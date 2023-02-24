@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WasteAndroidApp</string>
+    <string name="title_activity_landing">LandingActivity</string>
 </resources>
