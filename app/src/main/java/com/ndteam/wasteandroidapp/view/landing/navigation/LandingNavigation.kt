@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ndteam.wasteandroidapp.view.landing.screens.LandingMainScreen
+import com.ndteam.wasteandroidapp.view.landing.screens.WelcomeScreen
 
 @Composable
 fun LandingNavigation() {
@@ -15,7 +16,7 @@ fun LandingNavigation() {
         }
 
         composable(route = LandingScreens.WelcomeLandingScreens.route) {
-
+            WelcomeScreen(navController = navController)
         }
     }
 }

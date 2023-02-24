@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">WasteAndroidApp</string>
     <string name="title_activity_landing">LandingActivity</string>
+    <string name="reduce_title">Reduce</string>
+    <string name="reduce_desc">Reduce waste by being mindful of consumption habits, choosing minimal packaging, reusable water bottles, and turning off electronics.\n</string>
+    <string name="reuse_title">Reuse</string>
+    <string name="reuse_desc">Reuse items instead of discarding them by finding new ways to use them, like textile napkins, donating items to charity, using reusable shopping bags.\n</string>
+    <string name="recycle_title">Recycle</string>
+    <string name="recycle_desc">"Recycle by converting waste materials into new products instead of throwing them away. Recyclable items include aluminum cans, glass bottles, plastic containers, and paper products. "</string>
 </resources>
