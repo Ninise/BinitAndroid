@@ -1,5 +1,8 @@
 package com.ndteam.wasteandroidapp.view.landing.screens
 
+import android.content.Context
+import android.hardware.*
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -33,6 +37,8 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.android.material.animation.AnimationUtils.lerp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Utils
+import com.squareup.moshi.internal.Util
 import kotlin.math.absoluteValue
 
 @Preview
@@ -54,6 +60,11 @@ fun WelcomeScreen(navController: NavController) {
     val slideDesc = remember { mutableStateOf( navController.context.getString(R.string.reduce_desc)) }
 
     val slideDotColor = remember { mutableStateOf( MainBlue ) }
+
+    val offsetX = remember { mutableStateOf( 0f ) }
+    val offsetY = remember { mutableStateOf( 0f ) }
+
+    setupMotion(LocalContext.current, offsetX, offsetY)
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -143,7 +154,7 @@ fun WelcomeScreen(navController: NavController) {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         }) {
-                    pagerImage(back = slideBackImage.value, front = slideFrontImage.value)
+                    pagerImage(back = slideBackImage.value, front = slideFrontImage.value, offsetX = offsetX.value, offsetY = offsetY.value)
                     Spacer(modifier = Modifier.height(30.dp))
                     Text(
                         text = slideTitle.value,
@@ -194,7 +205,7 @@ fun WelcomeScreen(navController: NavController) {
 }
 
 @Composable
-fun pagerImage(@DrawableRes back: Int, @DrawableRes front: Int,) {
+fun pagerImage(@DrawableRes back: Int, @DrawableRes front: Int, offsetX: Float, offsetY: Float) {
     Box {
         Image(
             painter = painterResource(id = back),
@@ -202,7 +213,12 @@ fun pagerImage(@DrawableRes back: Int, @DrawableRes front: Int,) {
             modifier = Modifier
                 .height(400.dp)
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp),
+                .padding(horizontal = 10.dp)
+                .graphicsLayer {
+                    translationX = offsetX * 10
+                    translationY = offsetY * 10
+
+                },
             contentScale = ContentScale.Fit
         )
 
@@ -252,5 +268,27 @@ fun DotsIndicator(
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }
         }
+    }
+}
+
+private fun setupMotion(context: Context, offsetX: MutableState<Float>, offsetY: MutableState<Float>) {
+    val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    val mSensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+
+    val listener = object : SensorEventListener {
+        // this method is called when the
+        // device's position changes
+        override fun onSensorChanged(sensorEvent: SensorEvent) {
+            // check if listener is
+            // different from null
+            offsetX.value = sensorEvent.values[0]
+            offsetY.value = sensorEvent.values[1]
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor?, i: Int) {}
+    }
+
+    mSensor?.also { sensor ->
+        sensorManager.registerListener(listener, sensor, 1)
     }
 }
