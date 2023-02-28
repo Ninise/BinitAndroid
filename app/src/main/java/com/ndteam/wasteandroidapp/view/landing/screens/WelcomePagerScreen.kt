@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +20,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +38,8 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
 import com.squareup.moshi.internal.Util
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Preview
@@ -61,6 +62,8 @@ fun WelcomeScreen(navController: NavController) {
 
     val slideDotColor = remember { mutableStateOf( MainBlue ) }
 
+    val nextButtonText = remember { mutableStateOf(navController.context.getString(R.string.next)) }
+
     val offsetX = remember { mutableStateOf( 0f ) }
     val offsetY = remember { mutableStateOf( 0f ) }
 
@@ -78,7 +81,9 @@ fun WelcomeScreen(navController: NavController) {
         ) {
             Text(
                 text = "Skip",
-                color = BodyText
+                color = BodyText,
+                style = MaterialTheme.typography.h3,
+                letterSpacing = 1.sp
             )
         }
 
@@ -100,6 +105,8 @@ fun WelcomeScreen(navController: NavController) {
 
                             slideDotColor.value = MainBlue
 
+                            nextButtonText.value = navController.context.getString(R.string.next)
+
                         }
 
                         1 -> {
@@ -111,6 +118,8 @@ fun WelcomeScreen(navController: NavController) {
 
                             slideDotColor.value = MainGreen
 
+                            nextButtonText.value = navController.context.getString(R.string.got_it)
+
                         }
 
                         2 -> {
@@ -121,6 +130,8 @@ fun WelcomeScreen(navController: NavController) {
                             slideDesc.value = navController.context.getString(R.string.recycle_desc)
 
                             slideDotColor.value = MainOrange
+
+                            nextButtonText.value = navController.context.getString(R.string.let_get_started)
                         }
                     }
                 }
@@ -156,22 +167,7 @@ fun WelcomeScreen(navController: NavController) {
                         }) {
                     pagerImage(back = slideBackImage.value, front = slideFrontImage.value, offsetX = offsetX.value, offsetY = offsetY.value)
                     Spacer(modifier = Modifier.height(30.dp))
-                    Text(
-                        text = slideTitle.value,
-                        color = TitleText,
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center
-                        )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Text(
-                        text = slideDesc.value,
-                        color = BodyText,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 50.dp)
-                        )
+                    pagerText(slideTitle.value, slideDesc.value)
                 }
 
             }
@@ -187,14 +183,27 @@ fun WelcomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(30.dp))
 
+            val scope = rememberCoroutineScope()
+
             Button(
-                onClick = { },
+                onClick = {
+                          scope.launch {
+                              state.scrollToPage(if (state.currentPage < state.pageCount) state.currentPage+1 else state.currentPage )
+                          }
+                },
                 colors = ButtonDefaults.buttonColors(slideDotColor.value),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
-                    .width(130.dp)
                     .height(45.dp)) {
-                Text(text = "Next", color = Color.White)
+
+                Text(
+                    text = nextButtonText.value,
+                    color = Color.White,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(horizontal = 30.dp),
+                    letterSpacing = 1.sp
+                )
+
             }
         }
     }
@@ -234,6 +243,30 @@ fun pagerImage(@DrawableRes back: Int, @DrawableRes front: Int, offsetX: Float, 
 }
 
 @Composable
+fun pagerText(title: String, body: String) {
+    Text(
+        text = title,
+        color = TitleText,
+        fontSize = 24.sp,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h1,
+        letterSpacing = 2.sp
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        text = body,
+        color = BodyText,
+        fontSize = 14.sp,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(horizontal = 30.dp),
+        style = MaterialTheme.typography.body1,
+        letterSpacing = 1.sp
+    )
+}
+
+@Composable
 fun DotsIndicator(
     totalDots : Int,
     selectedIndex : Int,
@@ -265,7 +298,7 @@ fun DotsIndicator(
             }
 
             if (index != totalDots - 1) {
-                Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+                Spacer(modifier = Modifier.padding(horizontal = 5.dp))
             }
         }
     }
