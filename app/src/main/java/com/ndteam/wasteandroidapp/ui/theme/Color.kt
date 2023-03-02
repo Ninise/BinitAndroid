@@ -13,3 +13,7 @@ val BodyText = Color(0xCD4F5969)
 val MainBlue = Color(0xFF1B87EB)
 val MainGreen = Color(0xFF5EE5A4)
 val MainOrange = Color(0xFFFB5607)
+
+val SearchBackGray = Color(0xFFEDEFF4)
+val ChipBackGray = Color(0xFFF1F1F5)
+val IconsGray = Color(0xFFB3B7C0)
