@@ -14,6 +14,11 @@ val Nunito = FontFamily(
     Font(R.font.nunito_light, FontWeight.Light)
 )
 
+var Inter = FontFamily(
+    Font(R.font.inter_regular, FontWeight.Normal),
+    Font(R.font.inter_medium, FontWeight.Medium),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(

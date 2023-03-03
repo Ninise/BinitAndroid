@@ -22,13 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
@@ -50,7 +53,7 @@ fun SearchMainScreen(navController: NavController?) {
             icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
             name = "Plastic bag",
             wayToRecycler = "Put it in recycler bin",
-            type = RecycleType.RECYCLE
+            type = RecycleType.ORGANIC
         ),
         GarbageItem(
             icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
@@ -74,6 +77,7 @@ fun SearchMainScreen(navController: NavController?) {
                     SearchChip(text = it, onItemClick = {
 
                     })
+
                 }
             }
 
@@ -81,10 +85,19 @@ fun SearchMainScreen(navController: NavController?) {
 
             LazyColumn() {
                 items(garbage) {
+
                     GarbageItemView(
                         item = it,
-                        onItemClick = {}
+                        onItemClick = {
+
+                        }
                     )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
+
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
         }
@@ -200,44 +213,51 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
 
 @Composable
 fun GarbageItemView(item: GarbageItem, onItemClick: (String) -> Unit) {
-   Row(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+   Row(modifier = Modifier
+       .fillMaxWidth()
+       .padding(vertical = 10.dp, horizontal = 20.dp)) {
        AsyncImage(
            model = item.icon,
            contentDescription = item.name,
            contentScale = ContentScale.Crop,
            modifier = Modifier
-               .size(80.dp, height = 80.dp)
+               .size(76.dp, height = 76.dp)
                .clip(RoundedCornerShape(11.dp))
 
        )
 
-       Column (Modifier.weight(1f).padding(horizontal = 15.dp)) {
+       Column (
+           Modifier
+               .weight(1f)
+               .padding(horizontal = 15.dp)) {
            Text(
                text = item.name,
                color = TitleText,
-               style = MaterialTheme.typography.h1,
-               fontSize = 16.sp,
+               fontFamily = Inter,
+               fontWeight = FontWeight.Medium,
+               fontSize = 14.sp,
                letterSpacing = 1.sp,
            )
 
-           Spacer(modifier = Modifier.height(5.dp))
+           Spacer(modifier = Modifier.height(2.dp))
 
            Text(
                text = item.wayToRecycler,
                color = BodyText,
-               style = MaterialTheme.typography.h1,
+               fontFamily = Inter,
+               fontWeight = FontWeight.Normal,
                fontSize = 12.sp,
                letterSpacing = 1.sp,
            )
        }
 
        Icon(
-           Icons.Filled.Star,
-           tint = IconsGray,
+           painterResource(id = item.returnImage()),
+           tint = GarbageTypeIconColor,
            contentDescription = "",
            modifier = Modifier
                .padding(end = 15.dp)
-               .size(24.dp)
+               .size(25.dp)
                .align(Alignment.CenterVertically),
        )
 

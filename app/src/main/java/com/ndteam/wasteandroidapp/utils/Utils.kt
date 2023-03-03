@@ -11,8 +11,4 @@ object Utils {
         Log.d("TAG", str)
     }
 
-    fun string(@StringRes id: Int) {
-
-    }
-
 }
