@@ -9,6 +9,7 @@ The goal of the project is to teach people how to sort their garbage, especially
 
 - Kotlin
 - Jetpack Compose
+- Jetpack Navigation
 - Retrofit
 - Moshi
 - RxKotlin
