@@ -1,13 +1,6 @@
 
 ## 🖥 Work in progress
 
------------------------------------------------------
-
-![Screenshot1](welcome_1.jpeg)![Screenshot2](welcome_2.jpeg)![Screenshot3](welcome_3.jpeg)![Screenshot4](search_1.jpeg)
-
------------------------------------------------------
-
-
 # Waste Sorting Educational App
 
 The goal of the project is to teach people how to sort their garbage, especially useful for people how are new to garbage sorting
@@ -25,6 +18,18 @@ The goal of the project is to teach people how to sort their garbage, especially
 - Accompanist
 - Hilt
 
+## Screenshots
+
+-----------------------------------------------------
+
+<p>
+  <img src="welcome_1.jpeg" width="225">
+  <img src="welcome_2.jpeg" width="225">
+  <img src="welcome_3.jpeg" width="225">
+  <img src="search_1.jpeg" width="225">
+</p>
+
+-----------------------------------------------------
 
 ## License
 
