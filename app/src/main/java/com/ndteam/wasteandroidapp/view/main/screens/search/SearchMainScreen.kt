@@ -83,7 +83,7 @@ fun SearchMainScreen(navController: NavController?) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            LazyColumn() {
+            LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
                 items(garbage) {
 
                     GarbageItemView(
@@ -212,10 +212,10 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
 }
 
 @Composable
-fun GarbageItemView(item: GarbageItem, onItemClick: (String) -> Unit) {
+fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (String) -> Unit) {
    Row(modifier = Modifier
        .fillMaxWidth()
-       .padding(vertical = 10.dp, horizontal = 20.dp)) {
+       .padding(vertical = 10.dp)) {
        AsyncImage(
            model = item.icon,
            contentDescription = item.name,
@@ -251,15 +251,18 @@ fun GarbageItemView(item: GarbageItem, onItemClick: (String) -> Unit) {
            )
        }
 
-       Icon(
-           painterResource(id = item.returnImage()),
-           tint = GarbageTypeIconColor,
-           contentDescription = "",
-           modifier = Modifier
-               .padding(end = 15.dp)
-               .size(25.dp)
-               .align(Alignment.CenterVertically),
-       )
+
+       if (showIcon) {
+           Icon(
+               painterResource(id = item.returnImage()),
+               tint = GarbageTypeIconColor,
+               contentDescription = "",
+               modifier = Modifier
+                   .padding(end = 15.dp)
+                   .size(25.dp)
+                   .align(Alignment.CenterVertically),
+           )
+       }
 
    }
 }

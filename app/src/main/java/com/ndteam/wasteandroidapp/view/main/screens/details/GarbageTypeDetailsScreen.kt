@@ -47,7 +47,40 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
     val pageColor: Color = MainOrange
     val typeIcon: Int = R.drawable.ic_recycle
     val descriptionText: String = "Recycling is important because it helps to conserve natural resources, reduce waste and pollution, save energy, create jobs, and support local economies."
+    val listType: String = "recycling"
 
+    val garbage = arrayListOf<GarbageItem>(
+        GarbageItem(
+            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
+            name = "Plastic bottle",
+            wayToRecycler = "Clean it and put it in recycle bin",
+            type = RecycleType.RECYCLE
+        ),
+        GarbageItem(
+            icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
+            name = "Plastic bag",
+            wayToRecycler = "Put it in recycler bin",
+            type = RecycleType.ORGANIC
+        ),
+        GarbageItem(
+            icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
+            name = "Plastic pack",
+            wayToRecycler = "Put it in garbage bin",
+            type = RecycleType.GARBAGE
+        ),
+        GarbageItem(
+            icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
+            name = "Plastic bag",
+            wayToRecycler = "Put it in recycler bin",
+            type = RecycleType.ORGANIC
+        ),
+        GarbageItem(
+            icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
+            name = "Plastic pack",
+            wayToRecycler = "Put it in garbage bin",
+            type = RecycleType.GARBAGE
+        ),
+    )
 
     Box(modifier =
     Modifier
@@ -67,12 +100,19 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                 )
                 .verticalScroll(scrollState)) {
 
+            Column(modifier = Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
 
-            DetailsTextView(
-                title = title,
-                descriptionText = descriptionText,
-                typeIcon = typeIcon
-            )
+                DetailsTextView(
+                    title = title,
+                    descriptionText = descriptionText,
+                    typeIcon = typeIcon
+                )
+
+                GarbageExampleListDetailsView(listType, garbage)
+
+            }
+
+
         }
 
     }
@@ -97,39 +137,83 @@ private fun DetailsHeaderView(headerImage: Int, scrollStateValue: Int) {
 
 @Composable
 private fun DetailsTextView(title: String, descriptionText: String, typeIcon: Int) {
-    Column(modifier =
-    Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = title,
+            color = TitleText,
+            fontFamily = Nunito,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            letterSpacing = 1.sp,
+            modifier = Modifier.weight(1f)
+        )
 
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Icon(
+            painterResource(id = typeIcon),
+            tint = GarbageTypeIconColor,
+            contentDescription = "",
+            modifier = Modifier
+                .size(25.dp),
+        )
+    }
+
+    Text(
+        text = descriptionText,
+        color = BodyText,
+        fontFamily = Nunito,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 1.sp,
+        modifier = Modifier.padding(top = 10.dp)
+
+    )
+}
+
+@Composable
+fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
+    Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier.padding(top = 30.dp)) {
+        Text(
+            text = "Products for $type bin:",
+            color = TitleText,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            letterSpacing = 1.sp,
+            modifier = Modifier.weight(1f)
+        )
+
+        TextButton(onClick = {
+            //TODO open search
+        }) {
             Text(
-                text = title,
+                text = "See all",
                 color = TitleText,
-                fontFamily = Nunito,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                letterSpacing = 1.sp,
-                modifier = Modifier.weight(1f)
-            )
-
-            Icon(
-                painterResource(id = typeIcon),
-                tint = GarbageTypeIconColor,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(25.dp),
+                fontFamily = Inter,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                letterSpacing = 1.sp
             )
         }
 
-        Text(
-            text = descriptionText,
-            color = BodyText,
-            fontFamily = Nunito,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-            letterSpacing = 1.sp,
-            modifier = Modifier.padding(top = 10.dp)
+    }
 
-        )
+    LazyColumn(modifier = Modifier.height(500.dp)) {
+        items(garbage) {
+
+            GarbageItemView(
+                item = it,
+                onItemClick = {
+
+                },
+                showIcon = false
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
+
+            Spacer(modifier = Modifier.height(4.dp))
+        }
     }
 }
 
