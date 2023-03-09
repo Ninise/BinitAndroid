@@ -5,6 +5,8 @@ sealed class MainScreens(val route: String) {
 
     object GarbageDetailsScreen : MainScreens("garbage_details_screen")
 
+    object MainScreen : MainScreens("main_screen")
+
     fun withArgs(vararg args: String) : String {
         return buildString {
             append(route)

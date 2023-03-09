@@ -13,10 +13,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +32,7 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Utils
 
 @Composable
 fun SearchMainScreen(navController: NavController?) {
@@ -70,7 +68,11 @@ fun SearchMainScreen(navController: NavController?) {
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            SearchView(state = textState)
+            SearchView(state = textState, click = {
+
+            }, backClick = {
+                navController?.popBackStack()
+            })
 
             LazyRow(modifier = Modifier.padding(start = 15.dp)) {
                 items(searchSuggestions) {
@@ -106,12 +108,14 @@ fun SearchMainScreen(navController: NavController?) {
 }
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+fun SearchView(state: MutableState<TextFieldValue>, showBack: Boolean = true, click: () -> Unit, backClick: () -> Unit = {}) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+        click()
+    }) {
 
-        if (state.value == TextFieldValue("")) {
+        if (state.value == TextFieldValue("") && showBack) {
             IconButton(onClick = {
-
+                backClick()
             }) {
                 Icon(
                     Icons.Default.ArrowBack,
@@ -129,9 +133,13 @@ fun SearchView(state: MutableState<TextFieldValue>) {
             onValueChange = { value ->
                 state.value = value
             },
+            enabled = showBack,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp),
+            placeholder = {
+                Text("Search", style = TextStyle(color = BodyText, fontSize = 16.sp),)
+            },
             textStyle = TextStyle(color = BodyText, fontSize = 16.sp),
             leadingIcon = {
                 if (state.value != TextFieldValue("")) {

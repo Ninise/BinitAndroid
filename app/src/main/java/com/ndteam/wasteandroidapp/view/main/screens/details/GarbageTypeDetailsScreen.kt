@@ -140,7 +140,6 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-
                     .graphicsLayer {
                         alpha = scrollState.value / 350f
                     }
@@ -162,7 +161,6 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
     }
 
 }
-
 
 @Composable
 private fun ToolbarPlanIconAndTitle(listType: String) {
@@ -208,7 +206,6 @@ private fun DetailsHeaderView(headerImage: Int, scrollStateValue: Int) {
     }
 
 }
-
 
 @Composable
 private fun DetailsTextView(title: String, descriptionText: String, typeIcon: Int) {
