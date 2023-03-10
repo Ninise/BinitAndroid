@@ -20,3 +20,4 @@ val IconsGray = Color(0xFFB3B7C0)
 val GarbageTypeIconColor = Color(0xFF4F5969)
 
 val DividerColor = Color(0x1A4F5969)
+
