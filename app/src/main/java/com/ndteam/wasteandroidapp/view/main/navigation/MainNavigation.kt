@@ -1,9 +1,11 @@
 package com.ndteam.wasteandroidapp.view.main.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
@@ -22,7 +24,9 @@ fun MainNavigation() {
         }
 
         composable(route = MainScreens.MainScreen.route) {
-            MainScreen(navController = navController)
+            val viewModel = hiltViewModel<MainViewModel>()
+
+            MainScreen(navController = navController, viewModel)
         }
 
     }

@@ -1,6 +1,5 @@
 package com.ndteam.wasteandroidapp.view.main.screens.main
 
-import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -10,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -20,54 +18,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.ndteam.wasteandroidapp.ui.theme.BodyText
-import com.ndteam.wasteandroidapp.ui.theme.Nunito
-import com.ndteam.wasteandroidapp.ui.theme.TitleText
-import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
-import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
-import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.MainBlue
+import com.ndteam.wasteandroidapp.ui.theme.Nunito
+import com.ndteam.wasteandroidapp.ui.theme.TitleText
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
+import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
+import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 
 
 @Composable
-fun MainScreen(navController: NavController?) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel) {
+
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
-    val searchSuggestions = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
+    val searchSuggestions = viewModel.getSearchSuggestions()
 
-    val garbageCategories = arrayListOf<GarbageCategory>(
-        GarbageCategory("Recycle", R.drawable.ic_recycle_maincard, RecycleType.RECYCLE),
-        GarbageCategory("Organic", R.drawable.ic_organic_maincard, RecycleType.ORGANIC),
-        GarbageCategory("Garbage", R.drawable.ic_recycle_maincard, RecycleType.GARBAGE),
-    )
+    val garbageCategories = viewModel.getGarbageCategories()
 
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
         SearchView(state = textState, showBack = false, click = {
-            navController?.navigate(MainScreens.SearchMainScreen.route)
+            navController.navigate(MainScreens.SearchMainScreen.route)
         })
 
         LazyRow(modifier = Modifier.padding(start = 15.dp)) {
             items(searchSuggestions) {
                 SearchChip(text = it, onItemClick = {
-                    navController?.navigate(MainScreens.SearchMainScreen.route)
+                    navController.navigate(MainScreens.SearchMainScreen.route)
                 })
 
             }
         }
 
-        TextTitleMain(title = "How to sort")
+        TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
         
         Row (modifier = Modifier
             .fillMaxWidth()
@@ -80,7 +78,7 @@ fun MainScreen(navController: NavController?) {
 
         }
 
-        TextTitleMain(title = "Game")
+        TextTitleMain(title = stringResource(R.string.main_title_game))
 
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -89,7 +87,7 @@ fun MainScreen(navController: NavController?) {
             .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
         )
 
-        TextTitleMain(title = "Good to know")
+        TextTitleMain(title = stringResource(R.string.main_title_good_to_know))
 
     }
 }
@@ -167,5 +165,5 @@ fun GarbageTypeCard(item: GarbageCategory) {
 @Preview
 @Composable
 fun MainPreview() {
-    MainScreen(navController = null)
+    MainScreen(navController = NavController(LocalContext.current), viewModel = viewModel())
 }

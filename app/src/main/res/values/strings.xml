@@ -10,4 +10,7 @@
     <string name="next">Next</string>
     <string name="got_it">Got it</string>
     <string name="let_get_started">Let’s get started!</string>
+    <string name="main_title_good_to_know">Good to know</string>
+    <string name="main_title_game">Game</string>
+    <string name="main_title_how_to_sort">How to sort</string>
 </resources>
