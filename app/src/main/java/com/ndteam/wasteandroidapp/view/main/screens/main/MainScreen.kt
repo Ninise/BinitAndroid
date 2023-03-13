@@ -1,12 +1,9 @@
 package com.ndteam.wasteandroidapp.view.main.screens.main
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -36,6 +33,7 @@ import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.ui.theme.TitleText
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
+import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 
@@ -73,7 +71,9 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             .padding(start = 10.dp)) {
 
             for (i in garbageCategories.indices) {
-                GarbageTypeCard(garbageCategories[i])
+                GarbageTypeCard(garbageCategories[i]) {
+                    navController.navigate(MainScreens.GarbageDetailsScreen.route)
+                }
             }
 
         }
@@ -105,8 +105,11 @@ fun TextTitleMain(title: String) {
 }
 
 @Composable
-fun GarbageTypeCard(item: GarbageCategory) {
+fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Unit) {
     Box (modifier = Modifier
+        .clickable {
+            onItemClick(item)
+        }
         .width(180.dp)
         .height(180.dp)
         .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))

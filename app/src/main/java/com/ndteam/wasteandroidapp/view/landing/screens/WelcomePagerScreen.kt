@@ -1,8 +1,8 @@
 package com.ndteam.wasteandroidapp.view.landing.screens
 
+import android.app.Activity
 import android.content.Context
 import android.hardware.*
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,38 +20,35 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivities
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import com.google.android.material.animation.AnimationUtils.lerp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
-import com.squareup.moshi.internal.Util
-import kotlinx.coroutines.coroutineScope
+import com.ndteam.wasteandroidapp.view.main.MainActivity
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Preview
 @Composable
 fun preview() {
-    WelcomeScreen(navController = NavController(LocalContext.current))
+    WelcomeScreen(
+        navController = NavController(LocalContext.current),
+        navigateToActivity = {  }
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun WelcomeScreen(navController: NavController) {
+fun WelcomeScreen(navController: NavController, navigateToActivity: (Class<out Activity>) -> Unit) {
 
     val state = rememberPagerState()
 
@@ -75,7 +72,9 @@ fun WelcomeScreen(navController: NavController) {
         .background(Color.White)) {
 
         TextButton(
-            onClick = {},
+            onClick = {
+                navigateToActivity(MainActivity::class.java)
+            },
             modifier = Modifier
                 .align(alignment = Alignment.TopEnd)
                 .padding(15.dp)
@@ -188,9 +187,13 @@ fun WelcomeScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                          scope.launch {
-                              state.scrollToPage(if (state.currentPage < state.pageCount) state.currentPage+1 else state.currentPage )
-                          }
+                    scope.launch {
+                        state.scrollToPage(if (state.currentPage < state.pageCount) state.currentPage + 1 else state.currentPage )
+                    }
+
+                    if (state.currentPage === state.pageCount - 1) {
+                        navigateToActivity(MainActivity::class.java)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(slideDotColor.value),
                 shape = RoundedCornerShape(10.dp),

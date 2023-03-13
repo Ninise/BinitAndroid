@@ -20,20 +20,8 @@
         android:theme="@style/Theme.WasteAndroidApp"
         tools:targetApi="31">
 
-<!--        <activity-->
-<!--            android:name=".view.landing.LandingActivity"-->
-<!--            android:exported="true"-->
-<!--            android:label="@string/title_activity_landing"-->
-<!--            android:theme="@style/Theme.WasteAndroidApp">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.landing.LandingActivity"
             android:exported="true"
             android:label="@string/title_activity_landing"
             android:theme="@style/Theme.WasteAndroidApp">
@@ -44,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.landing.LandingActivity" />
+        <activity android:name=".view.main.MainActivity" />
     </application>
 
 </manifest>

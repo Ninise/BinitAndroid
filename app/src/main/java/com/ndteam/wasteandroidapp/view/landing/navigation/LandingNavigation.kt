@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.landing.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -8,7 +9,7 @@ import com.ndteam.wasteandroidapp.view.landing.screens.LandingMainScreen
 import com.ndteam.wasteandroidapp.view.landing.screens.WelcomeScreen
 
 @Composable
-fun LandingNavigation() {
+fun LandingNavigation(navigateToActivity: (Class<out Activity>) -> Unit) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = LandingScreens.LandingLandingScreens.route) {
         composable(route = LandingScreens.LandingLandingScreens.route) {
@@ -16,7 +17,7 @@ fun LandingNavigation() {
         }
 
         composable(route = LandingScreens.WelcomeLandingScreens.route) {
-            WelcomeScreen(navController = navController)
+            WelcomeScreen(navController = navController, navigateToActivity)
         }
     }
 }

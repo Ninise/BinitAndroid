@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -105,7 +107,9 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                 .height(60.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ToolbarPlanIconAndTitle(listType = listType)
+                ToolbarPlanIconAndTitle(listType = listType) {
+                    navController?.popBackStack()
+                }
             }
 
             Box(
@@ -152,7 +156,9 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                     .background(pageColor),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ToolbarPlanIconAndTitle(listType = listType)
+                    ToolbarPlanIconAndTitle(listType = listType) {
+                        navController?.popBackStack()
+                    }
                 }
             }
         }
@@ -163,9 +169,9 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
 }
 
 @Composable
-private fun ToolbarPlanIconAndTitle(listType: String) {
+private fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
     IconButton(onClick = {
-
+        backPressed()
     }) {
         Icon(
             Icons.Default.ArrowBack,
@@ -220,11 +226,19 @@ private fun DetailsTextView(title: String, descriptionText: String, typeIcon: In
             modifier = Modifier.weight(1f)
         )
 
+        val infiniteTransition = rememberInfiniteTransition()
+        val rotateAnimation = infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(tween(5_000, easing = LinearEasing))
+        )
+
         Icon(
             painterResource(id = typeIcon),
             tint = GarbageTypeIconColor,
             contentDescription = "",
             modifier = Modifier
+                .rotate(rotateAnimation.value)
                 .size(25.dp),
         )
     }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
+import com.ndteam.wasteandroidapp.utils.NavigationUtils
 import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.landing.navigation.LandingNavigation
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,10 @@ class LandingActivity : BaseActivity() {
 
         setContent {
             WasteAndroidAppTheme {
-                LandingNavigation()
+                LandingNavigation {activity ->
+                    NavigationUtils.navigate(this, activity)
+                    finish()
+                }
             }
         }
 
