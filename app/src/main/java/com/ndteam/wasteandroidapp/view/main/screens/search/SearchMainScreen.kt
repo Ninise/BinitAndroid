@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,9 +35,10 @@ import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
 
 @Composable
-fun SearchMainScreen(navController: NavController?) {
+fun SearchMainScreen(navController: NavController, modifier: Modifier = Modifier.testTag(MainScreens.SearchMainScreen.route)) {
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
     val searchSuggestions = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
@@ -278,5 +281,5 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
 @Preview(showBackground = true)
 @Composable
 fun SearchViewPreview() {
-    SearchMainScreen(navController = null)
+    SearchMainScreen(navController = NavController(LocalContext.current))
 }
