@@ -43,7 +43,9 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
-    val searchSuggestions = viewModel.getSearchSuggestions()
+    viewModel.getSearchSuggestions()
+
+    val searchSuggestions = viewModel.suggestionState.value.suggestions
 
     val garbageCategories = viewModel.getGarbageCategories()
 
@@ -54,14 +56,18 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             navController.navigate(MainScreens.SearchMainScreen.route)
         })
 
-        LazyRow(modifier = Modifier.padding(start = 15.dp)) {
-            items(searchSuggestions) {
-                SearchChip(text = it, onItemClick = {
-                    navController.navigate(MainScreens.SearchMainScreen.route)
-                })
+        searchSuggestions?.let {
+            LazyRow(modifier = Modifier.padding(start = 15.dp)) {
+                items(searchSuggestions) {
+                    SearchChip(text = it, onItemClick = {
+                        navController.navigate(MainScreens.SearchMainScreen.route)
+                    })
 
+                }
             }
         }
+
+
 
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
         
@@ -82,7 +88,7 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
         Box(modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .height(200.dp)
             .padding(horizontal = 10.dp)
             .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
         )
@@ -129,6 +135,7 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
             modifier = Modifier
                 .fillMaxWidth()
                 .height(90.dp)
+                .padding(top = 5.dp)
                 .align(alignment = Alignment.BottomCenter)
                 .clip(RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)))
 
