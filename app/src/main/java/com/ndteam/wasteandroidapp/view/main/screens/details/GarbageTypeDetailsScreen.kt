@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -34,27 +35,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import kotlin.math.min
 
 
 @Composable
-fun GarbageTypeDetailsScreen(navController: NavController?) {
+fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageType: RecycleType) {
     val scrollState = rememberScrollState()
 
-    val title: String = "Why recycle is important?"
-    val headerImage: Int = R.drawable.ic_recycling_details_header
-    val pageColor: Color = MainOrange
-    val typeIcon: Int = R.drawable.ic_recycle
-    val descriptionText: String = "Recycling is important because it helps to conserve natural resources, reduce waste and pollution, save energy, create jobs, and support local economies."
-    val listType: String = "recycling"
+   val garbageCategory = viewModel.getGarbageCategoryByType(type = garbageType)
 
-    val garbage = arrayListOf<GarbageItem>(
+    val garbage = arrayListOf(
         GarbageItem(
             icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
             name = "Plastic bottle",
@@ -90,25 +88,23 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
 
     Box {
 
-
-
         // the rest
 
         Box(modifier =
         Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .background(color = pageColor)) {
+            .background(color = garbageCategory.categoryColor())) {
 
-            DetailsHeaderView(headerImage = headerImage, scrollStateValue = scrollState.value)
+            DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), scrollStateValue = scrollState.value)
 
             Row (modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ToolbarPlanIconAndTitle(listType = listType) {
-                    navController?.popBackStack()
+                ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
+                    navController.popBackStack()
                 }
             }
 
@@ -125,12 +121,12 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                 Column(modifier = Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
 
                     DetailsTextView(
-                        title = title,
-                        descriptionText = descriptionText,
-                        typeIcon = typeIcon
+                        title = garbageCategory.title,
+                        descriptionText = garbageCategory.description,
+                        typeIcon = garbageCategory.categoryIcon()
                     )
 
-                    GarbageExampleListDetailsView(listType, garbage)
+                    GarbageExampleListDetailsView(garbageCategory.categoryListTypeTitle(), garbage)
 
                 }
 
@@ -153,11 +149,11 @@ fun GarbageTypeDetailsScreen(navController: NavController?) {
                 Row (modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .background(pageColor),
+                    .background(garbageCategory.categoryColor()),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ToolbarPlanIconAndTitle(listType = listType) {
-                        navController?.popBackStack()
+                    ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
+                        navController.popBackStack()
                     }
                 }
             }
@@ -226,19 +222,19 @@ private fun DetailsTextView(title: String, descriptionText: String, typeIcon: In
             modifier = Modifier.weight(1f)
         )
 
-        val infiniteTransition = rememberInfiniteTransition()
-        val rotateAnimation = infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = 360f,
-            animationSpec = infiniteRepeatable(tween(5_000, easing = LinearEasing))
-        )
+//        val infiniteTransition = rememberInfiniteTransition()
+//        val rotateAnimation = infiniteTransition.animateFloat(
+//            initialValue = 0f,
+//            targetValue = 360f,
+//            animationSpec = infiniteRepeatable(tween(5_000, easing = LinearEasing))
+//        )
 
         Icon(
             painterResource(id = typeIcon),
             tint = GarbageTypeIconColor,
             contentDescription = "",
             modifier = Modifier
-                .rotate(rotateAnimation.value)
+//                .rotate(rotateAnimation.value)
                 .size(25.dp),
         )
     }
@@ -306,5 +302,5 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Preview(showBackground = true)
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
-    GarbageTypeDetailsScreen(navController = null)
+    GarbageTypeDetailsScreen(navController = NavController(LocalContext.current), viewModel(), RecycleType.RECYCLE)
 }

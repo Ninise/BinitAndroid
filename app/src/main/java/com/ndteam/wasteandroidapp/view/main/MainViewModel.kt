@@ -1,14 +1,13 @@
 package com.ndteam.wasteandroidapp.view.main
 
-import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,8 +22,35 @@ class MainViewModel @Inject constructor(
     private val _suggestionState = mutableStateOf(SuggestionState())
     val suggestionState: State<SuggestionState> = _suggestionState
 
-    fun getSearchSuggestions()  {
+    private val _garbageTypeState = mutableStateOf(GarbageState())
+    val garbageState: State<GarbageState> = _garbageTypeState
+
+    fun downloadData() {
+        getSearchSuggestions()
+        getGarbageCategories()
+    }
+
+    fun getGarbageCategoryByType(type: RecycleType) : GarbageCategory {
+        garbageState.value.garbageList?.filter {
+            it.type == type
+        }?.let {
+            return it[0]
+        }?: kotlin.run {
+            return GarbageCategory(
+                type.name,
+                R.drawable.ic_recycling_details_header,
+                type,
+                "TITLE",
+                "DESCRIPTION"
+            )
+        }
+    }
+
+    private fun getSearchSuggestions()  {
         viewModelScope.launch {
+
+            _suggestionState.value = SuggestionState(isLoading = true)
+
             val result = repository.getSuggestions()
             _suggestionState.value = SuggestionState(
                 suggestions = result.data,
@@ -34,16 +60,20 @@ class MainViewModel @Inject constructor(
             )
         }
     }
-    fun getGarbageCategories() : List<GarbageCategory> {
-       return  arrayListOf<GarbageCategory>(
-            GarbageCategory("Recycle", R.drawable.ic_recycle_maincard, RecycleType.RECYCLE),
-            GarbageCategory("Organic", R.drawable.ic_organic_maincard, RecycleType.ORGANIC),
-            GarbageCategory("Garbage", R.drawable.ic_waste_maincard, RecycleType.GARBAGE),
-        )
-    }
 
-    fun downloadData() {
-        Log.d("TAG", "downloadData: ")
+    private fun getGarbageCategories() {
+        viewModelScope.launch {
+
+            _garbageTypeState.value = GarbageState(isLoading = true)
+
+            val result = repository.getGarbageCategories()
+            _garbageTypeState.value = GarbageState(
+                garbageList = result.data,
+                isLoading = false,
+                error = result.message
+
+            )
+        }
     }
 
 }

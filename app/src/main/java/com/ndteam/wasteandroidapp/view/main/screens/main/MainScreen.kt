@@ -43,11 +43,11 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
-    viewModel.getSearchSuggestions()
+    viewModel.downloadData()
 
     val searchSuggestions = viewModel.suggestionState.value.suggestions
 
-    val garbageCategories = viewModel.getGarbageCategories()
+    val garbageCategories = viewModel.garbageState.value.garbageList
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -67,8 +67,6 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             }
         }
 
-
-
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
         
         Row (modifier = Modifier
@@ -76,11 +74,14 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             .horizontalScroll(rememberScrollState())
             .padding(start = 10.dp)) {
 
-            for (i in garbageCategories.indices) {
-                GarbageTypeCard(garbageCategories[i]) {
-                    navController.navigate(MainScreens.GarbageDetailsScreen.route)
+            garbageCategories?.let {
+                for (i in garbageCategories.indices) {
+                    GarbageTypeCard(garbageCategories[i]) {
+                        navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(garbageCategories[i].type.name))
+                    }
                 }
             }
+
 
         }
 
@@ -88,10 +89,20 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
         Box(modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(230.dp)
             .padding(horizontal = 10.dp)
             .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
-        )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_game_placeholder),
+                contentDescription = "Game placeholder",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(230.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+            )
+        }
 
         TextTitleMain(title = stringResource(R.string.main_title_good_to_know))
 

@@ -13,4 +13,7 @@
     <string name="main_title_good_to_know">Good to know</string>
     <string name="main_title_game">Game</string>
     <string name="main_title_how_to_sort">How to sort</string>
+    <string name="title_recycling">recycling</string>
+    <string name="title_garbage">garbage</string>
+    <string name="title_organic">organic</string>
 </resources>

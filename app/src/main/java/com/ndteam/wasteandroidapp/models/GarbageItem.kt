@@ -10,5 +10,15 @@ data class GarbageItem(
 ) : GarbageIcon(type)
 
 enum class RecycleType {
-    RECYCLE, GARBAGE, ORGANIC
+    RECYCLE, GARBAGE, ORGANIC;
+
+    companion object {
+        fun parseValue(value: String) : RecycleType = when (value) {
+            RECYCLE.name -> RECYCLE
+            GARBAGE.name -> GARBAGE
+            else -> ORGANIC
+        }
+    }
+
+
 }

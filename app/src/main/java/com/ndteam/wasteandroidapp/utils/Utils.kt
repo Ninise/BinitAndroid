@@ -7,6 +7,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 
 object Utils {
 
+    fun string(res: Int) : String {
+        return App.context.getString(res)
+    }
+
     fun log(str: String) {
         Log.d("TAG", str)
     }
