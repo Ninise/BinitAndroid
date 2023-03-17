@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
@@ -32,7 +33,8 @@ class MainActivity : BaseActivity() {
 
         setContent {
             WasteAndroidAppTheme {
-                MainNavigation()
+                val viewModel = hiltViewModel<MainViewModel>()
+                MainNavigation(viewModel = viewModel)
             }
         }
 

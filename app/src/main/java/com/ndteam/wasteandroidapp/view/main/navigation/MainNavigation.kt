@@ -1,30 +1,49 @@
 package com.ndteam.wasteandroidapp.view.main.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
 
 @Composable
-fun MainNavigation() {
+fun MainNavigation(viewModel: MainViewModel, navController: NavHostController = rememberNavController()) {
 
     val GARBAGE_TYPE = "garbage_type"
-    val viewModel = hiltViewModel<MainViewModel>()
+    val SEARCH_QUERY = "search_query"
 
-    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = MainScreens.MainScreen.route) {
 
-        composable(route = MainScreens.SearchMainScreen.route) {
-            SearchMainScreen(navController = navController)
+        composable(
+            route = MainScreens.SearchMainScreen.route + "/{$SEARCH_QUERY}",
+            arguments = listOf(
+                navArgument(SEARCH_QUERY) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                    nullable = true
+                }
+            )
+        ) { entry ->
+            entry.arguments?.getString(SEARCH_QUERY, "")?.let { query ->
+
+                if (query == Const.SEARCH_QUERY_DEFAULT) {
+                    SearchMainScreen(navController = navController, viewModel)
+                } else {
+                    SearchMainScreen(navController = navController, viewModel, query)
+                }
+
+
+            }
         }
+
 
         composable(
             route = MainScreens.GarbageDetailsScreen.route + "/{$GARBAGE_TYPE}",

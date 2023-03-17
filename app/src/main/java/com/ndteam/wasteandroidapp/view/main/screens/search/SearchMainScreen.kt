@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,41 +27,21 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageItem
-import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
-import com.ndteam.wasteandroidapp.utils.Utils
-import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
 @Composable
-fun SearchMainScreen(navController: NavController, modifier: Modifier = Modifier.testTag(MainScreens.SearchMainScreen.route)) {
-    val textState = remember { mutableStateOf(TextFieldValue("")) }
+fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, query: String = "") {
 
-    val searchSuggestions = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
+    val textState = remember { mutableStateOf(TextFieldValue(query)) }
 
-    val garbage = arrayListOf<GarbageItem>(
-        GarbageItem(
-            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
-            name = "Plastic bottle",
-            wayToRecycler = "Clean it and put it in recycle bin",
-            type = RecycleType.RECYCLE
-        ),
-        GarbageItem(
-            icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
-            name = "Plastic bag",
-            wayToRecycler = "Put it in recycler bin",
-            type = RecycleType.ORGANIC
-        ),
-        GarbageItem(
-            icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
-            name = "Plastic pack",
-            wayToRecycler = "Put it in garbage bin",
-            type = RecycleType.GARBAGE
-        ),
-    )
+    val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
+
+    viewModel.searchGarbage(textState.value.text)
 
     Box(modifier =
     Modifier
@@ -74,35 +53,45 @@ fun SearchMainScreen(navController: NavController, modifier: Modifier = Modifier
             SearchView(state = textState, click = {
 
             }, backClick = {
-                navController?.popBackStack()
+                navController.popBackStack()
             })
 
-            LazyRow(modifier = Modifier.padding(start = 15.dp)) {
-                items(searchSuggestions) {
-                    SearchChip(text = it, onItemClick = {
+            if (textState.value.text.isEmpty()) {
+                LazyRow(modifier = Modifier.padding(start = 15.dp)) {
+                    items(searchSuggestions) {
+                        SearchChip(text = it, onItemClick = {
 
-                    })
+                        })
 
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
-                items(garbage) {
 
-                    GarbageItemView(
-                        item = it,
-                        onItemClick = {
+                if (viewModel.garbageItemState.value.isLoading) {
+                    // showLoader
+                } else {
+                    viewModel.garbageItemState.value.garbageList?.let {
+                        items(it) { item ->
 
+                            GarbageItemView(
+                                item = item,
+                                onItemClick = {
+
+                                }
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
+
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
-                    )
+                    }
 
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
-
-                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
         }
@@ -111,12 +100,16 @@ fun SearchMainScreen(navController: NavController, modifier: Modifier = Modifier
 }
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>, showBack: Boolean = true, click: () -> Unit, backClick: () -> Unit = {}) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
-        click()
-    }) {
+fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+        .clickable {
+            if (isMockView) {
+                click()
+            }
+        }
+        .testTag("search_view")) {
 
-        if (state.value == TextFieldValue("") && showBack) {
+        if (state.value == TextFieldValue("") && !isMockView) {
             IconButton(onClick = {
                 backClick()
             }) {
@@ -136,18 +129,18 @@ fun SearchView(state: MutableState<TextFieldValue>, showBack: Boolean = true, cl
             onValueChange = { value ->
                 state.value = value
             },
-            enabled = showBack,
+            enabled = !isMockView,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp),
             placeholder = {
-                Text("Search", style = TextStyle(color = BodyText, fontSize = 16.sp),)
+                Text("Search", style = TextStyle(color = BodyText, fontSize = 16.sp))
             },
             textStyle = TextStyle(color = BodyText, fontSize = 16.sp),
             leadingIcon = {
                 if (state.value != TextFieldValue("")) {
                     IconButton(onClick = {
-
+                        backClick()
                     }) {
                         Icon(
                             Icons.Default.ArrowBack,
@@ -209,6 +202,7 @@ fun SearchView(state: MutableState<TextFieldValue>, showBack: Boolean = true, cl
 fun SearchChip(text: String, onItemClick: (String) -> Unit) {
     Box(modifier = Modifier
         .padding(horizontal = 4.dp)
+        .testTag("search_chip")
         .background(color = ChipBackGray, shape = RoundedCornerShape(10.dp))
         .clickable { onItemClick(text) }) {
         Text(
@@ -226,7 +220,10 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
 fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (String) -> Unit) {
    Row(modifier = Modifier
        .fillMaxWidth()
-       .padding(vertical = 10.dp)) {
+       .padding(vertical = 10.dp)
+       .clickable {
+           onItemClick(item.name)
+       }) {
        AsyncImage(
            model = item.icon,
            contentDescription = item.name,
@@ -281,5 +278,9 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
 @Preview(showBackground = true)
 @Composable
 fun SearchViewPreview() {
-    SearchMainScreen(navController = NavController(LocalContext.current))
+    SearchMainScreen(
+        navController = NavController(LocalContext.current),
+        viewModel = hiltViewModel(),
+        query = ""
+    )
 }

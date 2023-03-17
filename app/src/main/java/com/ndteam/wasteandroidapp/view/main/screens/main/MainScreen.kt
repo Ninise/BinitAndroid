@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,23 +24,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
-import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.MainBlue
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.ui.theme.TitleText
+import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
-import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
@@ -51,16 +52,17 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     Column(modifier = Modifier
         .fillMaxSize()
+        .testTag("test_main")
         .background(Color.White)) {
-        SearchView(state = textState, showBack = false, click = {
-            navController.navigate(MainScreens.SearchMainScreen.route)
+        SearchView(state = textState, isMockView = true, click = {
+            navController.navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
         })
 
         searchSuggestions?.let {
             LazyRow(modifier = Modifier.padding(start = 15.dp)) {
                 items(searchSuggestions) {
-                    SearchChip(text = it, onItemClick = {
-                        navController.navigate(MainScreens.SearchMainScreen.route)
+                    SearchChip(text = it, onItemClick = { text ->
+                        navController.navigate(MainScreens.SearchMainScreen.withArgs(text))
                     })
 
                 }
@@ -127,6 +129,7 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
         .clickable {
             onItemClick(item)
         }
+        .testTag("garbage_type_card")
         .width(180.dp)
         .height(180.dp)
         .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))

@@ -7,6 +7,7 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
@@ -24,6 +25,9 @@ class MainViewModel @Inject constructor(
 
     private val _garbageTypeState = mutableStateOf(GarbageState())
     val garbageState: State<GarbageState> = _garbageTypeState
+
+    private val _garbageItemState = mutableStateOf(GarbageItemState())
+    val garbageItemState: State<GarbageItemState> = _garbageItemState
 
     fun downloadData() {
         getSearchSuggestions()
@@ -44,6 +48,28 @@ class MainViewModel @Inject constructor(
                 "DESCRIPTION"
             )
         }
+    }
+
+    fun searchGarbage(query: String) {
+
+        if (query.isNotEmpty()) {
+            viewModelScope.launch {
+                _garbageItemState.value = GarbageItemState(isLoading = true)
+
+                val result = repository.searchGarbage(query)
+
+                _garbageItemState.value = GarbageItemState(
+                    garbageList = result.data,
+                    isLoading = false,
+                    error = result.message
+                )
+            }
+        } else {
+            _garbageItemState.value = GarbageItemState(
+                isLoading = false,
+            )
+        }
+
     }
 
     private fun getSearchSuggestions()  {
