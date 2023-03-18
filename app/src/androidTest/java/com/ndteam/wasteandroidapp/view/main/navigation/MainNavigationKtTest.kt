@@ -1,22 +1,29 @@
 package com.ndteam.wasteandroidapp.view.main.navigation
 
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.filters.MediumTest
+import com.ndteam.wasteandroidapp.repository.WasteRepository
+import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
+import com.ndteam.wasteandroidapp.view.main.MainActivity
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.robolectric.annotation.Config
+import org.mockito.Mockito.mock
 
 @HiltAndroidTest
-@Config(application = HiltTestApplication::class)
 @MediumTest
 class MainNavigationKtTest {
 
@@ -25,21 +32,47 @@ class MainNavigationKtTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-    private lateinit var navController: TestNavHostController
+
+    lateinit var navController: TestNavHostController
+    lateinit var mainViewModel: MainViewModel
 
     @Before
     fun setUp() {
-        composeTestRule.setContent {
-            navController = TestNavHostController(LocalContext.current)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
-            MainNavigation()
-
+       composeTestRule.setContent {
+            WasteAndroidAppTheme {
+                navController = TestNavHostController(LocalContext.current)
+                mainViewModel = MainViewModel(FakeWasteRepository())
+                MainScreen(navController = navController, mainViewModel)
+            }
         }
+
         hiltRule.inject()
     }
 
     @Test
-    fun appNavHost_verifyStartDestination() {
-        composeTestRule.onNodeWithTag(MainScreens.SearchMainScreen.route).assertIsDisplayed()
+    fun mainScreen_screenIsDisplaying() {
+        composeTestRule.onNodeWithTag("test_main").assertIsDisplayed()
+    }
+
+    @Test
+    fun mainScreen_searchIsDisplaying() {
+        composeTestRule.onNodeWithTag("search_view").assertIsDisplayed()
+    }
+
+    @Test
+    fun mainScreen_suggestionsIsDisplaying() {
+        composeTestRule.waitUntil(5_000) {
+            composeTestRule.onAllNodesWithTag("search_chip").fetchSemanticsNodes().isNotEmpty()
+        }
+
+
+    }
+
+    @Test
+    fun mainScreen_garbageCategoriesIsDisplaying() {
+        composeTestRule.waitUntil(5_000) {
+            composeTestRule.onAllNodesWithTag("garbage_type_card").fetchSemanticsNodes()
+                .isNotEmpty()
+        }
     }
 }
