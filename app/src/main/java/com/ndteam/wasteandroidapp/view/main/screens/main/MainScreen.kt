@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
+import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainBlue
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.ui.theme.TitleText
@@ -130,42 +131,49 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
             onItemClick(item)
         }
         .testTag("garbage_type_card")
-        .width(180.dp)
+        .width(160.dp)
         .height(180.dp)
         .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))
         .padding(end = 10.dp)) {
 
         Image(
-            painter = painterResource(id = item.image),
-            contentDescription = "Back city type",
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop)
-
-        Image(
             painter = painterResource(id = item.returnShadow()),
             contentDescription = "Back shadow type",
             modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp)
-                .padding(top = 5.dp)
-                .align(alignment = Alignment.BottomCenter)
+                .fillMaxSize()
+                .align(alignment = Alignment.Center)
                 .clip(RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)))
 
+       Column (modifier = Modifier
+           .align(alignment = Alignment.Center)
+           .fillMaxWidth()) {
+
+
+           Image(
+               painter = painterResource(id = item.image),
+               contentDescription = "Back city type",
+               modifier = Modifier
+                   .width(108.dp)
+                   .height(108.dp)
+                   .align(alignment = Alignment.CenterHorizontally)
+                   .clip(RoundedCornerShape(16.dp)),
+               contentScale = ContentScale.Crop)
+
+           Spacer(modifier = Modifier.height(30.dp))
+       }
 
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 15.dp)
+                .padding(horizontal = 16.dp, vertical = 15.dp)
                 .align(alignment = Alignment.BottomCenter),
             verticalAlignment = Alignment.CenterVertically) {
 
             Text(
                 text = item.title,
                 color = Color.White,
-                fontFamily = Nunito,
-                fontWeight = FontWeight.Bold,
+                fontFamily = Inter,
+                fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
             )
             
@@ -176,7 +184,7 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
                 tint = Color.White,
                 contentDescription = "",
                 modifier = Modifier
-                    .size(25.dp)
+                    .size(20.dp)
                     .align(Alignment.CenterVertically),
             )
 

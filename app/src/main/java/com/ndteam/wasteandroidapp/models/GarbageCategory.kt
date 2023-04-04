@@ -15,15 +15,15 @@ data class GarbageCategory(
     val description: String
 ) : GarbageIcon(type) {
     fun returnShadow() = when(type) {
-        RecycleType.RECYCLE -> R.drawable.ic_recycle_shadow_maincard
-        RecycleType.GARBAGE -> R.drawable.ic_waste_shadow_maincard
-        else -> R.drawable.ic_shadow_organic_maincard
+        RecycleType.RECYCLE -> R.drawable.recycle_card_back_gradient
+        RecycleType.GARBAGE -> R.drawable.waste_card_back_gradient
+        else -> R.drawable.organic_card_back_gradient
     }
 
     fun categoryHeaderImage() = when(type) {
-        RecycleType.RECYCLE -> R.drawable.ic_recycling_details_header
-        RecycleType.GARBAGE -> R.drawable.ic_garbage_details_header
-        else -> R.drawable.ic_organic_details_header
+        RecycleType.RECYCLE -> R.drawable.recycle_details_back_gradient
+        RecycleType.GARBAGE -> R.drawable.waste_details_back_gradient
+        else -> R.drawable.organic_details_back_gradient
     }
 
     fun categoryColor() = when(type) {

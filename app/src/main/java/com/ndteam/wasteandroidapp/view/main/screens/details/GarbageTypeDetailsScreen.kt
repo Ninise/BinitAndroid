@@ -96,7 +96,7 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
             .verticalScroll(scrollState)
             .background(color = garbageCategory.categoryColor())) {
 
-            DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), scrollStateValue = scrollState.value)
+            DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), image = garbageCategory.image,  scrollStateValue = scrollState.value)
 
             Row (modifier = Modifier
                 .fillMaxWidth()
@@ -112,7 +112,7 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
                 modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 147.dp)
+                    .padding(top = 190.dp)
                     .background(
                         color = Color.White,
                         RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
@@ -190,14 +190,14 @@ private fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
 }
 
 @Composable
-private fun DetailsHeaderView(headerImage: Int, scrollStateValue: Int) {
+private fun DetailsHeaderView(headerImage: Int, image: Int, scrollStateValue: Int) {
     Box {
 
         Image(
             painter = painterResource(id = headerImage),
             contentDescription = "City background",
             modifier = Modifier
-                .height(160.dp)
+                .height(210.dp)
                 .fillMaxWidth()
                 .graphicsLayer {
                     alpha = min(1f, 1 - (scrollStateValue / 600f))
@@ -205,6 +205,22 @@ private fun DetailsHeaderView(headerImage: Int, scrollStateValue: Int) {
                 },
             contentScale = ContentScale.Crop
         )
+
+        Column (modifier = Modifier
+            .align(alignment = Alignment.Center)
+            .fillMaxWidth()) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = "Back city type",
+                modifier = Modifier
+                    .height(160.dp)
+                    .align(alignment = Alignment.CenterHorizontally),
+                contentScale = ContentScale.Crop
+            )
+            
+            Spacer(modifier = Modifier.height(10.dp))
+
+        }
     }
 
 }

@@ -36,14 +36,14 @@ class WasteRepositoryImpl @Inject constructor(
                 data = arrayListOf(
                     GarbageCategory(
                         title = "Recycle",
-                        R.drawable.ic_recycle_maincard,
+                        R.drawable.recycling_card_image,
                         RecycleType.RECYCLE,
                     importanceTitle = "Why recycle is important?",
                     description = "Recycling is important because it helps to conserve natural resources, reduce waste and pollution, save energy, create jobs, and support local economies."),
 
                     GarbageCategory(
                         "Organic",
-                        R.drawable.ic_organic_maincard,
+                        R.drawable.organic_card_image,
                         RecycleType.ORGANIC,
                         importanceTitle = "Why is important to collect organic waste separately?",
                         description = "Organic waste is composted for fertilizer, energy, or soil amendment. Composting decreases emissions, extends landfill lifespan, and enhances soil quality.\n" +
@@ -51,7 +51,7 @@ class WasteRepositoryImpl @Inject constructor(
 
                     GarbageCategory(
                         "Garbage",
-                        R.drawable.ic_waste_maincard,
+                        R.drawable.waste_card_image,
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",
                         description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +
