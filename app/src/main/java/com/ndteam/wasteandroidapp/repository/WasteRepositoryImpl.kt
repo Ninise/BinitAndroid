@@ -50,7 +50,7 @@ class WasteRepositoryImpl @Inject constructor(
                                 "Recycling organic waste supports natural systems instead of disposing it."),
 
                     GarbageCategory(
-                        "Garbage",
+                        "Waste",
                         R.drawable.waste_card_image,
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",
@@ -77,7 +77,7 @@ class WasteRepositoryImpl @Inject constructor(
                                 "Recycling organic waste supports natural systems instead of disposing it."),
 
                     GarbageCategory(
-                        "Garbage",
+                        "Waste",
                         R.drawable.ic_waste_maincard,
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",

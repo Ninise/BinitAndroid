@@ -72,19 +72,14 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltView
 
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
         
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+        LazyRow (modifier = Modifier
             .padding(start = 10.dp)) {
 
-            garbageCategories?.let {
-                for (i in garbageCategories.indices) {
-                    GarbageTypeCard(garbageCategories[i]) {
-                        navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(garbageCategories[i].type.name))
-                    }
+            items(garbageCategories!!) {category ->
+                GarbageTypeCard(category) {
+                    navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(category.type.name))
                 }
             }
-
 
         }
 
@@ -140,7 +135,8 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
             painter = painterResource(id = item.returnShadow()),
             contentDescription = "Back shadow type",
             modifier = Modifier
-                .fillMaxSize()
+                .width(160.dp)
+                .height(180.dp)
                 .align(alignment = Alignment.Center)
                 .clip(RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)))
 
@@ -157,7 +153,7 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
                    .height(108.dp)
                    .align(alignment = Alignment.CenterHorizontally)
                    .clip(RoundedCornerShape(16.dp)),
-               contentScale = ContentScale.Crop)
+               contentScale = ContentScale.Fit)
 
            Spacer(modifier = Modifier.height(30.dp))
        }
