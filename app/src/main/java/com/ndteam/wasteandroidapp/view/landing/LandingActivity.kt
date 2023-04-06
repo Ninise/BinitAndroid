@@ -7,7 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.base.BaseActivity
+import com.ndteam.wasteandroidapp.models.GarbageItem
+import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.utils.NavigationUtils
 import com.ndteam.wasteandroidapp.utils.Utils
@@ -32,6 +35,7 @@ class LandingActivity : BaseActivity() {
                 }
             }
         }
+
 
     }
 
