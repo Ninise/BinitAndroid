@@ -17,11 +17,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideWasteApi(): WasteApi {
-        return Retrofit.Builder()
-            .baseUrl("https://waste.api/")
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create()
+        return WasteApi
     }
 
 

@@ -28,6 +28,8 @@ class WasteRepositoryImpl @Inject constructor(
                 data = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
             )
         }
+
+
     }
 
     override suspend fun getGarbageCategories(): Resource<List<GarbageCategory>> {
@@ -89,55 +91,14 @@ class WasteRepositoryImpl @Inject constructor(
 
     override suspend fun searchGarbage(query: String): Resource<List<GarbageItem>> {
         return try {
-//            Resource.Success(
-//                data = api.getSuggestions()
-//            )
-            // return mock for now
+
             Resource.Success(
-                data = arrayListOf<GarbageItem>(
-                    GarbageItem(
-                        icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
-                        name = "Plastic bottle",
-                        wayToRecycler = "Clean it and put it in recycle bin",
-                        type = RecycleType.RECYCLE
-                    ),
-                    GarbageItem(
-                        icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
-                        name = "Plastic bag",
-                        wayToRecycler = "Put it in recycler bin",
-                        type = RecycleType.ORGANIC
-                    ),
-                    GarbageItem(
-                        icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
-                        name = "Plastic pack",
-                        wayToRecycler = "Put it in garbage bin",
-                        type = RecycleType.GARBAGE
-                    )
-                )
+                data = api.searchGarbageElements(query)
             )
         } catch(e: Exception) {
             e.printStackTrace()
-            Resource.Success(
-                data = arrayListOf<GarbageItem>(
-                    GarbageItem(
-                        icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
-                        name = "Plastic bottle",
-                        wayToRecycler = "Clean it and put it in recycle bin",
-                        type = RecycleType.RECYCLE
-                    ),
-                    GarbageItem(
-                        icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
-                        name = "Plastic bag",
-                        wayToRecycler = "Put it in recycler bin",
-                        type = RecycleType.ORGANIC
-                    ),
-                    GarbageItem(
-                        icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
-                        name = "Plastic pack",
-                        wayToRecycler = "Put it in garbage bin",
-                        type = RecycleType.GARBAGE
-                    ),
-                )
+            Resource.Error(
+              "Failed to get the data from Firestore", null
             )
         }
     }

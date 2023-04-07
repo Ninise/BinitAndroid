@@ -34,13 +34,13 @@ class LandingViewModel @Inject constructor(): BaseViewModel() {
 //            wayToRecycler = "Put it in garbage bin",
 //            type = RecycleType.GARBAGE
 //        )
-//        )
-
-        WasteApi.searchGarbageElements("pack") { items ->
-            items.forEach {
-                Utils.log(it.name)
-            }
-        }
+////        )
+//
+//        WasteApi.searchGarbageElements("pack") { items ->
+//            items.forEach {
+//                Utils.log(it.name)
+//            }
+//        }
     }
 
 }

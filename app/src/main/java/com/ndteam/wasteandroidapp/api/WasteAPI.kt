@@ -10,6 +10,7 @@ import com.ndteam.wasteandroidapp.api.WasteAPIKeys.ICON
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.NAME
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.WAY_TO_RECYCLER
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.TYPE
+import kotlinx.coroutines.tasks.await
 
 
 object WasteAPIKeys {
@@ -25,8 +26,6 @@ object WasteApi {
         /*
              KEYS OF GarbageItem
          */
-
-
 
         private var db: FirebaseFirestore
 
@@ -49,27 +48,30 @@ object WasteApi {
 
         }
 
-        fun searchGarbageElements(query: String, callback: (items: ArrayList<GarbageItem>) -> Unit) {
-                db.collection(GARBAGE_ITEMS)
-                        .get()
-                        .addOnSuccessListener { document ->
-                                if (document != null) {
+        suspend fun searchGarbageElements(query: String) : ArrayList<GarbageItem> {
+            val document = db.collection(GARBAGE_ITEMS)
+                            .get()
+                            .await()
 
-                                    val items = ArrayList<GarbageItem>()
+            val items = ArrayList<GarbageItem>()
 
-                                    for (doc in document.documents) {
-                                        items.add(GarbageItem.Companion.convertSnapshot(doc))
-                                    }
+            if (document != null) {
 
-                                    callback(items)
 
-                                } else {
-                                        Utils.log("No such document")
-                                }
-                        }
-                        .addOnFailureListener { exception ->
-                                Utils.log("get failed with $exception")
-                        }
+                for (doc in document.documents) {
+
+                    val item = GarbageItem.convertSnapshot(doc)
+
+                    if (item.name.contains(query) || item.type.name.contains(query)) {
+                        items.add(item)
+                    }
+                }
+
+            } else {
+                Utils.log("No such document")
+            }
+
+            return items
         }
 
 }
