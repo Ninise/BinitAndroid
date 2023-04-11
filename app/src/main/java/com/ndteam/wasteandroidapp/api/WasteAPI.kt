@@ -62,7 +62,7 @@ object WasteApi {
 
                     val item = GarbageItem.convertSnapshot(doc)
 
-                    if (item.name.contains(query) || item.type.name.contains(query)) {
+                    if (item.name.lowercase().contains(query.lowercase()) || item.type.name.lowercase().contains(query.lowercase())) {
                         items.add(item)
                     }
                 }

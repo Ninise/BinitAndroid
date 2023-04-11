@@ -2,6 +2,8 @@ package com.ndteam.wasteandroidapp.view.landing
 
 import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.base.BaseViewModel
+import com.ndteam.wasteandroidapp.models.GarbageItem
+import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -34,7 +36,7 @@ class LandingViewModel @Inject constructor(): BaseViewModel() {
 //            wayToRecycler = "Put it in garbage bin",
 //            type = RecycleType.GARBAGE
 //        )
-////        )
+//        )
 //
 //        WasteApi.searchGarbageElements("pack") { items ->
 //            items.forEach {

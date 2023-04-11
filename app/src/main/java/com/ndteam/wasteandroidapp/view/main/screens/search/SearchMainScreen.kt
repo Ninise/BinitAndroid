@@ -30,7 +30,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.google.firebase.FirebaseApp
+import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.models.GarbageItem
+import com.ndteam.wasteandroidapp.models.states.SuggestionState
+import com.ndteam.wasteandroidapp.repository.WasteRepository
+import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
@@ -60,7 +65,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                 LazyRow(modifier = Modifier.padding(start = 15.dp)) {
                     items(searchSuggestions) {
                         SearchChip(text = it, onItemClick = {
-
+                            textState.value = TextFieldValue(it)
                         })
 
                     }
@@ -71,7 +76,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
 
-                if (viewModel.garbageItemState.value.isLoading) {
+                if (viewModel.garbageItemState.value.isLoading ?: false) {
                     // showLoader
                 } else {
                     viewModel.garbageItemState.value.garbageList?.let {
@@ -278,9 +283,10 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
 @Preview(showBackground = true)
 @Composable
 fun SearchViewPreview() {
+
     SearchMainScreen(
         navController = NavController(LocalContext.current),
-        viewModel = hiltViewModel(),
+        viewModel = MainViewModel(WasteRepositoryImpl(WasteApi)),
         query = ""
     )
 }
