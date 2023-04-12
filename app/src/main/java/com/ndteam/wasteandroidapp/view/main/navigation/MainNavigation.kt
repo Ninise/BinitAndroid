@@ -56,7 +56,8 @@ fun MainNavigation(viewModel: MainViewModel, navController: NavHostController = 
             )
         ) { entry ->
             entry.arguments?.getString(GARBAGE_TYPE)?.let { type ->
-                GarbageTypeDetailsScreen(navController = navController, viewModel, RecycleType.parseValue(type))
+                val category = viewModel.getGarbageCategoryByType(type = RecycleType.parseValue(type))
+                GarbageTypeDetailsScreen(navController = navController, viewModel, category)
             }
 
         }

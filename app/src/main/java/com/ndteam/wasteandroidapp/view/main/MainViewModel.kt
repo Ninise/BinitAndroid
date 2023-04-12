@@ -13,6 +13,7 @@ import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
+import com.ndteam.wasteandroidapp.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -81,11 +82,15 @@ class MainViewModel @Inject constructor(
 
     fun searchGarbage(query: String) {
 
+        Utils.log("searchGarbage ${query}")
+
         if (query.isNotEmpty()) {
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
                 val result = repository.searchGarbage(query)
+
+                Utils.log("searchGarbage 2 ${result.data?.size}")
 
                 _garbageItemState.value = GarbageItemState(
                     garbageList = result.data,

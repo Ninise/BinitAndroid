@@ -32,7 +32,6 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
-import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.MainActivity
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue

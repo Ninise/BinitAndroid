@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,128 +26,129 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.ndteam.wasteandroidapp.R
+import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import kotlin.math.min
 
-
 @Composable
-fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageType: RecycleType) {
+fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
     val scrollState = rememberScrollState()
 
-   val garbageCategory = viewModel.getGarbageCategoryByType(type = garbageType)
 
-    val garbage = arrayListOf(
-        GarbageItem(
-            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
-            name = "Plastic bottle",
-            wayToRecycler = "Clean it and put it in recycle bin",
-            type = RecycleType.RECYCLE
-        ),
-        GarbageItem(
-            icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
-            name = "Plastic bag",
-            wayToRecycler = "Put it in recycler bin",
-            type = RecycleType.ORGANIC
-        ),
-        GarbageItem(
-            icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
-            name = "Plastic pack",
-            wayToRecycler = "Put it in garbage bin",
-            type = RecycleType.GARBAGE
-        ),
-        GarbageItem(
-            icon = "https://img.huffingtonpost.com/asset/5bad6d8b2200003501daad00.jpeg",
-            name = "Plastic bag",
-            wayToRecycler = "Put it in recycler bin",
-            type = RecycleType.ORGANIC
-        ),
-        GarbageItem(
-            icon = "https://akns-images.eonline.com/eol_images/Entire_Site/2022912/rs_1200x1200-221012142652-1200-balendciaga-lays-potato-chip-purse.jpg",
-            name = "Plastic pack",
-            wayToRecycler = "Put it in garbage bin",
-            type = RecycleType.GARBAGE
-        ),
-    )
+    LaunchedEffect(Unit, block = {
+        viewModel.searchGarbage(garbageCategory.type.name)
+    })
 
+    garbageCategory?.let { garbageCategory ->
+        Box  {
 
-    Box {
+            // the rest
 
-        // the rest
+            Box(modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .background(color = garbageCategory.categoryColor())) {
 
-        Box(modifier =
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .background(color = garbageCategory.categoryColor())) {
+                DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), image = garbageCategory.image,  scrollStateValue = scrollState.value)
 
-            DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), image = garbageCategory.image,  scrollStateValue = scrollState.value)
-
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
-                    navController.popBackStack()
-                }
-            }
-
-            Box(
-                modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(top = 190.dp)
-                    .background(
-                        color = Color.White,
-                        RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-                    )) {
-
-                Column(modifier = Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
-
-                    DetailsTextView(
-                        title = garbageCategory.title,
-                        descriptionText = garbageCategory.description,
-                        typeIcon = garbageCategory.categoryIcon()
-                    )
-
-                    GarbageExampleListDetailsView(garbageCategory.categoryListTypeTitle(), garbage)
-
-                }
-
-
-            }
-
-        }
-
-        if (scrollState.value > 0) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .graphicsLayer {
-                        alpha = scrollState.value / 350f
-                    }
-                ,
-                contentAlignment = Alignment.CenterStart
-            ) {
                 Row (modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
-                    .background(garbageCategory.categoryColor()),
+                    .height(60.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
                         navController.popBackStack()
                     }
                 }
+
+                Box(
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(top = 190.dp)
+                        .background(
+                            color = Color.White,
+                            RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                        )) {
+
+                    Column(modifier = Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
+
+                        DetailsTextView(
+                            title = garbageCategory.title,
+                            descriptionText = garbageCategory.description,
+                            typeIcon = garbageCategory.categoryIcon()
+                        )
+
+
+                        if (viewModel.garbageItemState.value.isLoading ?: false) {
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(600.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.TopCenter,
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(50.dp)
+                                        .padding(top = 40.dp)
+
+                                ) {
+                                    CircularProgressIndicator(color = garbageCategory.categoryColor())
+
+                                }
+                            }
+                        } else {
+                            viewModel.garbageItemState.value.garbageList?.let {
+                                GarbageExampleListDetailsView(
+                                    garbageCategory.categoryListTypeTitle(),
+                                    it
+                                )
+                            }
+                        }
+
+                    }
+
+
+                }
+
             }
+
+            if (scrollState.value > 0) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .graphicsLayer {
+                            alpha = scrollState.value / 350f
+                        }
+                    ,
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Row (modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .background(garbageCategory.categoryColor()),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
+                            navController.popBackStack()
+                        }
+                    }
+                }
+            }
+
+
         }
-
-
     }
+
+
 
 }
 
@@ -304,5 +306,5 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Preview(showBackground = true)
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
-    GarbageTypeDetailsScreen(navController = NavController(LocalContext.current), viewModel(), RecycleType.RECYCLE)
+    GarbageTypeDetailsScreen(navController = NavController(LocalContext.current), viewModel(), GarbageCategory("", 0, RecycleType.RECYCLE, "", ""))
 }
