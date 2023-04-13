@@ -37,6 +37,8 @@ import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
 @Composable
@@ -75,9 +77,13 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
-
                 if (viewModel.garbageItemState.value.isLoading ?: false) {
-                    // showLoader
+                    item {
+                        Box (Modifier.fillMaxWidth().height(90.dp),
+                            contentAlignment = Alignment.TopCenter) {
+                            CircularLoaderView(color = Const.MAIN_COLORS_ARRAY.random() )
+                        }
+                    }
                 } else {
                     viewModel.garbageItemState.value.garbageList?.let {
                         items(it) { item ->

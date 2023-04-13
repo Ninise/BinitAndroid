@@ -23,7 +23,6 @@
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_landing"
             android:theme="@style/Theme.WasteAndroidApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

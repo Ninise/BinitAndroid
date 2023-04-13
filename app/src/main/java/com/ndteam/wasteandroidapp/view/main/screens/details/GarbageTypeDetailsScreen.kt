@@ -32,6 +32,7 @@ import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import kotlin.math.min
 
@@ -92,17 +93,7 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
                                 .height(600.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Box(
-                                    contentAlignment = Alignment.TopCenter,
-                                    modifier = Modifier
-                                        .width(50.dp)
-                                        .height(50.dp)
-                                        .padding(top = 40.dp)
-
-                                ) {
-                                    CircularProgressIndicator(color = garbageCategory.categoryColor())
-
-                                }
+                              CircularLoaderView(color = garbageCategory.categoryColor())
                             }
                         } else {
                             viewModel.garbageItemState.value.garbageList?.let {

@@ -29,10 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
-import com.ndteam.wasteandroidapp.ui.theme.Inter
-import com.ndteam.wasteandroidapp.ui.theme.MainBlue
-import com.ndteam.wasteandroidapp.ui.theme.Nunito
-import com.ndteam.wasteandroidapp.ui.theme.TitleText
+import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
@@ -54,7 +51,8 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltView
     Column(modifier = Modifier
         .fillMaxSize()
         .testTag("test_main")
-        .background(Color.White)) {
+        .background(Color.White)
+        .verticalScroll(state = rememberScrollState(), enabled = true)) {
         SearchView(state = textState, isMockView = true, click = {
             navController.navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
         })
@@ -104,6 +102,12 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltView
 
         TextTitleMain(title = stringResource(R.string.main_title_good_to_know))
 
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .background(color = MainOrange)
+            .padding(horizontal = 10.dp))
+
     }
 }
 
@@ -143,7 +147,6 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
        Column (modifier = Modifier
            .align(alignment = Alignment.Center)
            .fillMaxWidth()) {
-
 
            Image(
                painter = painterResource(id = item.image),
