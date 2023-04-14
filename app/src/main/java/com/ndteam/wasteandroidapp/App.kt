@@ -2,6 +2,7 @@ package com.ndteam.wasteandroidapp
 
 import android.app.Application
 import android.content.Context
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 
@@ -17,6 +18,10 @@ class App : Application() {
         super.onCreate()
         context = applicationContext
         FirebaseApp.initializeApp(this)
+
+        MobileAds.initialize(
+            this
+        ) { }
     }
 
 }
