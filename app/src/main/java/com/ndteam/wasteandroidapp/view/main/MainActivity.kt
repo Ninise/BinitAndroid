@@ -49,6 +49,7 @@ class MainActivity : BaseActivity() {
                     Utils.log("ADS LOADED ${ad.body}")
                     // The AdLoader has finished loading ads.
                 }
+
             }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
