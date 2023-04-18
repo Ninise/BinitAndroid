@@ -79,15 +79,19 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
                 if (viewModel.garbageItemState.value.isLoading ?: false) {
                     item {
-                        Box (Modifier.fillMaxWidth().height(90.dp),
+                        Box (
+                            Modifier
+                                .fillMaxWidth()
+                                .height(90.dp),
                             contentAlignment = Alignment.TopCenter) {
                             CircularLoaderView(color = Const.MAIN_COLORS_ARRAY.random() )
                         }
                     }
                 } else {
+                    var index = 0
                     viewModel.garbageItemState.value.garbageList?.let {
                         items(it) { item ->
-
+                            index++
                             GarbageItemView(
                                 item = item,
                                 onItemClick = {
@@ -97,9 +101,22 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
                             Spacer(modifier = Modifier.height(4.dp))
 
-                            Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
+                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
 
                             Spacer(modifier = Modifier.height(4.dp))
+
+                            if (index % 3 == 0) {
+                                NativeAdItemView()
+
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                                Spacer(modifier = Modifier.height(4.dp))
+                            }
+
+
+
                         }
                     }
 

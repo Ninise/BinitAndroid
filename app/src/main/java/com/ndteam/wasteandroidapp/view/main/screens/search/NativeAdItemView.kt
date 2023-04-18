@@ -26,10 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.google.android.gms.ads.nativead.NativeAd
-import com.ndteam.wasteandroidapp.ui.theme.Inter
-import com.ndteam.wasteandroidapp.ui.theme.MainGreen
-import com.ndteam.wasteandroidapp.ui.theme.MainOrange
-import com.ndteam.wasteandroidapp.ui.theme.TitleText
+import com.ndteam.wasteandroidapp.ui.theme.*
 
 
 @Composable
@@ -39,8 +36,8 @@ fun NativeAdItemView(ad: NativeAd? = null) {
         Column (modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .padding(10.dp)) {
-            Row (modifier = Modifier.padding(5.dp)) {
+            .padding(vertical = 10.dp)) {
+            Row (modifier = Modifier.padding(vertical = 5.dp)) {
                 AsyncImage(
                     model = "https://thumbs.dreamstime.com/b/nasa-logo-white-background-vector-format-available-239931324.jpg",
                     contentDescription = "Ads logo",
@@ -57,7 +54,7 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                     Text(
                         text = "Ad HEADER",
                         color = TitleText,
-                        fontFamily = Inter,
+                        fontFamily = OpenSans,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
                         letterSpacing = 1.sp
@@ -83,11 +80,11 @@ fun NativeAdItemView(ad: NativeAd? = null) {
             Text(
                 text = "Easy-to-use tool for adding text and captions to your photos. ",
                 color = TitleText,
-                fontFamily = Inter,
+                fontFamily = OpenSans,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
                 letterSpacing = 1.sp,
-                modifier = Modifier.padding(horizontal = 5.dp)
+                modifier = Modifier.padding(bottom = 2.dp)
             )
         }
 
@@ -105,11 +102,12 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                     shape = RoundedCornerShape(8.dp),
                 )
 
+
         ) {
             Text(
                 text = "Ad",
                 color = TitleText,
-                fontFamily = Inter,
+                fontFamily = OpenSans,
                 fontWeight = FontWeight.Medium,
                 fontSize = 10.sp,
                 letterSpacing = 1.sp,

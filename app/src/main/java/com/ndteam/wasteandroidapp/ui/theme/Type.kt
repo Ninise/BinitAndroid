@@ -19,6 +19,13 @@ var Inter = FontFamily(
     Font(R.font.inter_medium, FontWeight.Medium),
 )
 
+var OpenSans = FontFamily(
+    Font(R.font.opensans_regular, FontWeight.Normal),
+    Font(R.font.opensans_semibold, FontWeight.Medium),
+    Font(R.font.opensans_bold, FontWeight.Bold),
+    Font(R.font.opensans_light, FontWeight.Light),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(
