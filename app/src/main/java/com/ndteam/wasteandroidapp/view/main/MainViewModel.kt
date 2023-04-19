@@ -3,6 +3,13 @@ package com.ndteam.wasteandroidapp.view.main
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.base.BaseViewModel
@@ -31,6 +38,10 @@ class MainViewModel @Inject constructor(
 
     private val _garbageItemState = mutableStateOf(GarbageItemState())
     val garbageItemState: State<GarbageItemState> = _garbageItemState
+
+    lateinit var adLoader: AdLoader
+
+    val ads: ArrayList<NativeAd> = arrayListOf()
 
 //    init {
 //        WasteApi.addGarbageElement( GarbageItem(
@@ -62,6 +73,7 @@ class MainViewModel @Inject constructor(
     fun downloadData() {
         getSearchSuggestions()
         getGarbageCategories()
+        downloadAds()
     }
 
     fun getGarbageCategoryByType(type: RecycleType) : GarbageCategory {
@@ -136,4 +148,39 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun downloadAds() {
+
+        adLoader = AdLoader.Builder(App.context, "ca-app-pub-3940256099942544/2247696110")
+            .forNativeAd { ad : NativeAd ->
+                // Show the ad.
+                if (adLoader.isLoading) {
+                    Utils.log("ADS LOADING")
+                    // The AdLoader is still loading ads.
+                    // Expect more adLoaded or onAdFailedToLoad callbacks.
+                } else {
+                    Utils.log("ADS LOADED 1 ${ad.body}")
+                    Utils.log("ADS LOADED 2 ${ad.icon?.uri}")
+                    Utils.log("ADS LOADED 3 ${ad.images.first().uri}")
+                    // The AdLoader has finished loading ads.
+                    ads.add(ad)
+                }
+
+
+
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    // Handle the failure by logging, altering the UI, and so on.
+
+                }
+            })
+            .withNativeAdOptions(
+                NativeAdOptions.Builder()
+                    // Methods in the NativeAdOptions.Builder class can be
+                    // used here to specify individual options settings.
+                    .build())
+            .build()
+
+        adLoader.loadAds(AdRequest.Builder().build(), 3)
+    }
 }

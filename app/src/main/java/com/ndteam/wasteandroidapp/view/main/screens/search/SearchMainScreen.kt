@@ -105,8 +105,8 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
                             Spacer(modifier = Modifier.height(4.dp))
 
-                            if (index % 3 == 0) {
-                                NativeAdItemView()
+                            if (index % 3 == 0 && viewModel.ads.isNotEmpty()) {
+                                NativeAdItemView(ad = viewModel.ads.random())
 
                                 Spacer(modifier = Modifier.height(4.dp))
 

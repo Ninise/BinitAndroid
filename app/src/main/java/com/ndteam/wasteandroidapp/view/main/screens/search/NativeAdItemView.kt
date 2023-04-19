@@ -39,7 +39,7 @@ fun NativeAdItemView(ad: NativeAd? = null) {
             .padding(vertical = 10.dp)) {
             Row (modifier = Modifier.padding(vertical = 5.dp)) {
                 AsyncImage(
-                    model = "https://thumbs.dreamstime.com/b/nasa-logo-white-background-vector-format-available-239931324.jpg",
+                    model = ad?.images?.first()?.uri,
                     contentDescription = "Ads logo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -51,15 +51,17 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Column (horizontalAlignment = Alignment.Start) {
-                    Text(
-                        text = "Ad HEADER",
-                        color = TitleText,
-                        fontFamily = OpenSans,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
-                        letterSpacing = 1.sp
+                    ad?.headline?.let {
+                        Text(
+                            text = it,
+                            color = TitleText,
+                            fontFamily = OpenSans,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            letterSpacing = 1.sp
 
-                    )
+                        )
+                    }
 
                     ClickableText(
                         text = AnnotatedString("Open"),
@@ -77,15 +79,17 @@ fun NativeAdItemView(ad: NativeAd? = null) {
 
             }
 
-            Text(
-                text = "Easy-to-use tool for adding text and captions to your photos. ",
-                color = TitleText,
-                fontFamily = OpenSans,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
-                letterSpacing = 1.sp,
-                modifier = Modifier.padding(bottom = 2.dp)
-            )
+            ad?.body?.let {
+                Text(
+                    text = it,
+                    color = TitleText,
+                    fontFamily = OpenSans,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    letterSpacing = 1.sp,
+                    modifier = Modifier.padding(bottom = 2.dp)
+                )
+            }
         }
 
         Box(
