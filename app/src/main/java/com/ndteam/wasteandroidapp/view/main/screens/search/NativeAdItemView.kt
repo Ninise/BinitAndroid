@@ -30,9 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
+import com.appnexus.opensdk.AdView
 import com.appnexus.opensdk.NativeAdEventListener
+import com.appnexus.opensdk.NativeAdRequest
 import com.appnexus.opensdk.NativeAdSDK
+import com.google.ads.AdSize
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.NativeAd
+import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.ui.theme.*
 
 
@@ -42,9 +47,15 @@ fun NativeAdItemView(ad: NativeAd? = null) {
     val composeView = ComposeView(LocalContext.current)
     val composeViewClickThrough: ComposeView = ComposeView(LocalContext.current)
 
+    val nativeAdRequest: NativeAdRequest by lazy {
+        NativeAdRequest(App.context, "ca-app-pub-3940256099942544/2247696110")
+    }
+
+
     AndroidView(factory = {
         composeView.apply {
             setContent {
+
                 Box {
                     Column (modifier = Modifier
                         .fillMaxWidth()
@@ -86,7 +97,7 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                                         letterSpacing = 1.sp
                                     ),
                                     onClick = {
-                                        ad?.performClick(Bundle())
+
                                     })
                             }
 
@@ -139,42 +150,15 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                 }
             }
 
+            com.google.android.gms.ads.AdView(App.context).apply {
+                setAdSize(com.google.android.gms.ads.AdSize.BANNER)
+                adUnitId = "ca-app-pub-3940256099942544/2247696110"
+                loadAd(AdRequest.Builder().build())
+                performClick()
+            }
+
         }
     })
-
-
-    NativeAdSDK.unRegisterTracking(composeView)
-    NativeAdSDK.registerTracking(
-        nativeAdResponse,
-        composeView,
-        mutableListOf(composeViewClickThrough) as List<View>?,
-        object : NativeAdEventListener {
-            override fun onAdWasClicked() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAdWasClicked(p0: String?, p1: String?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAdWillLeaveApplication() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAdImpression() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAdAboutToExpire() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAdExpired() {
-                TODO("Not yet implemented")
-            }
-
-        }
-    )
 
 
 
