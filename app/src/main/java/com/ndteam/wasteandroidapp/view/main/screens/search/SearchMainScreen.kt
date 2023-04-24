@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,9 +22,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.firebase.FirebaseApp
+import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
@@ -90,34 +94,66 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                 } else {
                     var index = 0
                     viewModel.garbageItemState.value.garbageList?.let {
-                        items(it) { item ->
-                            index++
-                            GarbageItemView(
-                                item = item,
-                                onItemClick = {
 
+                        if (it.isEmpty()) {
+                            item {
+                                Column (modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally)) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.ic_no_search_results),
+                                        contentDescription = "No search result",
+                                        modifier = Modifier
+                                            .width(380.dp)
+                                            .height(310.dp)
+                                            .align(alignment = Alignment.CenterHorizontally)
+                                            .clip(RoundedCornerShape(16.dp)),
+                                        contentScale = ContentScale.Fit)
+
+                                    Text(
+                                        text = "Ooops, we don’t have this item in our garbage bins.\n" +
+                                                "Sorry, we will add it soon.",
+                                        color = BodyText,
+                                        fontFamily = Nunito,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        letterSpacing = 1.sp,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.padding(top = 10.dp)
+                                        )
                                 }
-                            )
+                            }
+                        } else {
+                            items(it) { item ->
+                                index++
+                                GarbageItemView(
+                                    item = item,
+                                    onItemClick = {
 
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            if (index % 3 == 0 && viewModel.ads.isNotEmpty()) {
-                                NativeAdItemView(ad = viewModel.ads.random())
+                                    }
+                                )
 
                                 Spacer(modifier = Modifier.height(4.dp))
 
                                 Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
 
                                 Spacer(modifier = Modifier.height(4.dp))
+
+                                if (index % 3 == 0 && viewModel.ads.isNotEmpty()) {
+                                    NativeAdItemView(ad = viewModel.ads.random())
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                }
+
+
+
                             }
-
-
-
                         }
+
+
+
                     }
 
                 }
