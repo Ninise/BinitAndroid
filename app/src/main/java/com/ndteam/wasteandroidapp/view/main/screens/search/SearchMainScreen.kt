@@ -36,7 +36,9 @@ import coil.compose.AsyncImage
 import com.google.firebase.FirebaseApp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.api.WasteApi
+import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
+import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
@@ -93,11 +95,57 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                     }
                 } else {
                     var index = 0
+
+                    item {
+                        if (textState.value.text.isEmpty()) {
+                            categoryPlaceholder(
+                                item = GarbageCategory(
+                                    "Recycle",
+                                    R.drawable.ic_recycle,
+                                    RecycleType.RECYCLE,
+                                    "",
+                                    ""
+                                )
+                            )
+                        }
+                    }
+
+                    item {
+                        if (textState.value.text.isEmpty()) {
+                            categoryPlaceholder(
+                                item = GarbageCategory(
+                                    "Garbage",
+                                    R.drawable.ic_garbage,
+                                    RecycleType.GARBAGE,
+                                    "",
+                                    ""
+                                )
+                            )
+                        }
+                    }
+
+                    item {
+                        if (textState.value.text.isEmpty()) {
+                            categoryPlaceholder(
+                                item = GarbageCategory(
+                                    "Organic",
+                                    R.drawable.ic_organic,
+                                    RecycleType.ORGANIC,
+                                    "",
+                                    ""
+                                )
+                            )
+                        }
+                    }
+
+
                     viewModel.garbageItemState.value.garbageList?.let {
 
                         if (it.isEmpty()) {
                             item {
-                                Column (modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally)) {
+                                Column (modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(alignment = Alignment.CenterHorizontally)) {
                                     Image(
                                         painter = painterResource(id = R.drawable.ic_no_search_results),
                                         contentDescription = "No search result",
@@ -337,6 +385,42 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
        }
 
    }
+}
+
+@Composable
+fun categoryPlaceholder(item: GarbageCategory) {
+    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(44.dp)) {
+        Icon(
+            painterResource(id = item.returnImage()),
+            tint = GarbageTypeIconColor,
+            contentDescription = "",
+            modifier = Modifier
+                .padding(end = 15.dp)
+                .size(25.dp)
+                .align(Alignment.CenterVertically),
+        )
+
+        Text(
+            text = item.title,
+            color = BodyText,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            letterSpacing = 1.sp,
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Icon(
+            painterResource(id = R.drawable.ic_search_go_to),
+            tint = GarbageTypeIconColor,
+            contentDescription = "",
+            modifier = Modifier
+                .padding(end = 15.dp)
+                .size(16.dp)
+                .align(Alignment.CenterVertically),
+        )
+    }
 }
 
 @Preview(showBackground = true)
