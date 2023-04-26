@@ -106,8 +106,19 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                                     "",
                                     ""
                                 )
-                            )
+                            ) {
+                                textState.value = TextFieldValue("recycle")
+                            }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
+
+
+
                     }
 
                     item {
@@ -120,8 +131,18 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                                     "",
                                     ""
                                 )
-                            )
+                            ) {
+                                textState.value = TextFieldValue("garbage")
+                            }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
+
+
                     }
 
                     item {
@@ -134,7 +155,15 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                                     "",
                                     ""
                                 )
-                            )
+                            ) {
+                                textState.value = TextFieldValue("organic")
+                            }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
                     }
 
@@ -388,8 +417,8 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
 }
 
 @Composable
-fun categoryPlaceholder(item: GarbageCategory) {
-    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(44.dp)) {
+fun categoryPlaceholder(item: GarbageCategory, click: () -> Unit) {
+    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(55.dp).clickable { click() }) {
         Icon(
             painterResource(id = item.returnImage()),
             tint = GarbageTypeIconColor,
@@ -405,7 +434,7 @@ fun categoryPlaceholder(item: GarbageCategory) {
             color = BodyText,
             fontFamily = Inter,
             fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
+            fontSize = 14.sp,
             letterSpacing = 1.sp,
         )
 
@@ -417,7 +446,7 @@ fun categoryPlaceholder(item: GarbageCategory) {
             contentDescription = "",
             modifier = Modifier
                 .padding(end = 15.dp)
-                .size(16.dp)
+                .size(18.dp)
                 .align(Alignment.CenterVertically),
         )
     }
