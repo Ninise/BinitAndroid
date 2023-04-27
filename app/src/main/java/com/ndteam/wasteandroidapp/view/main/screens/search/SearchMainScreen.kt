@@ -33,12 +33,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.FirebaseApp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.states.GarbageItemState
+import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
 import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
@@ -56,6 +59,17 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
     viewModel.searchGarbage(textState.value.text)
 
+}
+
+@Composable
+fun SearchMainScreenContent(
+    textState: MutableState<TextFieldValue>,
+    isLoading: MutableState<Boolean>,
+    garbageState: MutableState<GarbageItemState>,
+    searchSuggestions: List<String>,
+    ads: List<NativeAd>,
+    popBack: () -> Unit,) {
+
     Box(modifier =
     Modifier
         .fillMaxSize()
@@ -66,7 +80,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             SearchView(state = textState, click = {
 
             }, backClick = {
-                navController.popBackStack()
+                popBack()
             })
 
             if (textState.value.text.isEmpty()) {
@@ -83,7 +97,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
-                if (viewModel.garbageItemState.value.isLoading ?: false) {
+                if (isLoading.value) {
                     item {
                         Box (
                             Modifier
@@ -168,7 +182,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                     }
 
 
-                    viewModel.garbageItemState.value.garbageList?.let {
+                    garbageState.value.garbageList?.let {
 
                         if (it.isEmpty()) {
                             item {
@@ -195,7 +209,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
                                         letterSpacing = 1.sp,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier.padding(top = 10.dp)
-                                        )
+                                    )
                                 }
                             }
                         } else {
@@ -214,8 +228,8 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
                                 Spacer(modifier = Modifier.height(4.dp))
 
-                                if (index % 3 == 0 && viewModel.ads.isNotEmpty()) {
-                                    NativeAdItemView(ad = viewModel.ads.random())
+                                if (index % 3 == 0 && ads.isNotEmpty()) {
+                                    NativeAdItemView(ad = ads.random())
 
                                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -418,7 +432,9 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
 
 @Composable
 fun categoryPlaceholder(item: GarbageCategory, click: () -> Unit) {
-    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(55.dp).clickable { click() }) {
+    Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+        .height(55.dp)
+        .clickable { click() }) {
         Icon(
             painterResource(id = item.returnImage()),
             tint = GarbageTypeIconColor,
@@ -456,9 +472,17 @@ fun categoryPlaceholder(item: GarbageCategory, click: () -> Unit) {
 @Composable
 fun SearchViewPreview() {
 
-    SearchMainScreen(
-        navController = NavController(LocalContext.current),
-        viewModel = MainViewModel(WasteRepositoryImpl(WasteApi)),
-        query = ""
+//    SearchMainScreen(
+//        navController = NavController(LocalContext.current),
+//        viewModel = MainViewModel(WasteRepositoryImpl(WasteApi)),
+//        query = ""
+//    )
+
+    val textState = remember { mutableStateOf(TextFieldValue(query)) }
+
+
+    SearchMainScreenContent(
+
+
     )
 }

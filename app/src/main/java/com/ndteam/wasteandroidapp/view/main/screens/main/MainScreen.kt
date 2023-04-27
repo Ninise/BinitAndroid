@@ -38,7 +38,7 @@ import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
@@ -196,5 +196,5 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
 @Preview
 @Composable
 fun MainPreview() {
-    MainScreen(navController = NavController(LocalContext.current), viewModel = viewModel())
+    MainScreen(navController = NavController(LocalContext.current), viewModel = hiltViewModel())
 }
