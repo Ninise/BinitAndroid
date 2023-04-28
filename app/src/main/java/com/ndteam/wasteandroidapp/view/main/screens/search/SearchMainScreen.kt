@@ -478,11 +478,20 @@ fun SearchViewPreview() {
 //        query = ""
 //    )
 
-    val textState = remember { mutableStateOf(TextFieldValue(query)) }
+
+    val textState = remember { mutableStateOf(TextFieldValue("")) }
+    val isLoading = remember { mutableStateOf(false) }
+    val garbageState = remember { mutableStateOf(GarbageItemState(arrayListOf(), false, null)) }
 
 
     SearchMainScreenContent(
+        textState,
+        isLoading = isLoading,
+        garbageState,
+        arrayListOf(),
+        arrayListOf(),
+        popBack = {
 
-
+        }
     )
 }
