@@ -55,17 +55,29 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
     val textState = remember { mutableStateOf(TextFieldValue(query)) }
 
-    val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
+    var searchSuggestions: List<String> = listOf()
 
-    viewModel.searchGarbage(textState.value.text)
+    LaunchedEffect(Unit, block = {
+        viewModel.searchGarbage(textState)
+        searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
+    })
 
+    SearchMainScreenContent(
+        textState = textState,
+        isLoading = viewModel.garbageItemState.value.isLoading ?: false,
+        garbageState = viewModel.garbageItemState,
+        searchSuggestions = searchSuggestions,
+        ads = viewModel.ads
+    ) {
+        navController.popBackStack()
+    }
 }
 
 @Composable
 fun SearchMainScreenContent(
     textState: MutableState<TextFieldValue>,
-    isLoading: MutableState<Boolean>,
-    garbageState: MutableState<GarbageItemState>,
+    isLoading: Boolean,
+    garbageState: State<GarbageItemState>,
     searchSuggestions: List<String>,
     ads: List<NativeAd>,
     popBack: () -> Unit,) {
@@ -74,7 +86,7 @@ fun SearchMainScreenContent(
     Modifier
         .fillMaxSize()
         .background(Color.White),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             SearchView(state = textState, click = {
@@ -97,7 +109,7 @@ fun SearchMainScreenContent(
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
-                if (isLoading.value) {
+                if (isLoading) {
                     item {
                         Box (
                             Modifier
@@ -486,7 +498,7 @@ fun SearchViewPreview() {
 
     SearchMainScreenContent(
         textState,
-        isLoading = isLoading,
+        isLoading = isLoading.value,
         garbageState,
         arrayListOf(),
         arrayListOf(),

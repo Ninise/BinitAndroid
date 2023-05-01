@@ -1,7 +1,9 @@
 package com.ndteam.wasteandroidapp.view.main
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
@@ -92,6 +94,32 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun searchGarbage(query: MutableState<TextFieldValue>) {
+
+        Utils.log("searchGarbage ${query}")
+
+        if (query.value.text.isNotEmpty()) {
+            viewModelScope.launch {
+                _garbageItemState.value = GarbageItemState(isLoading = true)
+
+                val result = repository.searchGarbage(query.value.text)
+
+                Utils.log("searchGarbage 2 ${result.data?.size}")
+
+                _garbageItemState.value = GarbageItemState(
+                    garbageList = result.data,
+                    isLoading = false,
+                    error = result.message
+                )
+            }
+        } else {
+            _garbageItemState.value = GarbageItemState(
+                isLoading = false,
+            )
+        }
+
+    }
+
     fun searchGarbage(query: String) {
 
         Utils.log("searchGarbage ${query}")
@@ -149,6 +177,8 @@ class MainViewModel @Inject constructor(
     }
 
     private fun downloadAds() {
+
+        Utils.log("downloadAds")
 
         adLoader = AdLoader.Builder(App.context, "ca-app-pub-3940256099942544/2247696110")
             .forNativeAd { ad : NativeAd ->

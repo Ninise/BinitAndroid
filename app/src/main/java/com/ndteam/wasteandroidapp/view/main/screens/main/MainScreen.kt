@@ -42,8 +42,6 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
 
-    viewModel.downloadData()
-
     val searchSuggestions = viewModel.suggestionState.value.suggestions
 
     val garbageCategories = viewModel.garbageState.value.garbageList
