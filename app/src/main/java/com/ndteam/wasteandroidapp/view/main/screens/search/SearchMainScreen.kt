@@ -47,6 +47,7 @@ import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
@@ -58,19 +59,22 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
     var searchSuggestions: List<String> = listOf()
 
     LaunchedEffect(Unit, block = {
-        viewModel.searchGarbage(textState)
         searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
     })
 
     SearchMainScreenContent(
         textState = textState,
-        isLoading = viewModel.garbageItemState.value.isLoading ?: false,
+        isLoading = viewModel.garbageItemState.value.isLoading,
         garbageState = viewModel.garbageItemState,
         searchSuggestions = searchSuggestions,
-        ads = viewModel.ads
-    ) {
-        navController.popBackStack()
-    }
+        ads = viewModel.ads,
+        popBack = {
+            navController.popBackStack()
+        },
+        onTextChange = {
+            viewModel.searchGarbage(textState.value.text)
+        }
+    )
 }
 
 @Composable
@@ -80,7 +84,8 @@ fun SearchMainScreenContent(
     garbageState: State<GarbageItemState>,
     searchSuggestions: List<String>,
     ads: List<NativeAd>,
-    popBack: () -> Unit,) {
+    popBack: () -> Unit,
+    onTextChange: () -> Unit) {
 
     Box(modifier =
     Modifier
@@ -91,9 +96,7 @@ fun SearchMainScreenContent(
         Column(modifier = Modifier.fillMaxSize()) {
             SearchView(state = textState, click = {
 
-            }, backClick = {
-                popBack()
-            })
+            }, backClick = popBack, onTextChange = onTextChange)
 
             if (textState.value.text.isEmpty()) {
                 LazyRow(modifier = Modifier.padding(start = 15.dp)) {
@@ -134,6 +137,7 @@ fun SearchMainScreenContent(
                                 )
                             ) {
                                 textState.value = TextFieldValue("recycle")
+                                onTextChange()
                             }
 
                             Spacer(modifier = Modifier.height(4.dp))
@@ -159,6 +163,7 @@ fun SearchMainScreenContent(
                                 )
                             ) {
                                 textState.value = TextFieldValue("garbage")
+                                onTextChange()
                             }
 
                             Spacer(modifier = Modifier.height(4.dp))
@@ -183,6 +188,7 @@ fun SearchMainScreenContent(
                                 )
                             ) {
                                 textState.value = TextFieldValue("organic")
+                                onTextChange()
                             }
 
                             Spacer(modifier = Modifier.height(4.dp))
@@ -193,10 +199,9 @@ fun SearchMainScreenContent(
                         }
                     }
 
-
                     garbageState.value.garbageList?.let {
 
-                        if (it.isEmpty()) {
+                        if (it.isEmpty() && textState.value.text.isNotEmpty()) {
                             item {
                                 Column (modifier = Modifier
                                     .fillMaxWidth()
@@ -250,8 +255,6 @@ fun SearchMainScreenContent(
                                     Spacer(modifier = Modifier.height(4.dp))
                                 }
 
-
-
                             }
                         }
 
@@ -267,7 +270,7 @@ fun SearchMainScreenContent(
 }
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}) {
+fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}, onTextChange: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
         .clickable {
             if (isMockView) {
@@ -295,6 +298,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
             value = state.value,
             onValueChange = { value ->
                 state.value = value
+                onTextChange()
             },
             enabled = !isMockView,
             modifier = Modifier
@@ -336,6 +340,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                         onClick = {
                             state.value =
                                 TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                            onTextChange()
                         }
                     ) {
                         Icon(
@@ -503,6 +508,9 @@ fun SearchViewPreview() {
         arrayListOf(),
         arrayListOf(),
         popBack = {
+
+        },
+        onTextChange = {
 
         }
     )

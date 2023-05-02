@@ -53,6 +53,8 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         .verticalScroll(state = rememberScrollState(), enabled = true)) {
         SearchView(state = textState, isMockView = true, click = {
             navController.navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
+        }, onTextChange = {
+
         })
 
         searchSuggestions?.let {

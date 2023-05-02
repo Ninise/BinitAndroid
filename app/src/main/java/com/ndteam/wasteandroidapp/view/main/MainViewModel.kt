@@ -94,43 +94,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun searchGarbage(query: MutableState<TextFieldValue>) {
-
-        Utils.log("searchGarbage ${query}")
-
-        if (query.value.text.isNotEmpty()) {
-            viewModelScope.launch {
-                _garbageItemState.value = GarbageItemState(isLoading = true)
-
-                val result = repository.searchGarbage(query.value.text)
-
-                Utils.log("searchGarbage 2 ${result.data?.size}")
-
-                _garbageItemState.value = GarbageItemState(
-                    garbageList = result.data,
-                    isLoading = false,
-                    error = result.message
-                )
-            }
-        } else {
-            _garbageItemState.value = GarbageItemState(
-                isLoading = false,
-            )
-        }
-
-    }
-
     fun searchGarbage(query: String) {
-
-        Utils.log("searchGarbage ${query}")
 
         if (query.isNotEmpty()) {
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
                 val result = repository.searchGarbage(query)
-
-                Utils.log("searchGarbage 2 ${result.data?.size}")
 
                 _garbageItemState.value = GarbageItemState(
                     garbageList = result.data,
