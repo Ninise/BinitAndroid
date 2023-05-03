@@ -5,6 +5,7 @@ import android.view.View
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -33,12 +34,14 @@ import coil.compose.AsyncImage
 import com.appnexus.opensdk.AdView
 import com.appnexus.opensdk.NativeAdEventListener
 import com.appnexus.opensdk.NativeAdRequest
+import com.appnexus.opensdk.NativeAdResponse
 import com.appnexus.opensdk.NativeAdSDK
 import com.google.ads.AdSize
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.NativeAd
 import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Utils
 
 
 @Composable
@@ -50,7 +53,6 @@ fun NativeAdItemView(ad: NativeAd? = null) {
     val nativeAdRequest: NativeAdRequest by lazy {
         NativeAdRequest(App.context, "ca-app-pub-3940256099942544/2247696110")
     }
-
 
     AndroidView(factory = {
         composeView.apply {
@@ -154,13 +156,47 @@ fun NativeAdItemView(ad: NativeAd? = null) {
                 setAdSize(com.google.android.gms.ads.AdSize.BANNER)
                 adUnitId = "ca-app-pub-3940256099942544/2247696110"
                 loadAd(AdRequest.Builder().build())
-                performClick()
+                setOnClickListener {
+                    Utils.log("CLICK AD")
+                    composeViewClickThrough.performClick()
+                }
             }
 
         }
     })
 
+    NativeAdSDK.unRegisterTracking(composeView)
+    NativeAdSDK.registerTracking(
+        null,
+        composeView,
+        mutableListOf(composeViewClickThrough) as List<View>?,
+        object : NativeAdEventListener {
+            override fun onAdWasClicked() {
+                TODO("Not yet implemented")
+            }
 
+            override fun onAdWasClicked(p0: String?, p1: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdWillLeaveApplication() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdImpression() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdAboutToExpire() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAdExpired() {
+                TODO("Not yet implemented")
+            }
+
+        }
+    )
 
 }
 

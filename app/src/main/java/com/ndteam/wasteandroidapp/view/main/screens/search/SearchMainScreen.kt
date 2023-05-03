@@ -19,10 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -30,24 +29,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.firebase.FirebaseApp
+import com.ndteam.wasteandroidapp.App.Companion.context
 import com.ndteam.wasteandroidapp.R
-import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
-import com.ndteam.wasteandroidapp.models.states.GarbageState
-import com.ndteam.wasteandroidapp.models.states.SuggestionState
-import com.ndteam.wasteandroidapp.repository.WasteRepository
-import com.ndteam.wasteandroidapp.repository.WasteRepositoryImpl
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
-import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
@@ -482,6 +476,24 @@ fun categoryPlaceholder(item: GarbageCategory, click: () -> Unit) {
                 .size(18.dp)
                 .align(Alignment.CenterVertically),
         )
+    }
+}
+
+@Composable
+fun NativeAd() {
+    val nativeAdState = remember { mutableStateOf<NativeAd?>(null) }
+
+    val adLoader = remember {
+        AdLoader.Builder(context, "ad_unit_id")
+            .forNativeAd { nativeAd ->
+                nativeAdState.value = nativeAd
+            }
+            .build()
+    }
+
+
+    if (nativeAdState.value != null) {
+
     }
 }
 
