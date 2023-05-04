@@ -1,18 +1,15 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
-import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.compose.foundation.BorderStroke
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +20,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,18 +27,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
-import com.appnexus.opensdk.AdView
 import com.appnexus.opensdk.NativeAdEventListener
 import com.appnexus.opensdk.NativeAdRequest
-import com.appnexus.opensdk.NativeAdResponse
 import com.appnexus.opensdk.NativeAdSDK
-import com.google.ads.AdSize
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.NativeAd
 import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
+import androidx.compose.foundation.*
+import com.google.android.gms.ads.nativead.NativeAdView
+import com.ndteam.wasteandroidapp.R
 
+
+@Composable
+fun NativeAdItemViewXML(ad: NativeAd? = null) {
+    AndroidView(
+        factory = { context ->
+            val adView = LayoutInflater.from(context).inflate(R.layout.layout_admob, null) as NativeAdView
+
+            val headlineView = adView.findViewById<TextView>(R.id.primary)
+            val ctaView = adView.findViewById<AppCompatButton>(R.id.cta)
+
+            adView.headlineView = headlineView
+            adView.callToActionView = ctaView
+
+            ad?.let {
+                adView.setNativeAd(it)
+                headlineView.text = ad.body
+            }
+
+            adView
+        },
+        update = {  },
+        modifier = Modifier.height(90.dp)
+    )
+}
 
 @Composable
 fun NativeAdItemView(ad: NativeAd? = null) {

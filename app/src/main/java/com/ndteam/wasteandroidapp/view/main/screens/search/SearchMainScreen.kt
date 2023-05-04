@@ -240,7 +240,7 @@ fun SearchMainScreenContent(
                                 Spacer(modifier = Modifier.height(4.dp))
 
                                 if (index % 3 == 0 && ads.isNotEmpty()) {
-                                    NativeAdItemView(ad = ads.random())
+                                    NativeAdItemViewXML(ad = ads.random())
 
                                     Spacer(modifier = Modifier.height(4.dp))
 
