@@ -2,6 +2,8 @@ package com.ndteam.wasteandroidapp.view.main.screens.search
 
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.compose.foundation.background
@@ -36,6 +38,8 @@ import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Utils
 import androidx.compose.foundation.*
+import coil.Coil
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.ndteam.wasteandroidapp.R
 
@@ -47,15 +51,33 @@ fun NativeAdItemViewXML(ad: NativeAd? = null) {
             val adView = LayoutInflater.from(context).inflate(R.layout.layout_admob, null) as NativeAdView
 
             val headlineView = adView.findViewById<TextView>(R.id.primary)
-            val ctaView = adView.findViewById<AppCompatButton>(R.id.cta)
+            val ctaView = adView.findViewById<Button>(R.id.cta)
+            val icon = adView.findViewById<ImageView>(R.id.icon)
+            val secondary = adView.findViewById<TextView>(R.id.secondary)
 
             adView.headlineView = headlineView
             adView.callToActionView = ctaView
+            adView.iconView = icon
+            adView.bodyView = secondary
 
-            ad?.let {
-                adView.setNativeAd(it)
+            ad?.let { ad ->
+                adView.setNativeAd(ad)
+
                 headlineView.text = ad.body
+                ctaView.text = ad.callToAction
+                secondary.text = ad.body
+
+                ad.images.first()?.uri.let { uri ->
+                    Glide
+                        .with(App.context)
+                        .load(uri)
+                        .centerCrop()
+                        .into(icon);
+                }
             }
+
+
+
 
             adView
         },
