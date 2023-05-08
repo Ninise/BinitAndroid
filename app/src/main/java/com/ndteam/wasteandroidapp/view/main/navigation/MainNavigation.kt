@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
@@ -21,6 +22,13 @@ fun MainNavigation(viewModel: MainViewModel, navController: NavHostController = 
     val SEARCH_QUERY = "search_query"
 
     NavHost(navController = navController, startDestination = MainScreens.MainScreen.route) {
+
+        composable(
+            route = MainScreens.GameMainScreen.route,
+            arguments = listOf()
+        ) { _ ->
+            GameMainScreen(navController = navController, viewModel)
+        }
 
         composable(
             route = MainScreens.SearchMainScreen.route + "/{$SEARCH_QUERY}",

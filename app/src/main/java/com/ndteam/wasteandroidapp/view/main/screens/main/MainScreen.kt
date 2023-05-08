@@ -88,6 +88,9 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             .height(230.dp)
             .padding(horizontal = 10.dp)
             .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
+            .clickable {
+                navController.navigate(MainScreens.GameMainScreen.route)
+            }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_game_placeholder),
