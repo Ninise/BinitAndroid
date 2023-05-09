@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -9,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.view.game.GameActivity
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
@@ -16,7 +18,7 @@ import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScr
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
 
 @Composable
-fun MainNavigation(viewModel: MainViewModel, navController: NavHostController = rememberNavController()) {
+fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController: NavHostController = rememberNavController()) {
 
     val GARBAGE_TYPE = "garbage_type"
     val SEARCH_QUERY = "search_query"
@@ -27,7 +29,7 @@ fun MainNavigation(viewModel: MainViewModel, navController: NavHostController = 
             route = MainScreens.GameMainScreen.route,
             arguments = listOf()
         ) { _ ->
-            GameMainScreen(navController = navController, viewModel)
+            openGame()
         }
 
         composable(

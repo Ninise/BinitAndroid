@@ -14,6 +14,7 @@ import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.view.game.GameActivity
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,19 +40,13 @@ class MainActivity : BaseActivity() {
         setContent {
             WasteAndroidAppTheme {
                 val viewModel = hiltViewModel<MainViewModel>()
-                MainNavigation(viewModel = viewModel)
+                MainNavigation(viewModel = viewModel, {
+                    Utils.log("OPEN_GAME")
+                    GameActivity.startActivity(this)
+                })
             }
         }
 
     }
 
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview2() {
-    WasteAndroidAppTheme {
-//        LandingMainText()
-    }
 }
