@@ -23,6 +23,8 @@ import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
+import com.ndteam.wasteandroidapp.view.game.DragTarget
+import com.ndteam.wasteandroidapp.view.game.LongPressDraggable
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreenContent
 import kotlin.math.min
@@ -72,6 +74,24 @@ fun GameMainScreenContent() {
                 color = Color.White
             )
         }
+
+        LongPressDraggable(modifier = Modifier.fillMaxSize()) {
+
+            DragTarget(modifier = Modifier.size(130.dp).align(alignment = Alignment.TopCenter), dataToDrop = "Meat") {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_game_item_meat),
+                    contentDescription = "Game item",
+                    modifier = Modifier
+
+                        .width(50.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+
+
+        }
+
 
         Row (modifier = Modifier
             .align(alignment = Alignment.BottomCenter)
