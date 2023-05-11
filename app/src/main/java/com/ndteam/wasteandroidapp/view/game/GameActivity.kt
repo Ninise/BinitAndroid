@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
 class GameActivity: BaseActivity() {
@@ -28,5 +30,11 @@ class GameActivity: BaseActivity() {
         }
 
     }
+
+    override fun onDestroy() {
+        Utils.log("onDestroy")
+        super.onDestroy()
+    }
+
 
 }

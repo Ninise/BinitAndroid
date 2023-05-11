@@ -41,11 +41,11 @@ class MainActivity : BaseActivity() {
             WasteAndroidAppTheme {
                 val viewModel = hiltViewModel<MainViewModel>()
                 MainNavigation(viewModel = viewModel, {
-                    Utils.log("OPEN_GAME")
                     GameActivity.startActivity(this)
                 })
             }
         }
+
 
     }
 

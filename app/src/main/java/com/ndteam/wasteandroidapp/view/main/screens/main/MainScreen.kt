@@ -31,6 +31,7 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
