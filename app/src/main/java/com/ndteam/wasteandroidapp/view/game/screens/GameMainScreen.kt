@@ -1,8 +1,13 @@
 package com.ndteam.wasteandroidapp.view.main.screens.game
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -23,10 +28,12 @@ import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.game.DragTarget
-import com.ndteam.wasteandroidapp.view.game.LongPressDraggable
+import com.ndteam.wasteandroidapp.view.game.DropTarget
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreenContent
+import com.squareup.moshi.internal.Util
 import kotlin.math.min
 
 
@@ -75,52 +82,83 @@ fun GameMainScreenContent() {
             )
         }
 
-        LongPressDraggable(modifier = Modifier.fillMaxSize()) {
 
-            DragTarget(modifier = Modifier.size(130.dp).align(alignment = Alignment.TopCenter), dataToDrop = "Meat") {
+
+        Row (modifier = Modifier
+            .align(alignment = Alignment.BottomCenter)
+            .padding(bottom = 5.dp)) {
+
+            DropTarget<String>(
+                modifier = Modifier
+                    .padding(6.dp)
+
+            ) { isInBound, draggedItem ->
+
+                Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
+
+
                 Image(
-                    painter = painterResource(id = R.drawable.ic_game_item_meat),
-                    contentDescription = "Game item",
+                    painter = painterResource(id = R.drawable.ic_def_organic_bin),
+                    contentDescription = "Organic bin",
                     modifier = Modifier
-
-                        .width(50.dp),
+                        .width(125.dp),
                     contentScale = ContentScale.Fit
                 )
             }
 
 
 
+            Spacer(modifier = Modifier.width(65.dp))
+
+            DropTarget<String>(
+                modifier = Modifier
+                    .padding(6.dp)
+
+            ) { isInBound, draggedItem ->
+
+                Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_def_recycle_bin),
+                    contentDescription = "Organic bin",
+                    modifier = Modifier
+                        .width(125.dp),
+                    contentScale = ContentScale.Fit
+                )
+
+            }
+
+            Spacer(modifier = Modifier.width(65.dp))
+
+            DropTarget<String>(
+                modifier = Modifier
+                    .padding(6.dp)
+
+            ) { isInBound, draggedItem ->
+
+                Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
+
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_def_garbage_bin),
+                    contentDescription = "Organic bin",
+                    modifier = Modifier
+                        .width(125.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
         }
 
 
-        Row (modifier = Modifier
-            .align(alignment = Alignment.BottomCenter)
-            .padding(bottom = 5.dp)) {
+
+        DragTarget(modifier = Modifier.size(90.dp).align(alignment = Alignment.TopCenter), dataToDrop = "Meat") {
             Image(
-                painter = painterResource(id = R.drawable.ic_def_organic_bin),
-                contentDescription = "Organic bin",
+                painter = painterResource(id = R.drawable.ic_game_item_meat),
+                contentDescription = "Game item",
                 modifier = Modifier
-                    .width(125.dp),
-                contentScale = ContentScale.Fit
-            )
 
-            Spacer(modifier = Modifier.width(65.dp))
+                    .width(50.dp),
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_def_recycle_bin),
-                contentDescription = "Organic bin",
-                modifier = Modifier
-                    .width(125.dp),
-                contentScale = ContentScale.Fit
-            )
-
-            Spacer(modifier = Modifier.width(65.dp))
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_def_garbage_bin),
-                contentDescription = "Organic bin",
-                modifier = Modifier
-                    .width(125.dp),
                 contentScale = ContentScale.Fit
             )
         }
@@ -132,4 +170,27 @@ fun GameMainScreenContent() {
 @Composable
 fun GameMainScreenContent_Preview() {
     GameMainScreenContent()
+}
+
+@Composable
+fun SpringRelease(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Circle(modifier = Modifier
+            .background(Color.Green, CircleShape))
+    }
+}
+@Composable
+fun Circle(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .size(50.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(Icons.Default.Star, contentDescription = null, tint = Color.White)
+    }
 }
