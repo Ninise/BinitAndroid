@@ -151,7 +151,7 @@ fun GameMainScreenContent() {
 
 
 
-        DragTarget(modifier = Modifier.size(90.dp).align(alignment = Alignment.TopCenter), dataToDrop = "Meat") {
+        DragTarget(modifier = Modifier.size(90.dp), dataToDrop = "Meat") {
             Image(
                 painter = painterResource(id = R.drawable.ic_game_item_meat),
                 contentDescription = "Game item",

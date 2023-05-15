@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.utils.Utils
 import kotlinx.coroutines.launch
+import java.util.Random
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -48,6 +49,14 @@ fun <T> DragTarget(
                 animationSpec = tween(durationMillis = 5_000)
             )
         }
+
+        scope.launch {
+
+            offsetX.animateTo(
+                targetValue = 500f,
+                animationSpec = tween(durationMillis = 100)
+            )
+        }
     })
 
     Box(modifier = modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
@@ -59,6 +68,7 @@ fun <T> DragTarget(
 
                     //Detect a touch down event
                     awaitFirstDown()
+
 
                     currentState.dataToDrop = dataToDrop
                     currentState.isDragging = true
@@ -76,6 +86,7 @@ fun <T> DragTarget(
                                 )
 
                                 currentState.dragOffset = Offset(abs(offsetX.value), abs(offsetY.value))
+
                             }
                         }
                     } while (event.changes.any { it.pressed })
@@ -96,6 +107,10 @@ fun <T> DragTarget(
         content()
     }
 }
+
+//D/TAG: rect.top: 731.0; rect.left: 402.0;
+//D/TAG: rect.top: 731.0; rect.left: 933.0;
+//D/TAG: rect.top: 731.0; rect.left: 1464.0;
 
 
 @Composable
@@ -119,8 +134,12 @@ fun <T> DropTarget(
 
         }
     }) {
-        val data =
-            if (isCurrentDropTarget && !dragInfo.isDragging) dragInfo.dataToDrop as T? else null
+        val data = if (isCurrentDropTarget && !dragInfo.isDragging) {
+                dragInfo.dataToDrop as T?
+            } else {
+                null
+            }
+
         content(isCurrentDropTarget, data)
     }
 }
