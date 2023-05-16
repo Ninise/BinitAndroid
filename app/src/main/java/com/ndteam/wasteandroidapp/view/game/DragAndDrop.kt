@@ -69,7 +69,6 @@ fun <T> DragTarget(
                     //Detect a touch down event
                     awaitFirstDown()
 
-
                     currentState.dataToDrop = dataToDrop
                     currentState.isDragging = true
 
@@ -78,6 +77,7 @@ fun <T> DragTarget(
                         event.changes.forEach { pointerInputChange: PointerInputChange ->
                             //Consume the change
                             scope.launch {
+
                                 offsetY.snapTo(
                                     offsetY.value + pointerInputChange.positionChange().y
                                 )
@@ -104,13 +104,11 @@ fun <T> DragTarget(
                 }
             }
         }) {
+
         content()
+
     }
 }
-
-//D/TAG: rect.top: 731.0; rect.left: 402.0;
-//D/TAG: rect.top: 731.0; rect.left: 933.0;
-//D/TAG: rect.top: 731.0; rect.left: 1464.0;
 
 
 @Composable
@@ -148,6 +146,5 @@ internal class DragTargetInfo {
     var isDragging: Boolean by mutableStateOf(false)
     var dragPosition by mutableStateOf(Offset.Zero)
     var dragOffset by mutableStateOf(Offset.Zero)
-    var draggableComposable by mutableStateOf<(@Composable () -> Unit)?>(null)
     var dataToDrop by mutableStateOf<Any?>(null)
 }

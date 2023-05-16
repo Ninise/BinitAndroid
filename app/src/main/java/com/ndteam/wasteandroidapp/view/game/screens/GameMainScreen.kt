@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.game
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,15 +9,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -29,11 +29,13 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreenContent
 import com.squareup.moshi.internal.Util
+import kotlinx.coroutines.delay
 import kotlin.math.min
 
 
@@ -88,6 +90,18 @@ fun GameMainScreenContent() {
             .align(alignment = Alignment.BottomCenter)
             .padding(bottom = 5.dp)) {
 
+            var mistakeOrganic = remember {
+                mutableStateOf(false)
+            }
+
+            var mistakeRecycler = remember {
+                mutableStateOf(false)
+            }
+
+            var mistakeGarbage = remember {
+                mutableStateOf(false)
+            }
+
             DropTarget<String>(
                 modifier = Modifier
                     .padding(6.dp)
@@ -96,12 +110,29 @@ fun GameMainScreenContent() {
 
                 Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
 
+                var image = if (isInBound) R.drawable.ic_correct_organic_bin else R.drawable.ic_def_organic_bin
+
+                if (draggedItem != null) {
+                    if (draggedItem == "Meat") {
+                        image = R.drawable.ic_mistake_organic_bin
+                        mistakeOrganic.value = true
+
+
+                    }
+                }
+
+                LaunchedEffect(Unit) {
+                    delay(1_000)
+                    mistakeOrganic.value = false
+                }
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_def_organic_bin),
+                    painter = painterResource(id = image),
                     contentDescription = "Organic bin",
                     modifier = Modifier
-                        .width(125.dp),
+                        .width(125.dp)
+                        .height(125.dp)
+                        .shake(mistakeOrganic),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -116,13 +147,27 @@ fun GameMainScreenContent() {
 
             ) { isInBound, draggedItem ->
 
-                Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
+                var image = if (isInBound) R.drawable.ic_correct_recycle_bin else R.drawable.ic_def_recycle_bin
+
+                if (draggedItem != null) {
+                    if (draggedItem == "Meat") {
+                        image = R.drawable.ic_mistake_recycle_bin
+                        mistakeRecycler.value = true
+                        
+                        LaunchedEffect(Unit) {
+                            delay(1_000)
+                            mistakeRecycler.value = false
+                        }
+                    }
+                }
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_def_recycle_bin),
-                    contentDescription = "Organic bin",
+                    painter = painterResource(id = image),
+                    contentDescription = "Recycle bin",
                     modifier = Modifier
-                        .width(125.dp),
+                        .width(125.dp)
+                        .height(125.dp)
+                        .shake(mistakeRecycler),
                     contentScale = ContentScale.Fit
                 )
 
@@ -138,12 +183,12 @@ fun GameMainScreenContent() {
 
                 Utils.log("isInBound: ${isInBound}; draggedItem: ${draggedItem}")
 
-
                 Image(
-                    painter = painterResource(id = R.drawable.ic_def_garbage_bin),
-                    contentDescription = "Organic bin",
+                    painter = painterResource(id = if (isInBound) R.drawable.ic_correct_garbage_bin else R.drawable.ic_def_garbage_bin),
+                    contentDescription = "Garbage bin",
                     modifier = Modifier
-                        .width(125.dp),
+                        .width(125.dp)
+                        .height(125.dp),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -170,27 +215,4 @@ fun GameMainScreenContent() {
 @Composable
 fun GameMainScreenContent_Preview() {
     GameMainScreenContent()
-}
-
-@Composable
-fun SpringRelease(){
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Circle(modifier = Modifier
-            .background(Color.Green, CircleShape))
-    }
-}
-@Composable
-fun Circle(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .size(50.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(Icons.Default.Star, contentDescription = null, tint = Color.White)
-    }
 }
