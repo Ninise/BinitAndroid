@@ -6,11 +6,28 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.base.BaseActivity
+import com.ndteam.wasteandroidapp.models.GameObject
+import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
-import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
 class GameActivity: BaseActivity() {
+
+    val gameSet = listOf(
+        GameObject(
+            R.drawable.ic_game_item_meat,
+            "Meat",
+            RecycleType.GARBAGE),
+        GameObject(
+            R.drawable.ic_game_item_egg,
+            "Egg",
+            RecycleType.ORGANIC),
+        GameObject(
+            R.drawable.ic_game_item_plastic_cup,
+            "Plastic cp",
+            RecycleType.RECYCLE),
+
+    )
 
     companion object {
         fun startActivity(context: Activity) {
@@ -25,15 +42,10 @@ class GameActivity: BaseActivity() {
 
         setContent {
             WasteAndroidAppTheme {
-                GameMainScreen()
+                GameMainScreen(gameSet)
             }
         }
 
-    }
-
-    override fun onDestroy() {
-        Utils.log("onDestroy")
-        super.onDestroy()
     }
 
 
