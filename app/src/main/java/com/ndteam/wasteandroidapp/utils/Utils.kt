@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.StringRes
 import com.ndteam.wasteandroidapp.App
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlin.random.Random
 
 object Utils {
 
@@ -13,6 +14,10 @@ object Utils {
 
     fun log(str: String) {
         Log.d("TAG", str)
+    }
+
+    fun getRandomFloatInRange(min: Float, max: Float): Float {
+        return Random.nextFloat() * (max - min) + min
     }
 
 }

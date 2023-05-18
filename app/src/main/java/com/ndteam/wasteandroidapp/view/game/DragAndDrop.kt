@@ -1,29 +1,18 @@
 package com.ndteam.wasteandroidapp.view.game
 
 import androidx.compose.animation.core.*
-import androidx.compose.animation.core.Spring.StiffnessLow
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.utils.Utils
 import kotlinx.coroutines.launch
-import java.util.Random
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -33,16 +22,20 @@ internal val LocalDragTargetInfo = compositionLocalOf { DragTargetInfo() }
 fun <T> DragTarget(
     modifier: Modifier,
     dataToDrop: T,
+    offsetY: Animatable<Float, AnimationVector1D>,
+    offsetX: Animatable<Float, AnimationVector1D>,
     content: @Composable (() -> Unit)
 ) {
 
     val currentState = LocalDragTargetInfo.current
 
-    val offsetY = remember { Animatable(0f) }
-    val offsetX = remember { Animatable(0f) }
+
     val scope = rememberCoroutineScope()
 
+
     LaunchedEffect(Unit, block = {
+
+
         scope.launch {
             offsetY.animateTo(
                 targetValue = 1500f,
@@ -57,6 +50,7 @@ fun <T> DragTarget(
                 animationSpec = tween(durationMillis = 100)
             )
         }
+
     })
 
     Box(modifier = modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
@@ -96,8 +90,9 @@ fun <T> DragTarget(
 
                     scope.launch {
                         offsetY.animateTo(
-                            targetValue = 1500f,
-                            animationSpec = tween(durationMillis = 5_000)
+                            targetValue = 1000f,
+                            animationSpec = tween(durationMillis = 5_000),
+
                             )
                     }
 

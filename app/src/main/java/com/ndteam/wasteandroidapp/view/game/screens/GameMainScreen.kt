@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.game
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -22,14 +23,14 @@ import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 // Make an object model - image,id,type +
-// Make a start and end point of an object lifecycle
-// Add dataset of objects that falling
+// Make a start and end point of an object lifecycle ?
+// Renew states correctly (object, bins)
+// Check animation of renewed obj
+// Add dataset of objects that falling +
 // Give points for correct objects
 // Add a dialog for a game explanation
 // Add correct drop state
@@ -42,37 +43,32 @@ fun GameMainScreen(gameSet: List<GameObject>) {
 
     })
 
-    var gameObject = remember {
+    var gameObject by remember {
         mutableStateOf(gameSet[0])
     }
 
 
-    var counter = remember {
+    var counter by remember {
         mutableStateOf(0)
     }
 
-    DisposableEffect(Unit) {
-        val delayJob = CoroutineScope(Dispatchers.Default).launch {
-            delay(5_000)
-            Utils.log("DROP NEW")
-            gameObject = mutableStateOf(gameSet[1])
 
-        }
+    GameMainScreenContent(gameObject, counter, onEndOfObject = {
+        gameObject = gameSet.random()
+    })
 
-        onDispose {
-            delayJob.cancel()
-        }
-    }
-
-    GameMainScreenContent(gameObject, counter)
-
-    counter.value = counter.value++
-
-    // state is not updating like this, learn how to do it properly
 }
 
 @Composable
-fun GameMainScreenContent(gameObject: MutableState<GameObject>, counter: MutableState<Int>) {
+fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: () -> Unit) {
+
+    var xPos by remember {
+        mutableStateOf(500f)
+    }
+
+    val offsetY = remember { Animatable(0f) }
+    val offsetX = remember { Animatable(200f) }
+
     Box {
         Image(
             painter = painterResource(id = R.drawable.ic_game_background),
@@ -95,7 +91,7 @@ fun GameMainScreenContent(gameObject: MutableState<GameObject>, counter: Mutable
             )
 
             Text(
-                text = "${counter.value}",
+                text = "$counter",
                 modifier = Modifier.padding(horizontal = 8.dp),
                 fontSize = 24.sp,
                 fontFamily = Nunito,
@@ -134,7 +130,6 @@ fun GameMainScreenContent(gameObject: MutableState<GameObject>, counter: Mutable
                     if (draggedItem.type == RecycleType.ORGANIC) {
                         image = R.drawable.ic_mistake_organic_bin
                         mistakeOrganic.value = true
-
 
                     }
                 }
@@ -207,9 +202,16 @@ fun GameMainScreenContent(gameObject: MutableState<GameObject>, counter: Mutable
                         mistakeGarbage.value = true
 
                         LaunchedEffect(Unit) {
+                            offsetY.snapTo(0f)
+                            offsetX.snapTo(Utils.getRandomFloatInRange(100f, 900f))
+
                             delay(1_000)
                             mistakeGarbage.value = false
                         }
+
+
+                        onEndOfObject()
+
                     }
                 }
 
@@ -225,9 +227,9 @@ fun GameMainScreenContent(gameObject: MutableState<GameObject>, counter: Mutable
         }
 
 
-        DragTarget(modifier = Modifier.size(90.dp), dataToDrop = gameObject) {
+        DragTarget(modifier = Modifier.size(90.dp), dataToDrop = gameObject, offsetY = offsetY, offsetX = offsetX) {
             Image(
-                painter = painterResource(id = gameObject.value.image),
+                painter = painterResource(id = gameObject.image),
                 contentDescription = "Game item",
                 modifier = Modifier
                     .width(50.dp),
