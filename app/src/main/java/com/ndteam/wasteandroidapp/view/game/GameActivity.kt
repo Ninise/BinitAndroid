@@ -11,23 +11,24 @@ import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
-class GameActivity: BaseActivity() {
-
-    val gameSet = listOf(
-        GameObject(
-            R.drawable.ic_game_item_meat,
-            "Meat",
-            RecycleType.GARBAGE),
-        GameObject(
-            R.drawable.ic_game_item_egg,
-            "Egg",
-            RecycleType.ORGANIC),
-        GameObject(
-            R.drawable.ic_game_item_plastic_cup,
-            "Plastic cp",
-            RecycleType.RECYCLE),
+val gameSet = listOf(
+    GameObject(
+        R.drawable.ic_game_item_meat,
+        "Meat",
+        RecycleType.GARBAGE),
+    GameObject(
+        R.drawable.ic_game_item_egg,
+        "Egg",
+        RecycleType.ORGANIC),
+    GameObject(
+        R.drawable.ic_game_item_plastic_cup,
+        "Plastic cp",
+        RecycleType.RECYCLE),
 
     )
+class GameActivity: BaseActivity() {
+
+
 
     companion object {
         fun startActivity(context: Activity) {

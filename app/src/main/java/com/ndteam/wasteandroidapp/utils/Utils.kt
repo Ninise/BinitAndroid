@@ -13,7 +13,7 @@ object Utils {
     }
 
     fun log(str: String) {
-        Log.d("TAG", str)
+        Log.d("BEAVER", str)
     }
 
     fun getRandomFloatInRange(min: Float, max: Float): Float {

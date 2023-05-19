@@ -1,6 +1,7 @@
 package com.ndteam.wasteandroidapp.view.main.screens.game
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -25,6 +26,7 @@ import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // Make an object model - image,id,type +
 // Make a start and end point of an object lifecycle ?
@@ -62,12 +64,19 @@ fun GameMainScreen(gameSet: List<GameObject>) {
 @Composable
 fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: () -> Unit) {
 
-    var xPos by remember {
-        mutableStateOf(500f)
-    }
-
     val offsetY = remember { Animatable(0f) }
     val offsetX = remember { Animatable(200f) }
+
+    suspend fun renewObjPosition() {
+        offsetY.snapTo(0f)
+        offsetX.snapTo(listOf<Float>(500f, 500f, 100f, 1500f).random())
+
+        offsetY.animateTo(
+            targetValue = 1500f,
+            animationSpec = tween(durationMillis = 5_000)
+        )
+
+    }
 
     Box {
         Image(
@@ -135,6 +144,9 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 }
 
                 LaunchedEffect(Unit) {
+
+                    renewObjPosition()
+
                     delay(1_000)
                     mistakeOrganic.value = false
                 }
@@ -168,6 +180,9 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                         mistakeRecycler.value = true
                         
                         LaunchedEffect(Unit) {
+
+                            renewObjPosition()
+
                             delay(1_000)
                             mistakeRecycler.value = false
                         }
@@ -197,20 +212,41 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 var image = if (isInBound) R.drawable.ic_correct_garbage_bin else R.drawable.ic_def_garbage_bin
 
                 if (draggedItem != null) {
+                    Utils.log(draggedItem.name)
                     if (draggedItem.type == RecycleType.GARBAGE) {
+
+                        Utils.log("GARBAGE")
+
+                        // todo add correct state
+                        LaunchedEffect(Unit) {
+                            renewObjPosition()
+                        }
+
+                        LaunchedEffect(key1 = Unit, block = {
+                            onEndOfObject()
+                        })
+
+
+                    } else {
+
+                        Utils.log("NOT GARBAGE")
+
                         image = R.drawable.ic_mistake_garbage_bin
                         mistakeGarbage.value = true
 
                         LaunchedEffect(Unit) {
-                            offsetY.snapTo(0f)
-                            offsetX.snapTo(Utils.getRandomFloatInRange(100f, 900f))
-
                             delay(1_000)
                             mistakeGarbage.value = false
                         }
 
+                        LaunchedEffect(key1 = Unit, block = {
+                            image = R.drawable.ic_def_garbage_bin
+                        })
 
-                        onEndOfObject()
+                        LaunchedEffect(key1 = Unit, block = {
+                            onEndOfObject()
+                        })
+
 
                     }
                 }
@@ -220,12 +256,14 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                     contentDescription = "Garbage bin",
                     modifier = Modifier
                         .width(125.dp)
-                        .height(125.dp),
+                        .height(125.dp)
+                        .shake(mistakeGarbage),
                     contentScale = ContentScale.Fit
                 )
             }
         }
 
+        Utils.log("TEST 0 ${gameObject.name}")
 
         DragTarget(modifier = Modifier.size(90.dp), dataToDrop = gameObject, offsetY = offsetY, offsetX = offsetX) {
             Image(

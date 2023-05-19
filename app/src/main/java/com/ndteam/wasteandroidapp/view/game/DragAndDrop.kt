@@ -11,6 +11,7 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
+import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.utils.Utils
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -29,31 +30,14 @@ fun <T> DragTarget(
 
     val currentState = LocalDragTargetInfo.current
 
+    currentState.dataToDrop = dataToDrop
 
     val scope = rememberCoroutineScope()
 
+    Utils.log("TEST 0.2 ${(dataToDrop as? GameObject)?.name}")
 
-    LaunchedEffect(Unit, block = {
-
-
-        scope.launch {
-            offsetY.animateTo(
-                targetValue = 1500f,
-                animationSpec = tween(durationMillis = 5_000)
-            )
-        }
-
-        scope.launch {
-
-            offsetX.animateTo(
-                targetValue = 500f,
-                animationSpec = tween(durationMillis = 100)
-            )
-        }
-
-    })
-
-    Box(modifier = modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+    Box(modifier = modifier
+        .offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
         .pointerInput(Unit) {
 
             forEachGesture {
@@ -63,8 +47,9 @@ fun <T> DragTarget(
                     //Detect a touch down event
                     awaitFirstDown()
 
-                    currentState.dataToDrop = dataToDrop
                     currentState.isDragging = true
+
+                    Utils.log("TEST 0.4 ${(currentState.dataToDrop as? GameObject)?.name}")
 
                     do {
                         val event: PointerEvent = awaitPointerEvent()
@@ -79,7 +64,8 @@ fun <T> DragTarget(
                                     offsetX.value + pointerInputChange.positionChange().x
                                 )
 
-                                currentState.dragOffset = Offset(abs(offsetX.value), abs(offsetY.value))
+                                currentState.dragOffset =
+                                    Offset(abs(offsetX.value), abs(offsetY.value))
 
                             }
                         }
@@ -115,6 +101,8 @@ fun <T> DropTarget(
     val dragInfo = LocalDragTargetInfo.current
     val dragPosition = dragInfo.dragPosition
     val dragOffset = dragInfo.dragOffset
+
+//    Utils.log("TEST ${(dragInfo.dataToDrop as? GameObject)?.name}")
 
     var isCurrentDropTarget by remember {
         mutableStateOf(false)

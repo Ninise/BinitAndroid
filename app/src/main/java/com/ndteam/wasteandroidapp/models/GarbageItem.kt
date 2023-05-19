@@ -40,6 +40,12 @@ data class GarbageItem(
 enum class RecycleType {
     RECYCLE, GARBAGE, ORGANIC;
 
+    fun parseValue() : String = when (this) {
+        RECYCLE -> "RECYCLE"
+        GARBAGE -> "GARBAGE"
+        else -> "ORGANIC"
+    }
+
     companion object {
         fun parseValue(value: String) : RecycleType = when (value) {
             RECYCLE.name -> RECYCLE
