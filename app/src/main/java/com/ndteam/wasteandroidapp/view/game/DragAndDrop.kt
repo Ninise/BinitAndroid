@@ -29,7 +29,7 @@ fun <T> DragTarget(
 ) {
 
     val currentState = LocalDragTargetInfo.current
-
+    currentState.ready = false
     currentState.dataToDrop = dataToDrop
 
     val scope = rememberCoroutineScope()
@@ -47,9 +47,10 @@ fun <T> DragTarget(
                     //Detect a touch down event
                     awaitFirstDown()
 
+                    currentState.ready = false
                     currentState.isDragging = true
 
-                    Utils.log("TEST 0.4 ${(currentState.dataToDrop as? GameObject)?.name}")
+                    Utils.log("TEST 0.3 ${(currentState.dataToDrop as? GameObject)?.name}")
 
                     do {
                         val event: PointerEvent = awaitPointerEvent()
@@ -71,16 +72,17 @@ fun <T> DragTarget(
                         }
                     } while (event.changes.any { it.pressed })
 
+                    currentState.ready = true
                     currentState.dragOffset = Offset.Zero
                     currentState.isDragging = false
 
-                    scope.launch {
-                        offsetY.animateTo(
-                            targetValue = 1000f,
-                            animationSpec = tween(durationMillis = 5_000),
-
-                            )
-                    }
+//                    scope.launch {
+//                        offsetY.animateTo(
+//                            targetValue = 1000f,
+//                            animationSpec = tween(durationMillis = 5_000),
+//
+//                            )
+//                    }
 
                 }
             }
@@ -101,8 +103,7 @@ fun <T> DropTarget(
     val dragInfo = LocalDragTargetInfo.current
     val dragPosition = dragInfo.dragPosition
     val dragOffset = dragInfo.dragOffset
-
-//    Utils.log("TEST ${(dragInfo.dataToDrop as? GameObject)?.name}")
+    val ready = dragInfo.ready
 
     var isCurrentDropTarget by remember {
         mutableStateOf(false)
@@ -115,11 +116,15 @@ fun <T> DropTarget(
 
         }
     }) {
-        val data = if (isCurrentDropTarget && !dragInfo.isDragging) {
+        val data = if (ready && isCurrentDropTarget && !dragInfo.isDragging) {
                 dragInfo.dataToDrop as T?
             } else {
                 null
             }
+
+        if (ready) {
+            Utils.log("TEST 0.4 ${(dragInfo.dataToDrop as? GameObject)?.name}")
+        }
 
         content(isCurrentDropTarget, data)
     }
@@ -130,4 +135,5 @@ internal class DragTargetInfo {
     var dragPosition by mutableStateOf(Offset.Zero)
     var dragOffset by mutableStateOf(Offset.Zero)
     var dataToDrop by mutableStateOf<Any?>(null)
+    var ready by mutableStateOf(false)
 }

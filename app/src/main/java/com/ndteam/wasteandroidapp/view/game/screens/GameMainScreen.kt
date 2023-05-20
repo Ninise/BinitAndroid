@@ -69,13 +69,24 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
     suspend fun renewObjPosition() {
         offsetY.snapTo(0f)
-        offsetX.snapTo(listOf<Float>(500f, 500f, 100f, 1500f).random())
+        offsetX.snapTo(listOf<Float>(500f, 900f, 1200f, 1500f).random())
 
-        offsetY.animateTo(
-            targetValue = 1500f,
-            animationSpec = tween(durationMillis = 5_000)
-        )
+//        offsetY.animateTo(
+//            targetValue = 1500f,
+//            animationSpec = tween(durationMillis = 5_000)
+//        )
 
+    }
+
+    @Composable
+    fun correctDrop() {
+        LaunchedEffect(Unit) {
+            renewObjPosition()
+        }
+
+        LaunchedEffect(key1 = Unit, block = {
+            onEndOfObject()
+        })
     }
 
     Box {
@@ -137,9 +148,25 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                 if (draggedItem != null) {
                     if (draggedItem.type == RecycleType.ORGANIC) {
+
+                        correctDrop()
+
+                    } else {
                         image = R.drawable.ic_mistake_organic_bin
                         mistakeOrganic.value = true
 
+                        LaunchedEffect(Unit) {
+                            delay(1_000)
+                            mistakeOrganic.value = false
+                        }
+
+                        LaunchedEffect(key1 = Unit, block = {
+                            image = R.drawable.ic_def_organic_bin
+                        })
+
+                        LaunchedEffect(key1 = Unit, block = {
+                            onEndOfObject()
+                        })
                     }
                 }
 
@@ -162,8 +189,6 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 )
             }
 
-
-
             Spacer(modifier = Modifier.width(65.dp))
 
             DropTarget<GameObject>(
@@ -176,18 +201,29 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                 if (draggedItem != null) {
                     if (draggedItem.type == RecycleType.RECYCLE) {
+
+                        correctDrop()
+
+                    } else {
                         image = R.drawable.ic_mistake_recycle_bin
                         mistakeRecycler.value = true
-                        
+
                         LaunchedEffect(Unit) {
-
-                            renewObjPosition()
-
                             delay(1_000)
                             mistakeRecycler.value = false
                         }
+
+                        LaunchedEffect(key1 = Unit, block = {
+                            image = R.drawable.ic_def_recycle_bin
+                        })
+
+                        LaunchedEffect(key1 = Unit, block = {
+                            onEndOfObject()
+                        })
                     }
                 }
+
+
 
                 Image(
                     painter = painterResource(id = image),
@@ -212,20 +248,19 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 var image = if (isInBound) R.drawable.ic_correct_garbage_bin else R.drawable.ic_def_garbage_bin
 
                 if (draggedItem != null) {
-                    Utils.log(draggedItem.name)
+                    Utils.log("TEST 0.5 ${draggedItem.name}")
                     if (draggedItem.type == RecycleType.GARBAGE) {
 
                         Utils.log("GARBAGE")
 
                         // todo add correct state
-                        LaunchedEffect(Unit) {
-                            renewObjPosition()
-                        }
-
-                        LaunchedEffect(key1 = Unit, block = {
-                            onEndOfObject()
+                        LaunchedEffect(key1 = "Renew state", block = {
+                            delay(1_000)
+                            image = R.drawable.ic_def_garbage_bin
+                            Utils.log("TEST 0.6 RENEW CORRECT STATE")
                         })
 
+                        correctDrop()
 
                     } else {
 
@@ -243,9 +278,9 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                             image = R.drawable.ic_def_garbage_bin
                         })
 
-                        LaunchedEffect(key1 = Unit, block = {
-                            onEndOfObject()
-                        })
+                        LaunchedEffect(Unit) {
+                            renewObjPosition()
+                        }
 
 
                     }
