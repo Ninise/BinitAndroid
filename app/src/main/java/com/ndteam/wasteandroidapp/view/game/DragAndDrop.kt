@@ -34,8 +34,6 @@ fun <T> DragTarget(
 
     val scope = rememberCoroutineScope()
 
-    Utils.log("TEST 0.2 ${(dataToDrop as? GameObject)?.name}")
-
     Box(modifier = modifier
         .offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
         .pointerInput(Unit) {
