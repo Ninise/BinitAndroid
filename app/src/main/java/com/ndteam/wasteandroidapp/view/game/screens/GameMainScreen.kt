@@ -24,16 +24,17 @@ import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import okhttp3.Dispatcher
 
 // Make an object model - image,id,type +
-// Make a start and end point of an object lifecycle ?
-// Renew states correctly (object, bins)
-// Check animation of renewed obj
+// Make a start and end point of an object lifecycle +
+// Renew states correctly (object, bins) +
+// Check animation of renewed obj +
 // Add dataset of objects that falling +
-// Give points for correct objects
+// Give points for correct objects +
+// After object released add end of animation check
+// After object added to the bin and renewed check animation
 // Add a dialog for a game explanation
 // Add correct drop state
 
@@ -73,12 +74,6 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
     suspend fun renewObjPosition() {
         offsetY.snapTo(0f)
         offsetX.snapTo(listOf<Float>(500f, 900f, 1200f, 1500f).random())
-//
-//        offsetY.animateTo(
-//            targetValue = 1500f,
-//            animationSpec = tween(durationMillis = 5_000)
-//        )
-
     }
 
     @Composable
@@ -92,6 +87,29 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
         })
     }
 
+    val scope = rememberCoroutineScope()
+
+    fun startFallingAnimation() {
+        scope.launch {
+            offsetY.animateTo(
+                targetValue = 1300f,
+                animationSpec = tween(durationMillis = 5_000)
+            ) {
+                if (this.value == 1300f) {
+                    onEndOfObject(false)
+
+                    CoroutineScope(Dispatchers.Default).launch {
+                        renewObjPosition()
+                        startFallingAnimation()
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    startFallingAnimation()
 
     Box {
         Image(

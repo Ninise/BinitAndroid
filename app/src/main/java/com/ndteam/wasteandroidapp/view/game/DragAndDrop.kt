@@ -74,13 +74,14 @@ fun <T> DragTarget(
                     currentState.dragOffset = Offset.Zero
                     currentState.isDragging = false
 
-//                    scope.launch {
-//                        offsetY.animateTo(
-//                            targetValue = 1000f,
-//                            animationSpec = tween(durationMillis = 5_000),
-//
-//                            )
-//                    }
+                    scope.launch {
+                        offsetY.animateTo(
+                            targetValue = 1000f,
+                            animationSpec = tween(durationMillis = 5_000),
+
+                            )
+                        Utils.log("POST ANIMATION: ${offsetY.value}")
+                    }
 
                 }
             }
