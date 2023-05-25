@@ -25,6 +25,7 @@ fun <T> DragTarget(
     dataToDrop: T,
     offsetY: Animatable<Float, AnimationVector1D>,
     offsetX: Animatable<Float, AnimationVector1D>,
+    objectFell: () -> Unit,
     content: @Composable (() -> Unit)
 ) {
 
@@ -76,10 +77,12 @@ fun <T> DragTarget(
 
                     scope.launch {
                         offsetY.animateTo(
-                            targetValue = 1000f,
-                            animationSpec = tween(durationMillis = 5_000),
-
-                            )
+                            targetValue = 1300f,
+                            animationSpec = tween(durationMillis = 5_000)) {
+                            if (this.value == 1300f) {
+                                objectFell()
+                            }
+                        }
                         Utils.log("POST ANIMATION: ${offsetY.value}")
                     }
 

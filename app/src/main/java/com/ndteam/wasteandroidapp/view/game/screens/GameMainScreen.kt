@@ -20,12 +20,13 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
-import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
-import kotlinx.coroutines.*
-import okhttp3.Dispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // Make an object model - image,id,type +
 // Make a start and end point of an object lifecycle +
@@ -33,8 +34,8 @@ import okhttp3.Dispatcher
 // Check animation of renewed obj +
 // Add dataset of objects that falling +
 // Give points for correct objects +
-// After object released add end of animation check
-// After object added to the bin and renewed check animation
+// After object released add end of animation check +
+// After object added to the bin and renewed check animation +
 // Add a dialog for a game explanation
 // Add correct drop state
 
@@ -71,23 +72,15 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
     val offsetY = remember { Animatable(0f) }
     val offsetX = remember { Animatable(200f) }
 
+    val scope = rememberCoroutineScope()
+
+
     suspend fun renewObjPosition() {
         offsetY.snapTo(0f)
         offsetX.snapTo(listOf<Float>(500f, 900f, 1200f, 1500f).random())
     }
 
-    @Composable
-    fun afterDropRenewObject(correct: Boolean) {
-        LaunchedEffect(Unit) {
-            renewObjPosition()
-        }
 
-        LaunchedEffect(key1 = Unit, block = {
-            onEndOfObject(correct)
-        })
-    }
-
-    val scope = rememberCoroutineScope()
 
     fun startFallingAnimation() {
         scope.launch {
@@ -106,7 +99,18 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
             }
         }
 
+    }
 
+    @Composable
+    fun afterDropRenewObject(correct: Boolean) {
+        LaunchedEffect(Unit) {
+            renewObjPosition()
+            startFallingAnimation()
+        }
+
+        LaunchedEffect(key1 = Unit, block = {
+            onEndOfObject(correct)
+        })
     }
 
     startFallingAnimation()
@@ -225,16 +229,13 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                         LaunchedEffect(Unit) {
                             delay(1_000)
                             mistakeRecycler.value = false
+                            image = R.drawable.ic_def_recycle_bin
                         }
-
-                        image = R.drawable.ic_def_recycle_bin
 
                     }
 
                     afterDropRenewObject(correct)
                 }
-
-
 
                 Image(
                     painter = painterResource(id = image),
@@ -306,7 +307,14 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
         }
 
 
-        DragTarget(modifier = Modifier.size(90.dp), dataToDrop = gameObject, offsetY = offsetY, offsetX = offsetX) {
+        DragTarget(modifier = Modifier.size(90.dp), dataToDrop = gameObject, offsetY = offsetY, offsetX = offsetX, objectFell = {
+            onEndOfObject(false)
+
+            CoroutineScope(Dispatchers.Default).launch {
+                renewObjPosition()
+                startFallingAnimation()
+            }
+        }) {
             Image(
                 painter = painterResource(id = gameObject.image),
                 contentDescription = "Game item",
