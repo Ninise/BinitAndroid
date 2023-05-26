@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -23,6 +24,7 @@ import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
 import com.ndteam.wasteandroidapp.view.game.DropTarget
+import com.ndteam.wasteandroidapp.view.game.LocalDragTargetInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,7 +39,7 @@ import kotlinx.coroutines.launch
 // After object released add end of animation check +
 // After object added to the bin and renewed check animation +
 // Add a dialog for a game explanation
-// Add correct drop state
+// Add correct drop state ?
 
 
 @Composable
@@ -80,7 +82,13 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
         offsetX.snapTo(listOf<Float>(500f, 900f, 1200f, 1500f).random())
     }
 
-
+    @Composable
+    fun updateDragObjData() {
+        LocalDragTargetInfo.current.dragOffset = Offset.Zero
+        LocalDragTargetInfo.current.dragPosition = Offset.Zero
+        LocalDragTargetInfo.current.isDragging = false
+        LocalDragTargetInfo.current.ready = false
+    }
 
     fun startFallingAnimation() {
         scope.launch {
@@ -89,9 +97,11 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 animationSpec = tween(durationMillis = 5_000)
             ) {
                 if (this.value == 1300f) {
+
                     onEndOfObject(false)
 
                     CoroutineScope(Dispatchers.Default).launch {
+
                         renewObjPosition()
                         startFallingAnimation()
                     }
@@ -103,6 +113,8 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
     @Composable
     fun afterDropRenewObject(correct: Boolean) {
+        updateDragObjData()
+
         LaunchedEffect(Unit) {
             renewObjPosition()
             startFallingAnimation()
@@ -267,13 +279,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                         correct = true
 
-                        // todo add correct state
-                        LaunchedEffect(key1 = "Renew state", block = {
-                            delay(1_000)
-                            image = R.drawable.ic_def_garbage_bin
-                        })
-
-                        // todo correct state and points
+                        // todo correct state
 
                     } else {
 
@@ -283,12 +289,17 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                         LaunchedEffect(Unit) {
                             delay(1_000)
                             mistakeGarbage.value = false
-
                         }
 
-                        image = R.drawable.ic_def_garbage_bin
 
                     }
+
+
+                    // todo add correct state
+                    LaunchedEffect(key1 = "Renew state", block = {
+                        delay(1_000)
+                        image = R.drawable.ic_def_garbage_bin
+                    })
 
                     afterDropRenewObject(correct)
 
