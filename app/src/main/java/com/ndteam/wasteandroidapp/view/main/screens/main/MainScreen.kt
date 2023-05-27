@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -59,7 +60,7 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         })
 
         searchSuggestions?.let {
-            LazyRow(modifier = Modifier.padding(start = 15.dp)) {
+            LazyRow(modifier = Modifier.padding(start = 10.dp)) {
                 items(searchSuggestions) {
                     SearchChip(text = it, onItemClick = { text ->
                         navController.navigate(MainScreens.SearchMainScreen.withArgs(text))
@@ -71,15 +72,44 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
         
-        LazyRow (modifier = Modifier
-            .padding(start = 10.dp)) {
+//        LazyRow (modifier = Modifier
+//            .padding(start = 0.dp)) {
+//
+//            item {
+//                Spacer(modifier = Modifier.width(15.dp))
+//            }
+//
+//            items(garbageCategories!!) {category ->
+//                GarbageTypeCard(category) {
+//                    navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(category.type.name))
+//                }
+//            }
+//
+//        }
 
-            items(garbageCategories!!) {category ->
-                GarbageTypeCard(category) {
-                    navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(category.type.name))
-                }
+        Row (
+            modifier = Modifier
+                .align(alignment = CenterHorizontally)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            val recycle = garbageCategories!![0]
+            val organic = garbageCategories[1]
+            val waste = garbageCategories[2]
+
+            GarbageTypeCard(recycle) {
+                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
             }
 
+
+            GarbageTypeCard(organic) {
+                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
+            }
+
+
+            GarbageTypeCard(waste) {
+                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
+            }
         }
 
         TextTitleMain(title = stringResource(R.string.main_title_game))
@@ -120,9 +150,9 @@ fun TextTitleMain(title: String) {
     Text(
         text = title,
         color = TitleText,
-        fontFamily = Nunito,
+        fontFamily = Inter,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
+        fontSize = 18.sp,
         modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 10.dp)
     )
 }
@@ -134,64 +164,74 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
             onItemClick(item)
         }
         .testTag("garbage_type_card")
-        .width(160.dp)
-        .height(180.dp)
         .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))
-        .padding(end = 10.dp)) {
+        ) {
 
-        Image(
-            painter = painterResource(id = item.returnShadow()),
-            contentDescription = "Back shadow type",
-            modifier = Modifier
-                .width(160.dp)
-                .height(180.dp)
-                .align(alignment = Alignment.Center)
-                .clip(RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)))
-
-       Column (modifier = Modifier
-           .align(alignment = Alignment.Center)
-           .fillMaxWidth()) {
-
-           Image(
-               painter = painterResource(id = item.image),
-               contentDescription = "Back city type",
-               modifier = Modifier
-                   .width(108.dp)
-                   .height(108.dp)
-                   .align(alignment = Alignment.CenterHorizontally)
-                   .clip(RoundedCornerShape(16.dp)),
-               contentScale = ContentScale.Fit)
-
-           Spacer(modifier = Modifier.height(30.dp))
-       }
-
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 15.dp)
-                .align(alignment = Alignment.BottomCenter),
-            verticalAlignment = Alignment.CenterVertically) {
+        Column (modifier = Modifier.align(alignment = Alignment.Center)) {
+            Image(
+                painter = painterResource(id = item.returnShadow()),
+                contentDescription = "Back shadow type",
+                modifier = Modifier
+                    .size(115.dp, 115.dp))
 
             Text(
                 text = item.title,
-                color = Color.White,
+                color = TitleText,
                 fontFamily = Inter,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-            )
-            
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                painterResource(id = item.returnImage()),
-                tint = Color.White,
-                contentDescription = "",
+                fontSize = 14.sp,
                 modifier = Modifier
-                    .size(20.dp)
-                    .align(Alignment.CenterVertically),
+                    .align(alignment = CenterHorizontally)
+                    .padding(top = 5.dp)
             )
-
         }
+
+
+
+//       Column (modifier = Modifier
+//           .align(alignment = Alignment.Center)
+//           .fillMaxWidth()) {
+//
+//           Image(
+//               painter = painterResource(id = item.image),
+//               contentDescription = "Back city type",
+//               modifier = Modifier
+//                   .width(160.dp)
+//                   .height(160.dp)
+//                   .align(alignment = Alignment.CenterHorizontally)
+//                   .clip(RoundedCornerShape(16.dp)),
+//               contentScale = ContentScale.Fit)
+//
+//           Spacer(modifier = Modifier.height(30.dp))
+//       }
+
+//        Row (
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 16.dp, vertical = 15.dp)
+//                .align(alignment = Alignment.BottomCenter),
+//            verticalAlignment = Alignment.CenterVertically) {
+//
+//            Text(
+//                text = item.title,
+//                color = Color.White,
+//                fontFamily = Inter,
+//                fontWeight = FontWeight.SemiBold,
+//                fontSize = 16.sp,
+//            )
+//
+//            Spacer(modifier = Modifier.weight(1f))
+//
+//            Icon(
+//                painterResource(id = item.returnImage()),
+//                tint = Color.White,
+//                contentDescription = "",
+//                modifier = Modifier
+//                    .size(20.dp)
+//                    .align(Alignment.CenterVertically),
+//            )
+//
+//        }
 
 
     }

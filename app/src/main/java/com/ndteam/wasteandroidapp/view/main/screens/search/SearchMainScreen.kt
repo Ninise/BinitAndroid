@@ -12,16 +12,15 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -29,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.android.gms.ads.AdLoader
@@ -299,9 +297,9 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 .fillMaxWidth()
                 .padding(15.dp),
             placeholder = {
-                Text("Search", style = TextStyle(color = BodyText, fontSize = 16.sp))
+                Text(stringResource(R.string.search), style = TextStyle(color = HintText, fontSize = 16.sp, fontFamily = Inter, fontWeight = FontWeight.Normal))
             },
-            textStyle = TextStyle(color = BodyText, fontSize = 16.sp),
+            textStyle = TextStyle(color = BodyText, fontSize = 16.sp, fontFamily = Inter, fontWeight = FontWeight.Normal),
             leadingIcon = {
                 if (state.value != TextFieldValue("")) {
                     IconButton(onClick = {
@@ -318,11 +316,11 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                     }
                 } else {
                     Icon(
-                        Icons.Default.Search,
+                        painterResource(id = R.drawable.ic_search_mag_glass),
                         tint = IconsGray,
                         contentDescription = "",
                         modifier = Modifier
-                            .padding(15.dp)
+                            .padding(start = 15.dp)
                             .size(24.dp)
                     )
                 }
@@ -349,10 +347,10 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 }
             },
             singleLine = true,
-            shape = RoundedCornerShape(16.dp), // The TextFiled has rounded corners top left and right by default
+            shape = RoundedCornerShape(8.dp), // The TextFiled has rounded corners top left and right by default
             colors = TextFieldDefaults.textFieldColors(
                 textColor = BodyText,
-                cursorColor = BodyText,
+                cursorColor = cursorText,
                 leadingIconColor = IconsGray,
                 trailingIconColor = Color.White,
                 backgroundColor = SearchBackGray,
@@ -369,12 +367,13 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
     Box(modifier = Modifier
         .padding(horizontal = 4.dp)
         .testTag("search_chip")
-        .background(color = ChipBackGray, shape = RoundedCornerShape(10.dp))
+        .background(color = ChipBackGray, shape = RoundedCornerShape(6.dp))
         .clickable { onItemClick(text) }) {
         Text(
             text = text,
             color = BodyText,
-            style = MaterialTheme.typography.body1,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             letterSpacing = 1.sp,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

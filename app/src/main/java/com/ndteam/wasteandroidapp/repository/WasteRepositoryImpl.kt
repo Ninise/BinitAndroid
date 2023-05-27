@@ -20,12 +20,12 @@ class WasteRepositoryImpl @Inject constructor(
 //            )
             // return mock for now
             Resource.Success(
-                data = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
+                data = arrayListOf<String>("plastic bag", "meat", "styrofoam", "cup", "pan", "banana")
             )
         } catch(e: Exception) {
             e.printStackTrace()
             Resource.Success(
-                data = arrayListOf<String>("plastic bag", "meat", "cup", "pan", "banana")
+                data = arrayListOf<String>("plastic bag", "meat", "styrofoam", "cup", "pan", "banana")
             )
         }
 
