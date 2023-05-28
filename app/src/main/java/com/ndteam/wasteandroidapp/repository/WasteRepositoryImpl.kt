@@ -2,6 +2,7 @@ package com.ndteam.wasteandroidapp.repository
 
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.api.WasteApi
+import com.ndteam.wasteandroidapp.models.Article
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
@@ -99,6 +100,19 @@ class WasteRepositoryImpl @Inject constructor(
             e.printStackTrace()
             Resource.Error(
               "Failed to get the data from Firestore", null
+            )
+        }
+    }
+
+    override suspend fun getArticles(): Resource<List<Article>> {
+        return try {
+            Resource.Success(
+                data = api.getArticles()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(
+                "Failed to get the data from the server", null
             )
         }
     }

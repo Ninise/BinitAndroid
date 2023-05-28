@@ -2,9 +2,11 @@ package com.ndteam.wasteandroidapp.view.main.screens.main
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +30,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
+import com.ndteam.wasteandroidapp.models.Article
 import com.ndteam.wasteandroidapp.models.GarbageCategory
+import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.utils.Utils
@@ -42,11 +47,25 @@ import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
+
+
+    val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
+
+    val garbageCategories = viewModel.garbageState.value.garbageList ?: listOf()
+
+    val articles = viewModel.articleItemState.value.articlesList ?: listOf()
+
+    MainScreenContent(searchSuggestions, garbageCategories, articles,
+        navigate = { destination ->
+            navController.navigate(destination)
+        }
+    )
+}
+
+@Composable
+fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<GarbageCategory>, articles: List<Article>, navigate: (String) -> Unit) {
+
     val textState = remember { mutableStateOf(TextFieldValue("")) }
-
-    val searchSuggestions = viewModel.suggestionState.value.suggestions
-
-    val garbageCategories = viewModel.garbageState.value.garbageList
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -54,38 +73,21 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         .background(Color.White)
         .verticalScroll(state = rememberScrollState(), enabled = true)) {
         SearchView(state = textState, isMockView = true, click = {
-            navController.navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
+            navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
         }, onTextChange = {
 
         })
 
-        searchSuggestions?.let {
-            LazyRow(modifier = Modifier.padding(start = 10.dp)) {
-                items(searchSuggestions) {
-                    SearchChip(text = it, onItemClick = { text ->
-                        navController.navigate(MainScreens.SearchMainScreen.withArgs(text))
-                    })
+        LazyRow(modifier = Modifier.padding(start = 10.dp)) {
+            items(searchSuggestions) {
+                SearchChip(text = it, onItemClick = { text ->
+                    navigate(MainScreens.SearchMainScreen.withArgs(text))
+                })
 
-                }
             }
         }
 
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
-        
-//        LazyRow (modifier = Modifier
-//            .padding(start = 0.dp)) {
-//
-//            item {
-//                Spacer(modifier = Modifier.width(15.dp))
-//            }
-//
-//            items(garbageCategories!!) {category ->
-//                GarbageTypeCard(category) {
-//                    navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(category.type.name))
-//                }
-//            }
-//
-//        }
 
         Row (
             modifier = Modifier
@@ -93,22 +95,22 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            val recycle = garbageCategories!![0]
+            val recycle = garbageCategories[0]
             val organic = garbageCategories[1]
             val waste = garbageCategories[2]
 
             GarbageTypeCard(recycle) {
-                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
+                navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
             }
 
 
             GarbageTypeCard(organic) {
-                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
+                navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
             }
 
 
             GarbageTypeCard(waste) {
-                navController.navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
+                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
             }
         }
 
@@ -117,10 +119,10 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
         Box(modifier = Modifier
             .fillMaxWidth()
             .height(230.dp)
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 16.dp)
             .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
             .clickable {
-                navController.navigate(MainScreens.GameMainScreen.route)
+                navigate(MainScreens.GameMainScreen.route)
             }
         ) {
             Image(
@@ -136,11 +138,41 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
         TextTitleMain(title = stringResource(R.string.main_title_good_to_know))
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .background(color = MainOrange)
-            .padding(horizontal = 10.dp))
+        articles.forEach { article ->
+            Row (modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 10.dp)) {
+                AsyncImage(
+                    model = article.image,
+                    contentDescription = "Article icon",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(76.dp, height = 76.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+
+                Column (modifier = Modifier.padding(horizontal = 12.dp)) {
+                    Text(
+                        text = article.title,
+                        color = TitleText,
+                        fontFamily = Inter,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    )
+
+                    Text(
+                        text = article.shortDesc,
+                        color = SubTitleText,
+                        fontFamily = Inter,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp,
+                        maxLines = 2
+                    )
+                }
+            }
+
+            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor, modifier = Modifier.padding(horizontal = 16.dp))
+        }
+
+
 
     }
 }
@@ -153,7 +185,7 @@ fun TextTitleMain(title: String) {
         fontFamily = Inter,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
-        modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 10.dp)
+        modifier = Modifier.padding(start = 16.dp, top = 25.dp, bottom = 10.dp)
     )
 }
 
@@ -240,5 +272,26 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
 @Preview
 @Composable
 fun MainPreview() {
-    MainScreen(navController = NavController(LocalContext.current), viewModel = hiltViewModel())
+    MainScreenContent(
+        searchSuggestions = listOf("meat", "cup", "banana"),
+        garbageCategories = listOf(GarbageCategory("Recycle", 0, RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", 0, RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", 0, RecycleType.GARBAGE, "", "")),
+        articles = listOf(Article(
+            image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+            title = "Reuse. Reduce. Recycle",
+            shortDesc = "How to make lifestyle eco-friendly?",
+            content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+            Article(
+                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+                title = "Reuse. Reduce. Recycle",
+                shortDesc = "How to make lifestyle eco-friendly?",
+                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+            Article(
+                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+                title = "Reuse. Reduce. Recycle",
+                shortDesc = "How to make lifestyle eco-friendly?",
+                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),),
+        navigate = {
+
+        }
+    )
 }

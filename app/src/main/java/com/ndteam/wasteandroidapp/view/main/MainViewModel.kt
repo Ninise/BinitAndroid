@@ -18,6 +18,7 @@ import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.states.ArticleItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
@@ -41,41 +42,18 @@ class MainViewModel @Inject constructor(
     private val _garbageItemState = mutableStateOf(GarbageItemState())
     val garbageItemState: State<GarbageItemState> = _garbageItemState
 
+    private val _articlesItemsState = mutableStateOf(ArticleItemState())
+    val articleItemState: State<ArticleItemState> = _articlesItemsState
+
     lateinit var adLoader: AdLoader
 
     val ads: ArrayList<NativeAd> = arrayListOf()
-
-//    init {
-//        WasteApi.addGarbageElement( GarbageItem(
-//            icon = "https://www.daysoftheyear.com/wp-content/uploads/banana-day1-scaled.jpg",
-//            name = "Banana",
-//            wayToRecycler = "Put it in organic bin",
-//            type = RecycleType.ORGANIC
-//        )
-//        )
-//
-//        WasteApi.addGarbageElement( GarbageItem(
-//            icon = "https://i2-prod.mirror.co.uk/incoming/article29311198.ece/ALTERNATES/s1200/0_Wales-Daily-Life-2022.jpg",
-//            name = "Plastic bottle",
-//            wayToRecycler = "Put it in recycler bin",
-//            type = RecycleType.RECYCLE
-//        )
-//        )
-//
-//        WasteApi.addGarbageElement(
-//            GarbageItem(
-//                icon = "https://facts.net/wp-content/uploads/2022/06/different-types-of-meat.jpg",
-//                name = "Meat",
-//                wayToRecycler = "Put it in garbage bin",
-//                type = RecycleType.GARBAGE
-//            )
-//        )
-//    }
 
     fun downloadData() {
         getSearchSuggestions()
         getGarbageCategories()
         downloadAds()
+        downloadArticles()
     }
 
     fun getGarbageCategoryByType(type: RecycleType) : GarbageCategory {
@@ -182,5 +160,20 @@ class MainViewModel @Inject constructor(
             .build()
 
         adLoader.loadAds(AdRequest.Builder().build(), 3)
+    }
+
+    private fun downloadArticles() {
+        viewModelScope.launch {
+
+            _articlesItemsState.value = ArticleItemState(isLoading = true)
+
+            val result = repository.getArticles()
+
+            _articlesItemsState.value = ArticleItemState(
+                articlesList = result.data,
+                isLoading = false,
+                error = result.message
+            )
+        }
     }
 }

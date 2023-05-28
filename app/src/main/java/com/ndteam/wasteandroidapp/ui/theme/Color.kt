@@ -9,6 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 
 val TitleText = Color(0xFF1D1D1D)
 val BodyText = Color(0xCD4F5969)
+val SubTitleText = Color(0xFF6C7072)
 val HintText = Color(0x4F596980)
 val cursorText = Color(0xFFFB5607)
 

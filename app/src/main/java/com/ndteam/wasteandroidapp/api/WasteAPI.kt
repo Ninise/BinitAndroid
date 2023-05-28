@@ -10,6 +10,7 @@ import com.ndteam.wasteandroidapp.api.WasteAPIKeys.ICON
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.NAME
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.WAY_TO_RECYCLER
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys.TYPE
+import com.ndteam.wasteandroidapp.models.Article
 import kotlinx.coroutines.tasks.await
 
 
@@ -73,5 +74,25 @@ object WasteApi {
 
             return items
         }
+
+    suspend fun getArticles() : ArrayList<Article> {
+        return arrayListOf(
+            Article(
+                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+                title = "Reuse. Reduce. Recycle",
+                shortDesc = "How to make lifestyle eco-friendly?",
+                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+            Article(
+                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+                title = "Reuse. Reduce. Recycle",
+                shortDesc = "How to make lifestyle eco-friendly?",
+                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+            Article(
+                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+                title = "Reuse. Reduce. Recycle",
+                shortDesc = "How to make lifestyle eco-friendly?",
+                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+        )
+    }
 
 }
