@@ -4,7 +4,6 @@ import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
-import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.utils.Resource
 
 open class FakeWasteRepository : WasteRepository {
@@ -28,7 +27,7 @@ open class FakeWasteRepository : WasteRepository {
 
             GarbageCategory(
                 "Garbage",
-                R.drawable.ic_waste_maincard,
+                R.drawable.ic_main_garbage_bin,
                 RecycleType.GARBAGE,
                 importanceTitle = "Why is important to reduce count of garbage?",
                 description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +

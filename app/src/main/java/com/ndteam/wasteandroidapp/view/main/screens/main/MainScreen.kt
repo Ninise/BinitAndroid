@@ -47,8 +47,6 @@ import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 
-
-
     val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
 
     val garbageCategories = viewModel.garbageState.value.garbageList ?: listOf()
@@ -60,6 +58,7 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
             navController.navigate(destination)
         }
     )
+
 }
 
 @Composable
@@ -139,40 +138,10 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
         TextTitleMain(title = stringResource(R.string.main_title_good_to_know))
 
         articles.forEach { article ->
-            Row (modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 10.dp)) {
-                AsyncImage(
-                    model = article.image,
-                    contentDescription = "Article icon",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(76.dp, height = 76.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
+           ArticleItem(article = article, onItemClick = {
 
-                Column (modifier = Modifier.padding(horizontal = 12.dp)) {
-                    Text(
-                        text = article.title,
-                        color = TitleText,
-                        fontFamily = Inter,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp
-                    )
-
-                    Text(
-                        text = article.shortDesc,
-                        color = SubTitleText,
-                        fontFamily = Inter,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp,
-                        maxLines = 2
-                    )
-                }
-            }
-
-            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor, modifier = Modifier.padding(horizontal = 16.dp))
+           })
         }
-
-
 
     }
 }
@@ -191,82 +160,76 @@ fun TextTitleMain(title: String) {
 
 @Composable
 fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Unit) {
-    Box (modifier = Modifier
+    Column (modifier = Modifier
         .clickable {
             onItemClick(item)
         }
-        .testTag("garbage_type_card")
-        .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))
+        .testTag("garbage_type_card")) {
+
+        Box (modifier = Modifier
+            .size(116.dp, 116.dp)
+            .background(color = MainCardBack, shape = RoundedCornerShape(8.dp))
         ) {
-
-        Column (modifier = Modifier.align(alignment = Alignment.Center)) {
             Image(
-                painter = painterResource(id = item.returnShadow()),
-                contentDescription = "Back shadow type",
+                painter = painterResource(id = item.image),
+                contentDescription = "Bin",
                 modifier = Modifier
-                    .size(115.dp, 115.dp))
+                    .width(70.dp)
+                    .height(70.dp)
+                    .align(alignment = Alignment.Center),
+                contentScale = ContentScale.Fit)
+        }
 
+        Text(
+            text = item.title,
+            color = TitleText,
+            fontFamily = Inter,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .align(alignment = CenterHorizontally)
+                .padding(top = 5.dp))
+
+    }
+}
+
+@Composable
+fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
+    Row (modifier = Modifier
+        .padding(start = 16.dp, end = 16.dp, bottom = 10.dp)
+        .clickable {
+            onItemClick(article)
+        }) {
+        AsyncImage(
+            model = article.image,
+            contentDescription = "Article icon",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(76.dp, height = 76.dp)
+                .clip(RoundedCornerShape(10.dp))
+        )
+
+        Column (modifier = Modifier.padding(horizontal = 12.dp)) {
             Text(
-                text = item.title,
+                text = article.title,
                 color = TitleText,
                 fontFamily = Inter,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
-                modifier = Modifier
-                    .align(alignment = CenterHorizontally)
-                    .padding(top = 5.dp)
+                fontSize = 14.sp
+            )
+
+            Text(
+                text = article.shortDesc,
+                color = SubTitleText,
+                fontFamily = Inter,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                maxLines = 2
             )
         }
-
-
-
-//       Column (modifier = Modifier
-//           .align(alignment = Alignment.Center)
-//           .fillMaxWidth()) {
-//
-//           Image(
-//               painter = painterResource(id = item.image),
-//               contentDescription = "Back city type",
-//               modifier = Modifier
-//                   .width(160.dp)
-//                   .height(160.dp)
-//                   .align(alignment = Alignment.CenterHorizontally)
-//                   .clip(RoundedCornerShape(16.dp)),
-//               contentScale = ContentScale.Fit)
-//
-//           Spacer(modifier = Modifier.height(30.dp))
-//       }
-
-//        Row (
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 16.dp, vertical = 15.dp)
-//                .align(alignment = Alignment.BottomCenter),
-//            verticalAlignment = Alignment.CenterVertically) {
-//
-//            Text(
-//                text = item.title,
-//                color = Color.White,
-//                fontFamily = Inter,
-//                fontWeight = FontWeight.SemiBold,
-//                fontSize = 16.sp,
-//            )
-//
-//            Spacer(modifier = Modifier.weight(1f))
-//
-//            Icon(
-//                painterResource(id = item.returnImage()),
-//                tint = Color.White,
-//                contentDescription = "",
-//                modifier = Modifier
-//                    .size(20.dp)
-//                    .align(Alignment.CenterVertically),
-//            )
-//
-//        }
-
-
     }
+
+    Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor, modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 10.dp))
 }
 
 @Preview

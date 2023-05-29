@@ -6,8 +6,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
@@ -39,6 +42,15 @@ class MainActivity : BaseActivity() {
 
         setContent {
             WasteAndroidAppTheme {
+
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = Color.White,
+                        darkIcons = true
+                    )
+                }
+
                 val viewModel = hiltViewModel<MainViewModel>()
                 MainNavigation(viewModel = viewModel, {
                     GameActivity.startActivity(this)
