@@ -40,6 +40,7 @@ import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
@@ -48,11 +49,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
     val textState = remember { mutableStateOf(TextFieldValue(query)) }
 
-    var searchSuggestions: List<String> = listOf()
-
-    LaunchedEffect(Unit, block = {
-        searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
-    })
+    val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
 
     SearchMainScreenContent(
         textState = textState,
@@ -86,7 +83,7 @@ fun SearchMainScreenContent(
         contentAlignment = Alignment.Center,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            SearchView(state = textState, click = {
+            SearchView(state = textState, isActive = true, click = {
 
             }, backClick = popBack, onTextChange = onTextChange)
 
@@ -95,6 +92,7 @@ fun SearchMainScreenContent(
                     items(searchSuggestions) {
                         SearchChip(text = it, onItemClick = {
                             textState.value = TextFieldValue(it)
+                            onTextChange()
                         })
 
                     }
@@ -197,28 +195,31 @@ fun SearchMainScreenContent(
                             item {
                                 Column (modifier = Modifier
                                     .fillMaxWidth()
+                                    .padding(top = 100.dp)
                                     .align(alignment = Alignment.CenterHorizontally)) {
+
                                     Image(
                                         painter = painterResource(id = R.drawable.ic_no_search_results),
                                         contentDescription = "No search result",
                                         modifier = Modifier
-                                            .width(380.dp)
-                                            .height(310.dp)
-                                            .align(alignment = Alignment.CenterHorizontally)
-                                            .clip(RoundedCornerShape(16.dp)),
+                                            .fillMaxSize()
+                                            .padding(horizontal = 15.dp)
+                                            .align(alignment = Alignment.CenterHorizontally),
                                         contentScale = ContentScale.Fit)
 
                                     Text(
                                         text = "Ooops, we don’t have this item in our garbage bins.\n" +
                                                 "Sorry, we will add it soon.",
                                         color = BodyText,
-                                        fontFamily = Nunito,
+                                        fontFamily = Inter,
                                         fontWeight = FontWeight.Normal,
-                                        fontSize = 16.sp,
+                                        fontSize = 14.sp,
                                         letterSpacing = 1.sp,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier.padding(top = 10.dp)
                                     )
+
+                                    Spacer(modifier = Modifier.padding())
                                 }
                             }
                         } else {
@@ -262,7 +263,7 @@ fun SearchMainScreenContent(
 }
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}, onTextChange: () -> Unit) {
+fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, isActive: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}, onTextChange: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
         .clickable {
             if (isMockView) {
@@ -317,7 +318,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 } else {
                     Icon(
                         painterResource(id = R.drawable.ic_search_mag_glass),
-                        tint = IconsGray,
+                        tint = if (isActive) IconsDark else IconsGray,
                         contentDescription = "",
                         modifier = Modifier
                             .padding(start = 15.dp)
@@ -351,7 +352,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
             colors = TextFieldDefaults.textFieldColors(
                 textColor = BodyText,
                 cursorColor = cursorText,
-                leadingIconColor = IconsGray,
+                leadingIconColor = if (isActive) IconsDark else IconsGray,
                 trailingIconColor = Color.White,
                 backgroundColor = SearchBackGray,
                 focusedIndicatorColor = Color.Transparent,

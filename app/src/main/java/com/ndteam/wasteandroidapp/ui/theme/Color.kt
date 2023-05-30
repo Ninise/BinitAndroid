@@ -20,6 +20,7 @@ val MainOrange = Color(0xFFFB5607)
 val SearchBackGray = Color(0x1A71759E)
 val ChipBackGray = Color(0xFFF1F1F5)
 val IconsGray = Color(0xFFB3B7C0)
+val IconsDark = Color(0xFF303033)
 val GarbageTypeIconColor = Color(0xFF4F5969)
 val MainCardBack = Color(0xFFF1F2F6)
 
