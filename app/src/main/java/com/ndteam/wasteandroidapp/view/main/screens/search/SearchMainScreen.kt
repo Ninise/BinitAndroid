@@ -120,7 +120,7 @@ fun SearchMainScreenContent(
                             categoryPlaceholder(
                                 item = GarbageCategory(
                                     "Recycle",
-                                    R.drawable.ic_recycle,
+                                    "R.drawable.ic_recycle",
                                     RecycleType.RECYCLE,
                                     "",
                                     ""
@@ -146,7 +146,7 @@ fun SearchMainScreenContent(
                             categoryPlaceholder(
                                 item = GarbageCategory(
                                     "Garbage",
-                                    R.drawable.ic_garbage,
+                                    "R.drawable.ic_garbage",
                                     RecycleType.GARBAGE,
                                     "",
                                     ""
@@ -171,7 +171,7 @@ fun SearchMainScreenContent(
                             categoryPlaceholder(
                                 item = GarbageCategory(
                                     "Organic",
-                                    R.drawable.ic_organic,
+                                    "R.drawable.ic_organic",
                                     RecycleType.ORGANIC,
                                     "",
                                     ""

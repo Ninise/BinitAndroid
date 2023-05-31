@@ -9,7 +9,7 @@ import com.ndteam.wasteandroidapp.utils.Utils
 
 data class GarbageCategory(
     val title: String,
-    val image: Int,
+    val image: String,
     val type: RecycleType,
     val importanceTitle: String,
     val description: String

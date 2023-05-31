@@ -1,12 +1,9 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,246 +12,143 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
-import com.ndteam.wasteandroidapp.ui.theme.*
-import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.models.states.GarbageItemState
+import com.ndteam.wasteandroidapp.ui.theme.DividerColor
+import com.ndteam.wasteandroidapp.ui.theme.IconsDark
+import com.ndteam.wasteandroidapp.ui.theme.Inter
+import com.ndteam.wasteandroidapp.ui.theme.MainOrange
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
-import kotlin.math.min
 
 @Composable
 fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
-    val scrollState = rememberScrollState()
-
 
     LaunchedEffect(Unit, block = {
         viewModel.searchGarbage(garbageCategory.type.name)
     })
 
-    garbageCategory?.let { garbageCategory ->
-        Box  {
+    GarbageTypeDetailsScreenContent(garbageCategory = garbageCategory, garbageItemState = viewModel.garbageItemState.value, navigate = { destination ->
+        if (destination == null) {
+            navController.popBackStack()
+        }
+    })
 
-            // the rest
+}
 
-            Box(modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .background(color = garbageCategory.categoryColor())) {
+@Composable
+fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageItemState: GarbageItemState, navigate: (String?) -> Unit) {
 
-                DetailsHeaderView(headerImage = garbageCategory.categoryHeaderImage(), image = garbageCategory.image,  scrollStateValue = scrollState.value)
+    val scrollState = rememberScrollState()
 
-                Row (modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
-                        navController.popBackStack()
-                    }
-                }
+    Column (modifier = Modifier
+        .verticalScroll(scrollState)) {
+        ToolbarPlanIconAndTitle(listType = garbageCategory.importanceTitle) {
+            navigate(null)
+        }
 
-                Box(
-                    modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(top = 190.dp)
-                        .background(
-                            color = Color.White,
-                            RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-                        )) {
+        AsyncImage(
+            model = garbageCategory.image,
+            contentDescription = garbageCategory.title,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(230.dp)
+                .padding(vertical = 10.dp, horizontal = 15.dp)
+        )
 
-                    Column(modifier = Modifier.padding(start = 21.dp, end = 21.dp, top = 28.dp)) {
-
-                        DetailsTextView(
-                            title = garbageCategory.title,
-                            descriptionText = garbageCategory.description,
-                            typeIcon = garbageCategory.categoryIcon()
-                        )
+        DetailsTextView(
+            descriptionText = garbageCategory.description,
+        )
 
 
-                        if (viewModel.garbageItemState.value.isLoading ?: false) {
-                            Column(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(600.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                              CircularLoaderView(color = garbageCategory.categoryColor())
-                            }
-                        } else {
-                            viewModel.garbageItemState.value.garbageList?.let {
-                                GarbageExampleListDetailsView(
-                                    garbageCategory.categoryListTypeTitle(),
-                                    it
-                                )
-                            }
-                        }
-
-                    }
-
-
-                }
-
+        if (garbageItemState.isLoading ?: false) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularLoaderView(color = garbageCategory.categoryColor())
             }
-
-            if (scrollState.value > 0) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .graphicsLayer {
-                            alpha = scrollState.value / 350f
-                        }
-                    ,
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Row (modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .background(garbageCategory.categoryColor()),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        ToolbarPlanIconAndTitle(listType = garbageCategory.categoryListTypeTitle()) {
-                            navController.popBackStack()
-                        }
-                    }
-                }
+        } else {
+            garbageItemState.garbageList?.let {
+                GarbageExampleListDetailsView(
+                    garbageCategory.categoryListTypeTitle(),
+                    it
+                )
             }
-
-
         }
     }
-
-
 
 }
 
 @Composable
 private fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
-    IconButton(onClick = {
-        backPressed()
-    }) {
-        Icon(
-            Icons.Default.ArrowBack,
-            tint = Color.White,
-            contentDescription = "",
-            modifier = Modifier
-                .padding(start = 15.dp)
-                .size(24.dp)
-        )
-    }
 
-    Text(
-        text = listType,
-        modifier = Modifier.padding(horizontal = 16.dp),
-        fontSize = 16.sp,
-        fontFamily = Inter,
-        fontWeight = FontWeight.Bold,
-        color = Color.White
-    )
-}
-
-@Composable
-private fun DetailsHeaderView(headerImage: Int, image: Int, scrollStateValue: Int) {
-    Box {
-
-        Image(
-            painter = painterResource(id = headerImage),
-            contentDescription = "City background",
-            modifier = Modifier
-                .height(210.dp)
-                .fillMaxWidth()
-                .graphicsLayer {
-                    alpha = min(1f, 1 - (scrollStateValue / 600f))
-                    translationY = -scrollStateValue * 0.1f
-                },
-            contentScale = ContentScale.Crop
-        )
-
-        Column (modifier = Modifier
-            .align(alignment = Alignment.Center)
-            .fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = image),
-                contentDescription = "Waste Type image",
+        IconButton(onClick = {
+            backPressed()
+        }) {
+            Icon(
+                Icons.Default.ArrowBack,
+                tint = IconsDark,
+                contentDescription = "",
                 modifier = Modifier
-                    .height(160.dp)
-                    .align(alignment = Alignment.CenterHorizontally),
-                contentScale = ContentScale.Fit
+                    .size(24.dp)
             )
-            
-            Spacer(modifier = Modifier.height(10.dp))
-
         }
-    }
+
+        Text(
+            text = listType,
+            fontSize = 32.sp,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Bold,
+            color = IconsDark,
+            modifier = Modifier.padding(horizontal = 15.dp)
+        )
 
 }
 
 @Composable
-private fun DetailsTextView(title: String, descriptionText: String, typeIcon: Int) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = title,
-            color = TitleText,
-            fontFamily = Nunito,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            letterSpacing = 1.sp,
-            modifier = Modifier.weight(1f)
-        )
-
-//        val infiniteTransition = rememberInfiniteTransition()
-//        val rotateAnimation = infiniteTransition.animateFloat(
-//            initialValue = 0f,
-//            targetValue = 360f,
-//            animationSpec = infiniteRepeatable(tween(5_000, easing = LinearEasing))
-//        )
-
-        Icon(
-            painterResource(id = typeIcon),
-            tint = GarbageTypeIconColor,
-            contentDescription = "",
-            modifier = Modifier
-//                .rotate(rotateAnimation.value)
-                .size(25.dp),
-        )
-    }
+private fun DetailsTextView(descriptionText: String) {
 
     Text(
         text = descriptionText,
-        color = BodyText,
-        fontFamily = Nunito,
+        color = IconsDark,
+        fontFamily = Inter,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         letterSpacing = 1.sp,
-        modifier = Modifier.padding(top = 10.dp)
-
+        lineHeight = 24.sp,
+        modifier = Modifier.padding(top = 10.dp, start = 16.dp, end = 16.dp)
     )
 }
 
 @Composable
 fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
-    Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier.padding(top = 30.dp)) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(
+            top = 30.dp,
+            start = 16.dp,
+            end = 16.dp)
+    ) {
         Text(
             text = "Products for $type bin:",
-            color = TitleText,
+            color = IconsDark,
             fontFamily = Inter,
             fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             letterSpacing = 1.sp,
             modifier = Modifier.weight(1f)
         )
@@ -263,8 +157,8 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
             //TODO open search
         }) {
             Text(
-                text = "See all",
-                color = TitleText,
+                text = stringResource(R.string.see_all),
+                color = MainOrange,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
@@ -274,7 +168,10 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 
     }
 
-    LazyColumn(modifier = Modifier.height(600.dp)) {
+    LazyColumn(modifier = Modifier
+        .height(600.dp)
+        .padding(horizontal = 16.dp)
+    ) {
         items(garbage) {
 
             GarbageItemView(
@@ -297,5 +194,11 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Preview(showBackground = true)
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
-    GarbageTypeDetailsScreen(navController = NavController(LocalContext.current), viewModel(), GarbageCategory("", 0, RecycleType.RECYCLE, "", ""))
+    GarbageTypeDetailsScreenContent(
+        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg", RecycleType.RECYCLE, "Very imp", "good desk"),
+    garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
+        navigate = {
+
+        }
+    )
 }

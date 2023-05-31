@@ -39,14 +39,14 @@ class WasteRepositoryImpl @Inject constructor(
                 data = arrayListOf(
                     GarbageCategory(
                         title = "Recycle",
-                        R.drawable.ic_main_recycle_bin,
+                        "https://nationaltoday.com/wp-content/uploads/2022/07/5-Recycle-Awareness-Week-1200x834.jpg",
                         RecycleType.RECYCLE,
                     importanceTitle = "Why recycle is important?",
                     description = "Recycling is important because it helps to conserve natural resources, reduce waste and pollution, save energy, create jobs, and support local economies."),
 
                     GarbageCategory(
                         "Organic",
-                        R.drawable.ic_main_organic_bin,
+                        "https://i.cbc.ca/1.3046582.1682601407!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_940/compost.jpg",
                         RecycleType.ORGANIC,
                         importanceTitle = "Why is important to collect organic waste separately?",
                         description = "Organic waste is composted for fertilizer, energy, or soil amendment. Composting decreases emissions, extends landfill lifespan, and enhances soil quality.\n" +
@@ -54,7 +54,7 @@ class WasteRepositoryImpl @Inject constructor(
 
                     GarbageCategory(
                         "Waste",
-                        R.drawable.ic_main_garbage_bin,
+                        "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg&width=1200",
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",
                         description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +
@@ -66,14 +66,14 @@ class WasteRepositoryImpl @Inject constructor(
                 data = arrayListOf(
                     GarbageCategory(
                         title = "Recycle",
-                        R.drawable.ic_main_recycle_bin,
+                        "https://nationaltoday.com/wp-content/uploads/2022/07/5-Recycle-Awareness-Week-1200x834.jpg",
                         RecycleType.RECYCLE,
                         importanceTitle = "Why recycle is important?",
                         description = "Recycling is important because it helps to conserve natural resources, reduce waste and pollution, save energy, create jobs, and support local economies."),
 
                     GarbageCategory(
                         "Organic",
-                        R.drawable.ic_main_organic_bin,
+                        "https://i.cbc.ca/1.3046582.1682601407!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_940/compost.jpg",
                         RecycleType.ORGANIC,
                         importanceTitle = "Why is important to collect organic waste separately?",
                         description = "Organic waste is composted for fertilizer, energy, or soil amendment. Composting decreases emissions, extends landfill lifespan, and enhances soil quality.\n" +
@@ -81,7 +81,7 @@ class WasteRepositoryImpl @Inject constructor(
 
                     GarbageCategory(
                         "Waste",
-                        R.drawable.ic_main_garbage_bin,
+                        "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg&width=1200",
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",
                         description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +

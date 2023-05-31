@@ -98,17 +98,17 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
             val organic = garbageCategories[1]
             val waste = garbageCategories[2]
 
-            GarbageTypeCard(recycle) {
+            GarbageTypeCard(recycle, typeImage = R.drawable.ic_main_recycle_bin) {
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
             }
 
 
-            GarbageTypeCard(organic) {
+            GarbageTypeCard(organic, typeImage = R.drawable.ic_main_organic_bin) {
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
             }
 
 
-            GarbageTypeCard(waste) {
+            GarbageTypeCard(waste, typeImage = R.drawable.ic_main_garbage_bin) {
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
             }
         }
@@ -159,7 +159,7 @@ fun TextTitleMain(title: String) {
 }
 
 @Composable
-fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Unit) {
+fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (GarbageCategory) -> Unit) {
     Column (modifier = Modifier
         .clickable {
             onItemClick(item)
@@ -171,7 +171,7 @@ fun GarbageTypeCard(item: GarbageCategory, onItemClick: (GarbageCategory) -> Uni
             .background(color = MainCardBack, shape = RoundedCornerShape(8.dp))
         ) {
             Image(
-                painter = painterResource(id = item.image),
+                painter = painterResource(id = typeImage),
                 contentDescription = "Bin",
                 modifier = Modifier
                     .width(70.dp)
@@ -237,7 +237,7 @@ fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
 fun MainPreview() {
     MainScreenContent(
         searchSuggestions = listOf("meat", "cup", "banana"),
-        garbageCategories = listOf(GarbageCategory("Recycle", 0, RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", 0, RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", 0, RecycleType.GARBAGE, "", "")),
+        garbageCategories = listOf(GarbageCategory("Recycle", "", RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", "0", RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", "", RecycleType.GARBAGE, "", "")),
         articles = listOf(Article(
             image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
             title = "Reuse. Reduce. Recycle",

@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
         }?: kotlin.run {
             return GarbageCategory(
                 type.name,
-                R.drawable.ic_recycling_details_header,
+                "",
                 type,
                 "TITLE",
                 "DESCRIPTION"
