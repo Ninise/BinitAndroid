@@ -3,7 +3,9 @@ package com.ndteam.wasteandroidapp.view.main.screens.game
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,7 +45,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun GameMainScreen(gameSet: List<GameObject>) {
+fun GameMainScreen(gameSet: List<GameObject>, onBackPress: () -> Unit) {
 
     LaunchedEffect(Unit, block = {
 
@@ -64,12 +66,12 @@ fun GameMainScreen(gameSet: List<GameObject>) {
         if (correct) {
             counter++
         }
-    })
+    }, onBackPress = onBackPress)
 
 }
 
 @Composable
-fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (Boolean) -> Unit) {
+fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (Boolean) -> Unit, onBackPress: () -> Unit) {
 
     val offsetY = remember { Animatable(0f) }
     val offsetX = remember { Animatable(200f) }
@@ -138,12 +140,27 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
         Row(modifier = Modifier
             .align(alignment = Alignment.TopStart)
-            .padding(start = 20.dp)
-            .padding(top = 20.dp)) {
+            .padding(top = 10.dp, start = 25.dp, end = 25.dp)) {
+            
+            IconButton(onClick = {
+                onBackPress()
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_game_back_arrow),
+                    contentDescription = "Back icon",
+                    modifier = Modifier
+                        .size(45.dp, 45.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            
+            Spacer(modifier = Modifier.weight(1f).background(color = Color.Magenta))
+            
             Image(
                 painter = painterResource(id = R.drawable.ic_game_star),
                 contentDescription = "Star icon",
                 modifier = Modifier
+                    .padding(top = 4.dp)
                     .width(35.dp),
                 contentScale = ContentScale.Fit
             )
@@ -180,7 +197,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             ) { isInBound, draggedItem ->
 
-                var image = if (isInBound) R.drawable.ic_correct_organic_bin else R.drawable.ic_def_organic_bin
+                var image = if (isInBound) R.drawable.ic_inbound_organic_bin else R.drawable.ic_def_organic_bin
 
                 if (draggedItem != null) {
 
@@ -190,6 +207,8 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                         // todo correct state and points
                         correct = true
+                        image = R.drawable.ic_correct_organic_bin
+
                     } else {
                         image = R.drawable.ic_mistake_organic_bin
                         mistakeOrganic.value = true
@@ -225,7 +244,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             ) { isInBound, draggedItem ->
 
-                var image = if (isInBound) R.drawable.ic_correct_recycle_bin else R.drawable.ic_def_recycle_bin
+                var image = if (isInBound) R.drawable.ic_inbound_recycle_bin else R.drawable.ic_def_recycle_bin
 
                 if (draggedItem != null) {
 
@@ -234,6 +253,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                     if (draggedItem.type == RecycleType.RECYCLE) {
                         // todo correct state and points
                         correct = true
+                        image = R.drawable.ic_correct_recycle_bin
                     } else {
                         image = R.drawable.ic_mistake_recycle_bin
                         mistakeRecycler.value = true
@@ -269,7 +289,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             ) { isInBound, draggedItem ->
 
-                var image = if (isInBound) R.drawable.ic_correct_garbage_bin else R.drawable.ic_def_garbage_bin
+                var image = if (isInBound) R.drawable.ic_inbound_garbage_bin else R.drawable.ic_def_garbage_bin
 
                 if (draggedItem != null) {
 
@@ -280,6 +300,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                         correct = true
 
                         // todo correct state
+                        image = R.drawable.ic_correct_garbage_bin
 
                     } else {
 

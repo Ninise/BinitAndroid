@@ -24,5 +24,7 @@ val IconsDark = Color(0xFF303033)
 val GarbageTypeIconColor = Color(0xFF4F5969)
 val MainCardBack = Color(0xFFF1F2F6)
 
+val gameImageTopEdgeBack = Color(0xFF73BDF0)
+
 val DividerColor = Color(0x1A4F5969)
 
