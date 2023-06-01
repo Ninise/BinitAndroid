@@ -16,6 +16,7 @@ import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.ui.theme.gameImageTopEdgeBack
+import com.ndteam.wasteandroidapp.view.game.screens.GameGuideScreen
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
 val gameSet = listOf(
@@ -63,9 +64,13 @@ class GameActivity: BaseActivity() {
                     )
                 }
 
-                GameMainScreen(gameSet, onBackPress = {
-                    onBackPressed()
-                })
+                GameGuideScreen {
+
+                }
+
+//                GameMainScreen(gameSet, onBackPress = {
+//                    onBackPressed()
+//                })
             }
         }
 
