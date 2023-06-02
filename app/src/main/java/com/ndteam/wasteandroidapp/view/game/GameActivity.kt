@@ -50,11 +50,10 @@ class GameActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
 
 
-
         setContent {
             WasteAndroidAppTheme {
 
-
+                val isGuideStage = remember { mutableStateOf(true) }
 
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
@@ -64,13 +63,18 @@ class GameActivity: BaseActivity() {
                     )
                 }
 
-                GameGuideScreen {
-
+                if (isGuideStage.value) {
+                    GameGuideScreen(onBackPressed = {
+                        onBackPressed()
+                    }, onPlayPress = {
+                        isGuideStage.value = false
+                    })
+                } else {
+                    GameMainScreen(gameSet, onBackPress = {
+                        onBackPressed()
+                    })
                 }
 
-//                GameMainScreen(gameSet, onBackPress = {
-//                    onBackPressed()
-//                })
             }
         }
 
