@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WasteAndroidApp</string>
+    <string name="app_name">Binit!</string>
     <string name="title_activity_landing">LandingActivity</string>
     <string name="reduce_title">Reduce</string>
     <string name="reduce_desc">Reduce waste by being mindful of consumption habits, choosing minimal packaging, reusable water bottles, and turning off electronics.</string>
@@ -28,4 +28,7 @@
     <string name="play">Play</string>
     <string name="drag_and_drop">Drag and Drop</string>
     <string name="quiz">Quiz</string>
+    <string name="landing_dialog_title">Let\'s sort it out,\nbin it without a doubt!</string>
+    <string name="landing_dialog_content">We prepared for you a search,\nengaging educational games,\nand informative articles.</string>
+    <string name="landing_dialog_button">Let\'s get started!</string>
 </resources>
