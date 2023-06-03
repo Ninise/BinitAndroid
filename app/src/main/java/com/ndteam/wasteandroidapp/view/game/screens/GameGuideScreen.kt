@@ -66,15 +66,15 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
     val offsetY = remember { Animatable(0f) }
     val offsetX = remember { Animatable(0f) }
 
+    val offsetPersonX = remember { Animatable(0f) }
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = Unit, block = {
         offsetY.snapTo(-60f)
+        offsetX.snapTo(125f)
+        offsetPersonX.snapTo(130f)
     })
-
-    // todo drop all items to bottom edge
-    // todo make padding between bins and dialog more
-    // todo move person closer to the bin
 
     fun dropBanana() {
         scope.launch {
@@ -127,10 +127,12 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
 
         Row (modifier = Modifier
             .align(alignment = Alignment.BottomCenter)
-            .padding(bottom = 5.dp)) {
+
+        ) {
 
             Box (
-                modifier = Modifier.align(alignment = Alignment.Bottom)
+                modifier = Modifier
+                    .align(alignment = Alignment.Bottom)
                     ) {
 
                 Image(
@@ -152,14 +154,20 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                     painter = painterResource(id = R.drawable.ic_game_guide_guy),
                     contentDescription = "Guy bin",
                     modifier = Modifier
-                        .padding(6.dp)
+                        .padding(top = 6.dp, start = 6.dp, end = 6.dp)
                         .height(280.dp)
+                        .offset {
+                            IntOffset(
+                                offsetPersonX.value.roundToInt(),
+                                0
+                            )
+                        }
                     ,
                     contentScale = ContentScale.Fit
                 )
 
 
-                
+
             }
 
 
@@ -230,7 +238,7 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                         colors = ButtonDefaults.buttonColors(backgroundColor = MainOrange),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier
-                            .padding(top = 10.dp)
+                            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
                             .height(45.dp)) {
 
                         Text(
@@ -248,7 +256,7 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                 }
 
                 Spacer(
-                    modifier = Modifier.height(30.dp)
+                    modifier = Modifier.height(65.dp)
                 )
 
                 Row {
@@ -256,7 +264,7 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                         painter = painterResource(id = R.drawable.ic_def_organic_bin),
                         contentDescription = "Organic bin",
                         modifier = Modifier
-                            .padding(6.dp)
+                            .padding(top = 6.dp, start = 6.dp, end = 6.dp)
                             .width(125.dp)
                             .height(125.dp)
                             .align(alignment = Alignment.Bottom),
@@ -269,7 +277,7 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                         painter = painterResource(id = R.drawable.ic_def_recycle_bin),
                         contentDescription = "Organic bin",
                         modifier = Modifier
-                            .padding(6.dp)
+                            .padding(top = 6.dp, start = 6.dp, end = 6.dp)
                             .width(125.dp)
                             .height(125.dp)
                             .align(alignment = Alignment.Bottom),
@@ -282,7 +290,7 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
                         painter = painterResource(id = R.drawable.ic_def_garbage_bin),
                         contentDescription = "Organic bin",
                         modifier = Modifier
-                            .padding(6.dp)
+                            .padding(top = 6.dp, start = 6.dp, end = 6.dp)
                             .width(125.dp)
                             .height(125.dp)
                             .align(alignment = Alignment.Bottom),
