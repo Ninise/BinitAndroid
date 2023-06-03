@@ -26,4 +26,6 @@
     <string name="game_guide_content_one">In this game, your task is to sort different types of garbage into the\ncorrect bins. Get ready to test your waste management skills and\ncontribute to a cleaner environment!</string>
     <string name="game_guide_content_two">Drag each item and drop it into the appropriate bin:\n Compost, Recycling, or Waste.\nPay attention to the item\'s characteristics, such as material, food waste,\nor non-recyclable materials, to make the correct sorting decision.</string>
     <string name="play">Play</string>
+    <string name="drag_and_drop">Drag and Drop</string>
+    <string name="quiz">Quiz</string>
 </resources>

@@ -94,7 +94,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
 }
 
 @Composable
-private fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
+fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
 
         IconButton(onClick = {
             backPressed()
@@ -108,14 +108,16 @@ private fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
             )
         }
 
-        Text(
-            text = listType,
-            fontSize = 32.sp,
-            fontFamily = Inter,
-            fontWeight = FontWeight.Bold,
-            color = IconsDark,
-            modifier = Modifier.padding(horizontal = 15.dp)
-        )
+        if (listType.isNotEmpty()) {
+            Text(
+                text = listType,
+                fontSize = 32.sp,
+                fontFamily = Inter,
+                fontWeight = FontWeight.Bold,
+                color = IconsDark,
+                modifier = Modifier.padding(horizontal = 15.dp)
+            )
+        }
 
 }
 

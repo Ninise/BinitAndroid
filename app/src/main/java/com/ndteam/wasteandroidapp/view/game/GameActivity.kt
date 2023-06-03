@@ -16,7 +16,9 @@ import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.ui.theme.gameImageTopEdgeBack
+import com.ndteam.wasteandroidapp.utils.NavigationUtils
 import com.ndteam.wasteandroidapp.view.game.screens.GameGuideScreen
+import com.ndteam.wasteandroidapp.view.game.screens.GamePickerScreen
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
 val gameSet = listOf(
@@ -39,8 +41,15 @@ class GameActivity: BaseActivity() {
 
 
     companion object {
-        fun startActivity(context: Activity) {
+
+        const val GAME_TYPE = "GAME_TYPE"
+
+        const val DRAG_AND_DROP = 1
+        const val QUIZ = 2
+
+        fun startActivity(context: Activity, type: Int) {
             val intent = Intent(context, GameActivity::class.java)
+            intent.putExtra(GAME_TYPE, type)
             context.startActivity(intent)
         }
 
@@ -48,7 +57,6 @@ class GameActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContent {
             WasteAndroidAppTheme {
@@ -63,17 +71,29 @@ class GameActivity: BaseActivity() {
                     )
                 }
 
-                if (isGuideStage.value) {
-                    GameGuideScreen(onBackPressed = {
-                        onBackPressed()
-                    }, onPlayPress = {
-                        isGuideStage.value = false
-                    })
-                } else {
-                    GameMainScreen(gameSet, onBackPress = {
-                        onBackPressed()
-                    })
+                when (intent.getIntExtra(GAME_TYPE, DRAG_AND_DROP)) {
+                    DRAG_AND_DROP -> {
+                        if (isGuideStage.value) {
+                            GameGuideScreen(onBackPressed = {
+                                onBackPressed()
+                            }, onPlayPress = {
+                                isGuideStage.value = false
+                            })
+                        } else {
+                            GameMainScreen(gameSet, onBackPress = {
+                                onBackPressed()
+                            })
+                        }
+                    }
+
+                    QUIZ -> {
+
+                    }
                 }
+
+
+
+
 
             }
         }

@@ -5,19 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
-import com.ndteam.wasteandroidapp.utils.Utils
-import com.ndteam.wasteandroidapp.view.game.GameActivity
+import com.ndteam.wasteandroidapp.view.game.GamePickerActivity
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,7 +47,7 @@ class MainActivity : BaseActivity() {
 
                 val viewModel = hiltViewModel<MainViewModel>()
                 MainNavigation(viewModel = viewModel, {
-                    GameActivity.startActivity(this)
+                    GamePickerActivity.startActivity(this)
                 })
             }
         }
