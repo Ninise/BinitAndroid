@@ -119,7 +119,7 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
             .fillMaxWidth()
             .height(230.dp)
             .padding(horizontal = 16.dp)
-            .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
+            .background(color = MainBlue, shape = RoundedCornerShape(10.dp))
             .clickable {
                 navigate(MainScreens.GameMainScreen.route)
             }
@@ -131,7 +131,7 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(230.dp)
-                    .clip(shape = RoundedCornerShape(16.dp))
+                    .clip(shape = RoundedCornerShape(10.dp))
             )
         }
 
@@ -168,7 +168,7 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
 
         Box (modifier = Modifier
             .size(116.dp, 116.dp)
-            .background(color = MainCardBack, shape = RoundedCornerShape(8.dp))
+            .background(color = MainCardBack, shape = RoundedCornerShape(10.dp))
         ) {
             Image(
                 painter = painterResource(id = typeImage),

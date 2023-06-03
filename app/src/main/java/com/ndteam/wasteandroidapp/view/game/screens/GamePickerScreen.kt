@@ -55,7 +55,7 @@ fun GamePickerScreenContent(navigate: (String) -> Unit) {
             .fillMaxWidth()
             .height(230.dp)
             .padding(horizontal = 16.dp)
-            .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
+            .background(color = MainBlue, shape = RoundedCornerShape(10.dp))
             .clickable {
                 navigate(NAVIGATE_TO_DND)
             }
@@ -67,7 +67,7 @@ fun GamePickerScreenContent(navigate: (String) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(230.dp)
-                    .clip(shape = RoundedCornerShape(16.dp))
+                    .clip(shape = RoundedCornerShape(10.dp))
             )
         }
 
@@ -77,7 +77,7 @@ fun GamePickerScreenContent(navigate: (String) -> Unit) {
             .fillMaxWidth()
             .height(230.dp)
             .padding(horizontal = 16.dp)
-            .background(color = MainBlue, shape = RoundedCornerShape(16.dp))
+            .background(color = MainBlue, shape = RoundedCornerShape(10.dp))
             .clickable {
                 navigate(NAVIGATE_TO_QUIZ)
             }
@@ -89,7 +89,7 @@ fun GamePickerScreenContent(navigate: (String) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(230.dp)
-                    .clip(shape = RoundedCornerShape(16.dp))
+                    .clip(shape = RoundedCornerShape(10.dp))
             )
         }
 

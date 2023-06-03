@@ -348,7 +348,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 }
             },
             singleLine = true,
-            shape = RoundedCornerShape(8.dp), // The TextFiled has rounded corners top left and right by default
+            shape = RoundedCornerShape(6.dp), // The TextFiled has rounded corners top left and right by default
             colors = TextFieldDefaults.textFieldColors(
                 textColor = BodyText,
                 cursorColor = cursorText,

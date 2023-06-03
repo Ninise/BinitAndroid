@@ -236,10 +236,10 @@ fun GameGuideScreenContent(onPlayPress: () -> Unit, onBackPressed: () -> Unit) {
 
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = MainOrange),
-                        shape = RoundedCornerShape(10.dp),
+                        shape = RoundedCornerShape(6.dp),
                         modifier = Modifier
                             .padding(top = 10.dp, start = 10.dp, end = 10.dp)
-                            .height(45.dp)) {
+                            .height(40.dp)) {
 
                         Text(
                             text = buttonText.value,
