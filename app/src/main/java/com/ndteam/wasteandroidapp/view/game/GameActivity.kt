@@ -95,7 +95,9 @@ class GameActivity: BaseActivity() {
                         LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
 
-                        GameQuizGameScreen()
+                        GameQuizGameScreen(onBackPress = {
+                            onBackPressed()
+                        })
                     }
                 }
 

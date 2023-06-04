@@ -193,7 +193,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             DropTarget<GameObject>(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .padding(top = 6.dp, start = 6.dp, end = 6.dp)
 
             ) { isInBound, draggedItem ->
 
@@ -240,7 +240,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             DropTarget<GameObject>(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .padding(top = 6.dp, start = 6.dp, end = 6.dp)
 
             ) { isInBound, draggedItem ->
 
@@ -285,7 +285,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
             DropTarget<GameObject>(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .padding(top = 6.dp, start = 6.dp, end = 6.dp)
 
             ) { isInBound, draggedItem ->
 
