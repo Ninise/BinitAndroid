@@ -38,7 +38,7 @@ data class GarbageItem(
 }
 
 enum class RecycleType {
-    RECYCLE, GARBAGE, ORGANIC;
+    RECYCLE, GARBAGE, ORGANIC, E_WASTE, HAZARD;
 
     fun parseValue() : String = when (this) {
         RECYCLE -> "RECYCLE"

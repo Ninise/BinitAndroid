@@ -115,79 +115,85 @@ fun SearchMainScreenContent(
                 } else {
                     var index = 0
 
+                   @Composable
+                   fun quickSearchItem(category: GarbageCategory) {
+                       if (textState.value.text.isEmpty()) {
+                           categoryPlaceholder(
+                               item = category
+                           ) {
+                               textState.value = TextFieldValue(category.title.lowercase())
+                               onTextChange()
+                           }
+
+                           Spacer(modifier = Modifier.height(4.dp))
+
+                           Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                           Spacer(modifier = Modifier.height(4.dp))
+                       }
+                   }
+
                     item {
-                        if (textState.value.text.isEmpty()) {
-                            categoryPlaceholder(
-                                item = GarbageCategory(
-                                    "Recycle",
-                                    "R.drawable.ic_recycle",
-                                    RecycleType.RECYCLE,
-                                    "",
-                                    ""
-                                )
-                            ) {
-                                textState.value = TextFieldValue("recycle")
-                                onTextChange()
-                            }
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-                        }
-
-
-
+                        quickSearchItem(
+                            category = GarbageCategory(
+                                "Recycle",
+                                "R.drawable.ic_recycle",
+                                RecycleType.RECYCLE,
+                                "",
+                                ""
+                            )
+                        )
                     }
 
                     item {
-                        if (textState.value.text.isEmpty()) {
-                            categoryPlaceholder(
-                                item = GarbageCategory(
-                                    "Garbage",
-                                    "R.drawable.ic_garbage",
-                                    RecycleType.GARBAGE,
-                                    "",
-                                    ""
-                                )
-                            ) {
-                                textState.value = TextFieldValue("garbage")
-                                onTextChange()
-                            }
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-                        }
-
-
+                        quickSearchItem(
+                            category = GarbageCategory(
+                                "Garbage",
+                                "R.drawable.ic_garbage",
+                                RecycleType.GARBAGE,
+                                "",
+                                ""
+                            )
+                        )
                     }
 
                     item {
-                        if (textState.value.text.isEmpty()) {
-                            categoryPlaceholder(
-                                item = GarbageCategory(
-                                    "Organic",
-                                    "R.drawable.ic_organic",
-                                    RecycleType.ORGANIC,
-                                    "",
-                                    ""
-                                )
-                            ) {
-                                textState.value = TextFieldValue("organic")
-                                onTextChange()
-                            }
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                            Spacer(modifier = Modifier.height(4.dp))
-                        }
+                        quickSearchItem(
+                            category = GarbageCategory(
+                                "Organic",
+                                "R.drawable.ic_organic",
+                                RecycleType.ORGANIC,
+                                "",
+                                ""
+                            )
+                        )
                     }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory(
+                                "E-Waste",
+                                "R.drawable.ic_e_waste",
+                                RecycleType.E_WASTE,
+                                "",
+                                ""
+                            )
+                        )
+                    }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory(
+                                "Household hazardous",
+                                "R.drawable.ic_hazard",
+                                RecycleType.HAZARD,
+                                "",
+                                ""
+                            )
+                        )
+                    }
+
+
 
                     garbageState.value.garbageList?.let {
 

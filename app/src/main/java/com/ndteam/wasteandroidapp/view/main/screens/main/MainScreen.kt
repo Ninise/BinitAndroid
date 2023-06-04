@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -90,6 +91,7 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
 
         Row (
             modifier = Modifier
+                .horizontalScroll(state = rememberScrollState(), enabled = true)
                 .align(alignment = CenterHorizontally)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -97,6 +99,8 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
             val recycle = garbageCategories[0]
             val organic = garbageCategories[1]
             val waste = garbageCategories[2]
+            val eWaste = garbageCategories[3]
+            val hazarWaste = garbageCategories[4]
 
             GarbageTypeCard(recycle, typeImage = R.drawable.ic_main_recycle_bin) {
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
@@ -107,13 +111,20 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
             }
 
-
             GarbageTypeCard(waste, typeImage = R.drawable.ic_main_garbage_bin) {
+                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
+            }
+
+            GarbageTypeCard(eWaste, typeImage = R.drawable.ic_main_e_waste_bin) {
+                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
+            }
+
+            GarbageTypeCard(hazarWaste, typeImage = R.drawable.ic_main_hazar_bing) {
                 navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
             }
         }
 
-        TextTitleMain(title = stringResource(R.string.main_title_game))
+        TextTitleMain(title = stringResource(R.string.main_title_game), topMargin = 15.dp)
 
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -147,14 +158,14 @@ fun MainScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
 }
 
 @Composable
-fun TextTitleMain(title: String) {
+fun TextTitleMain(title: String, topMargin: Dp = 25.dp) {
     Text(
         text = title,
         color = TitleText,
         fontFamily = Inter,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
-        modifier = Modifier.padding(start = 16.dp, top = 25.dp, bottom = 10.dp)
+        modifier = Modifier.padding(start = 16.dp, top = topMargin, bottom = 10.dp)
     )
 }
 
@@ -164,6 +175,7 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
         .clickable {
             onItemClick(item)
         }
+        .padding(end = 16.dp)
         .testTag("garbage_type_card")) {
 
         Box (modifier = Modifier

@@ -58,7 +58,24 @@ class WasteRepositoryImpl @Inject constructor(
                         RecycleType.GARBAGE,
                         importanceTitle = "Why is important to reduce count of garbage?",
                         description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +
-                                "Sorting waste reduces the amount sent to these sites, reducing emissions and protecting the environment."))
+                                "Sorting waste reduces the amount sent to these sites, reducing emissions and protecting the environment."),
+
+                    GarbageCategory(
+                        "E-waste",
+                        "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg&width=1200",
+                        RecycleType.E_WASTE,
+                        importanceTitle = "Why is important to reduce count of garbage?",
+                        description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +
+                                "Sorting waste reduces the amount sent to these sites, reducing emissions and protecting the environment."),
+
+                    GarbageCategory(
+                        "Household\nhazardous",
+                        "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg&width=1200",
+                        RecycleType.HAZARD,
+                        importanceTitle = "Why is important to reduce count of garbage?",
+                        description = "Unsorted Canadian garbage goes to landfills or incinerators, where it decomposes and emits harmful gases. Incineration produces electricity but pollutes the air with carbon monoxide and dioxins, harming public health. \n" +
+                                "Sorting waste reduces the amount sent to these sites, reducing emissions and protecting the environment.")
+                    )
             )
         } catch (e: Exception) {
             e.printStackTrace()
