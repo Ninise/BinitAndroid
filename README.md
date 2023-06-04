@@ -1,7 +1,7 @@
 
 ## 🖥 Work in progress
 
-# Waste Sorting Educational App
+# Gargabe Sorting Educational App
 
 The goal of the project is to teach people how to sort their garbage, especially useful for people how are new to garbage sorting
 
