@@ -32,7 +32,7 @@
         </activity>
 
         <activity android:name=".view.game.GameActivity"
-            android:screenOrientation="landscape"
+
             />
 
         <activity android:name=".view.game.GamePickerActivity" />

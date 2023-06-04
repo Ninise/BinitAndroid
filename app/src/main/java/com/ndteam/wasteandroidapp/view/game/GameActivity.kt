@@ -2,13 +2,15 @@ package com.ndteam.wasteandroidapp.view.game
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.base.BaseActivity
@@ -19,6 +21,7 @@ import com.ndteam.wasteandroidapp.ui.theme.gameImageTopEdgeBack
 import com.ndteam.wasteandroidapp.utils.NavigationUtils
 import com.ndteam.wasteandroidapp.view.game.screens.GameGuideScreen
 import com.ndteam.wasteandroidapp.view.game.screens.GamePickerScreen
+import com.ndteam.wasteandroidapp.view.game.screens.GameQuizGameScreen
 import com.ndteam.wasteandroidapp.view.main.screens.game.GameMainScreen
 
 val gameSet = listOf(
@@ -73,6 +76,8 @@ class GameActivity: BaseActivity() {
 
                 when (intent.getIntExtra(GAME_TYPE, DRAG_AND_DROP)) {
                     DRAG_AND_DROP -> {
+                        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+
                         if (isGuideStage.value) {
                             GameGuideScreen(onBackPressed = {
                                 onBackPressed()
@@ -87,7 +92,10 @@ class GameActivity: BaseActivity() {
                     }
 
                     QUIZ -> {
+                        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
+
+                        GameQuizGameScreen()
                     }
                 }
 
@@ -121,4 +129,24 @@ class GameActivity: BaseActivity() {
         dialog.show()
     }
 
+}
+
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val context = LocalContext.current
+    DisposableEffect(orientation) {
+        val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
+        val originalOrientation = activity.requestedOrientation
+        activity.requestedOrientation = orientation
+        onDispose {
+            // restore original orientation when view disappears
+            activity.requestedOrientation = originalOrientation
+        }
+    }
+}
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
