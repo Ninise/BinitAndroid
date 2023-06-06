@@ -13,6 +13,7 @@ import com.ndteam.wasteandroidapp.base.BaseActivity
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.view.game.GamePickerActivity
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
+import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -45,10 +46,12 @@ class MainActivity : BaseActivity() {
                     )
                 }
 
-                val viewModel = hiltViewModel<MainViewModel>()
-                MainNavigation(viewModel = viewModel, {
-                    GamePickerActivity.startActivity(this)
-                })
+//                val viewModel = hiltViewModel<MainViewModel>()
+//                MainNavigation(viewModel = viewModel, {
+//                    GamePickerActivity.startActivity(this)
+//                })
+
+                MainScreen()
             }
         }
 

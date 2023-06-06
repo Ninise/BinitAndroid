@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
-import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
+import com.ndteam.wasteandroidapp.view.main.screens.home.HomeScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
 
@@ -77,7 +77,7 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
         }
 
         composable(route = MainScreens.MainScreen.route) {
-            MainScreen(navController = navController, viewModel)
+            HomeScreen(navController = navController, viewModel)
         }
 
     }

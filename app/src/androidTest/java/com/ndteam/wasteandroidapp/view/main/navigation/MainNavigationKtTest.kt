@@ -2,26 +2,17 @@ package com.ndteam.wasteandroidapp.view.main.navigation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.filters.MediumTest
-import com.ndteam.wasteandroidapp.repository.WasteRepository
 import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
-import com.ndteam.wasteandroidapp.view.main.MainActivity
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
-import com.ndteam.wasteandroidapp.view.main.screens.main.MainScreen
+import com.ndteam.wasteandroidapp.view.main.screens.home.HomeScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.mock
 
 @HiltAndroidTest
 @MediumTest
@@ -42,7 +33,7 @@ class MainNavigationKtTest {
             WasteAndroidAppTheme {
                 navController = TestNavHostController(LocalContext.current)
                 mainViewModel = MainViewModel(FakeWasteRepository())
-                MainScreen(navController = navController, mainViewModel)
+                HomeScreen(navController = navController, mainViewModel)
             }
         }
 
