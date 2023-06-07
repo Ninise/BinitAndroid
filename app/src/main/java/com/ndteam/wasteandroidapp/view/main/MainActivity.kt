@@ -33,7 +33,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mainViewModel.downloadData()
 
         setContent {
             WasteAndroidAppTheme {
@@ -46,10 +45,7 @@ class MainActivity : BaseActivity() {
                     )
                 }
 
-//                val viewModel = hiltViewModel<MainViewModel>()
-//                MainNavigation(viewModel = viewModel, {
-//                    GamePickerActivity.startActivity(this)
-//                })
+
 
                 MainScreen()
             }

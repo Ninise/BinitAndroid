@@ -1,7 +1,10 @@
 package com.ndteam.wasteandroidapp.utils
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import com.ndteam.wasteandroidapp.App
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlin.random.Random

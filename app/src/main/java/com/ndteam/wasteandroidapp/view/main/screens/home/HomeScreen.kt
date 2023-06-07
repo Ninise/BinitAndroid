@@ -90,31 +90,11 @@ fun HomeScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            val recycle = garbageCategories[0]
-            val organic = garbageCategories[1]
-            val waste = garbageCategories[2]
-            val eWaste = garbageCategories[3]
-            val hazarWaste = garbageCategories[4]
 
-            GarbageTypeCard(recycle, typeImage = R.drawable.ic_main_recycle_bin) {
-                navigate(MainScreens.GarbageDetailsScreen.withArgs(recycle.type.name))
-            }
-
-
-            GarbageTypeCard(organic, typeImage = R.drawable.ic_main_organic_bin) {
-                navigate(MainScreens.GarbageDetailsScreen.withArgs(organic.type.name))
-            }
-
-            GarbageTypeCard(waste, typeImage = R.drawable.ic_main_garbage_bin) {
-                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
-            }
-
-            GarbageTypeCard(eWaste, typeImage = R.drawable.ic_main_e_waste_bin) {
-                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
-            }
-
-            GarbageTypeCard(hazarWaste, typeImage = R.drawable.ic_main_hazar_bing) {
-                navigate(MainScreens.GarbageDetailsScreen.withArgs(waste.type.name))
+            garbageCategories.forEach {
+                GarbageTypeCard(it, typeImage = it.categoryBinImage()) {
+                    navigate(MainScreens.GarbageDetailsScreen.withArgs(it.type.name))
+                }
             }
         }
 

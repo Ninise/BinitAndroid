@@ -20,10 +20,12 @@ data class GarbageCategory(
         else -> R.drawable.organic_card_back_gradient
     }
 
-    fun categoryHeaderImage() = when(type) {
-        RecycleType.RECYCLE -> R.drawable.recycle_details_back_gradient
-        RecycleType.GARBAGE -> R.drawable.waste_details_back_gradient
-        else -> R.drawable.organic_details_back_gradient
+    fun categoryBinImage() = when(type) {
+        RecycleType.RECYCLE -> R.drawable.ic_main_recycle_bin
+        RecycleType.GARBAGE -> R.drawable.ic_main_garbage_bin
+        RecycleType.ORGANIC -> R.drawable.ic_main_organic_bin
+        RecycleType.E_WASTE -> R.drawable.ic_main_e_waste_bin
+        RecycleType.HAZARD -> R.drawable.ic_main_hazar_bing
     }
 
     fun categoryColor() = when(type) {
