@@ -2,9 +2,7 @@ package com.ndteam.wasteandroidapp.view.main.screens.main
 
 import android.app.Activity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -20,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -146,7 +145,7 @@ fun BottomNavigation(navController: NavController) {
 
     androidx.compose.material.BottomNavigation(
         backgroundColor = colorResource(id = R.color.white),
-        contentColor = Color.Black
+        contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -156,13 +155,13 @@ fun BottomNavigation(navController: NavController) {
                     Icon(painterResource(id = item.icon), contentDescription = item.title)
                        },
                 label = {
-                          Text(
-                              text = item.title,
-                              color = BodyText,
-                              fontFamily = Inter,
-                              fontWeight = FontWeight.Normal,
-                              fontSize = 12.sp
-                          )
+                    Text(
+                        text = item.title,
+                        color = if (currentRoute == item.screen_route) MainOrange else BodyText,
+                        fontFamily = Inter,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp
+                    )
                         },
                 selectedContentColor = MainOrange,
                 unselectedContentColor = SubTitleText,
@@ -196,9 +195,15 @@ fun MainScreenContent() {
     Scaffold(
         bottomBar = {
             BottomNavigation(navController = navController)
-        }) {
-        NavigationGraph(navController = navController)
-    }
+        },
+    backgroundColor = Color.White,
+    contentColor = Color.White,
+        content = { padding ->
+            Box(modifier = Modifier.padding(padding)) {
+                NavigationGraph(navController = navController)
+            }
+        }
+    )
 }
 
 @Preview

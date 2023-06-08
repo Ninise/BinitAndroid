@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +44,7 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
     GarbageTypeDetailsScreenContent(garbageCategory = garbageCategory, garbageItemState = viewModel.garbageItemState.value, navigate = { destination ->
         if (destination == null) {
             navController.popBackStack()
+            viewModel.clearGarbageList()
         }
     })
 
@@ -53,6 +56,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
     val scrollState = rememberScrollState()
 
     Column (modifier = Modifier
+        .background(color = Color.White)
         .verticalScroll(scrollState)) {
         ToolbarPlanIconAndTitle(listType = garbageCategory.importanceTitle) {
             navigate(null)

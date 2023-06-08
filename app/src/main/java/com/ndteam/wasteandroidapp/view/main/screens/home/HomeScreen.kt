@@ -153,15 +153,15 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
         .testTag("garbage_type_card")) {
 
         Box (modifier = Modifier
-            .size(116.dp, 116.dp)
+            .size(90.dp, 90.dp)
             .background(color = MainCardBack, shape = RoundedCornerShape(10.dp))
         ) {
             Image(
                 painter = painterResource(id = typeImage),
                 contentDescription = "Bin",
                 modifier = Modifier
-                    .width(70.dp)
-                    .height(70.dp)
+                    .width(50.dp)
+                    .height(50.dp)
                     .align(alignment = Alignment.Center),
                 contentScale = ContentScale.Fit)
         }

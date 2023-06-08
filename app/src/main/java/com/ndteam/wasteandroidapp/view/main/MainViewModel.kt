@@ -49,6 +49,11 @@ class MainViewModel @Inject constructor(
 
     val ads: ArrayList<NativeAd> = arrayListOf()
 
+    fun clearGarbageList() {
+        _garbageItemState.value = GarbageItemState(isLoading = false)
+
+    }
+
     fun downloadData() {
         getSearchSuggestions()
         getGarbageCategories()

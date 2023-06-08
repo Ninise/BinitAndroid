@@ -51,6 +51,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
     val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
 
+
     SearchMainScreenContent(
         textState = textState,
         isLoading = viewModel.garbageItemState.value.isLoading,
