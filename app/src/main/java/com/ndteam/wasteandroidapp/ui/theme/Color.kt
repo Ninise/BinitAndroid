@@ -30,3 +30,5 @@ val gameImageTopEdgeBack = Color(0xFF73BDF0)
 val DividerColor = Color(0x1A4F5969)
 
 val WhaleScaleColor = Color(0xFF67788A)
+
+//val dividerColor = Color(0x4F59691A)

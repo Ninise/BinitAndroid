@@ -31,4 +31,10 @@
     <string name="landing_dialog_title">Let\'s sort it out,\nbin it without a doubt!</string>
     <string name="landing_dialog_content">We prepared for you a search,\nengaging educational games,\nand informative articles.</string>
     <string name="landing_dialog_button">Let\'s get started!</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="feedback">Feedback</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about_us">About us</string>
+    <string name="rate_the_app">Rate the app</string>
+    <string name="report_a_problem">Report a problem</string>
 </resources>

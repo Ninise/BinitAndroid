@@ -35,6 +35,7 @@ import com.ndteam.wasteandroidapp.ui.theme.SubTitleText
 import com.ndteam.wasteandroidapp.view.game.GamePickerActivity
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
+import com.ndteam.wasteandroidapp.view.main.screens.settings.SettingsScreen
 
 sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:String) {
 
@@ -87,25 +88,6 @@ fun LocationsScreen() {
     ) {
         Text(
             text = "Locations Screen",
-            fontWeight = FontWeight.Bold,
-            color = MainOrange,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.white))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Settings Screen",
             fontWeight = FontWeight.Bold,
             color = MainOrange,
             modifier = Modifier.align(Alignment.CenterHorizontally),
