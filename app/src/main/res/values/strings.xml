@@ -37,4 +37,11 @@
     <string name="about_us">About us</string>
     <string name="rate_the_app">Rate the app</string>
     <string name="report_a_problem">Report a problem</string>
+    <string name="title_schedule_screen">Collection schedule</string>
+    <string name="sub_title_schedule_screen">We are working on collection schedule now</string>
+    <string name="sub_schedule_screen">If you know someone who can help us and provide updating information about collecting schedule, please let us know.</string>
+    <string name="send">Send</string>
+    <string name="message">Message</string>
+    <string name="title_drop_location_screen">Drop-off locations</string>
+    <string name="sub_title_drop_locations_screen">We are working on drop-off locations now</string>
 </resources>

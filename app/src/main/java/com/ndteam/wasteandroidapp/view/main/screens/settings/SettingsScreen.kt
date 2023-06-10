@@ -38,7 +38,7 @@ fun SettingsScreenContent() {
         Image(
             painter = painterResource(id = R.drawable.ic_binit_logo),
             contentDescription = "App logo",
-            modifier = Modifier.size(90.dp, 50.dp)
+            modifier = Modifier.size(90.dp, 50.dp).padding(top = 10.dp)
         )
 
         Spacer(modifier = Modifier.height(10.dp))

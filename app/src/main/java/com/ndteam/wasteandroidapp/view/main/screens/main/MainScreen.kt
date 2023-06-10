@@ -35,6 +35,8 @@ import com.ndteam.wasteandroidapp.ui.theme.SubTitleText
 import com.ndteam.wasteandroidapp.view.game.GamePickerActivity
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
+import com.ndteam.wasteandroidapp.view.main.screens.drop_locations.DropOffLocationsScreen
+import com.ndteam.wasteandroidapp.view.main.screens.schedule.ScheduleScreen
 import com.ndteam.wasteandroidapp.view.main.screens.settings.SettingsScreen
 
 sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:String) {
@@ -60,44 +62,6 @@ fun HomeScreen() {
 }
 
 @Composable
-fun ScheduleScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.white))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Schedule Screen",
-            fontWeight = FontWeight.Bold,
-            color = MainOrange,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
-    }
-}
-
-@Composable
-fun LocationsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.white))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Locations Screen",
-            fontWeight = FontWeight.Bold,
-            color = MainOrange,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
-    }
-}
-
-@Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
@@ -107,7 +71,7 @@ fun NavigationGraph(navController: NavHostController) {
             ScheduleScreen()
         }
         composable(BottomNavItem.Locations.screen_route) {
-            LocationsScreen()
+            DropOffLocationsScreen()
         }
         composable(BottomNavItem.Settings.screen_route) {
             SettingsScreen()
