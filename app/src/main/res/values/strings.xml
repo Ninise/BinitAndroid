@@ -46,4 +46,9 @@
     <string name="sub_title_drop_locations_screen">We are working on drop-off locations now</string>
     <string name="sub_invite_sub">Do you know anyone who doesn\'t sort garbage and doesn\'t understand why it\'s important?</string>
     <string name="share_with_friends">Share with friends</string>
+    <string name="sub_title_feedback_screen">We\'d love to hear from you!</string>
+    <string name="sub_feedback_screen">Share your feedback on how we\'re doing or let us know how we can make the app more useful for you.</string>
+    <string name="email">Email</string>
+    <string name="optional">(optional)</string>
+    <string name="email_placeholder">name@email.com</string>
 </resources>

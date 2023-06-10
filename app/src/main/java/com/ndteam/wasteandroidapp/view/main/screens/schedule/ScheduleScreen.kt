@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
 
 @Composable
 fun ScheduleScreen() {
@@ -113,28 +114,10 @@ fun ScheduleScreenContent() {
             )
         )
 
-        Button(
-            onClick = {
+        DefaultButton(text = stringResource(id = R.string.send), pressed = {
 
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MainOrange),
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(45.dp)) {
+        })
 
-            Text(
-                text = stringResource(id = R.string.send),
-                color = Color.White,
-                fontFamily = Inter,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(
-                    horizontal = 10.dp
-                )
-            )
-
-        }
     }
 }
 
