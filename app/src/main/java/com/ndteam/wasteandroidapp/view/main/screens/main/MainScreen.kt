@@ -37,6 +37,7 @@ import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainNavigation
 import com.ndteam.wasteandroidapp.view.main.screens.drop_locations.DropOffLocationsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.schedule.ScheduleScreen
+import com.ndteam.wasteandroidapp.view.main.screens.settings.InviteFriendsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.settings.SettingsScreen
 
 sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:String) {
@@ -71,7 +72,8 @@ fun NavigationGraph(navController: NavHostController) {
             ScheduleScreen()
         }
         composable(BottomNavItem.Locations.screen_route) {
-            DropOffLocationsScreen()
+//            DropOffLocationsScreen()
+            InviteFriendsScreen()
         }
         composable(BottomNavItem.Settings.screen_route) {
             SettingsScreen()

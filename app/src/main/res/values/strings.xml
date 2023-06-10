@@ -44,4 +44,6 @@
     <string name="message">Message</string>
     <string name="title_drop_location_screen">Drop-off locations</string>
     <string name="sub_title_drop_locations_screen">We are working on drop-off locations now</string>
+    <string name="sub_invite_sub">Do you know anyone who doesn\'t sort garbage and doesn\'t understand why it\'s important?</string>
+    <string name="share_with_friends">Share with friends</string>
 </resources>
