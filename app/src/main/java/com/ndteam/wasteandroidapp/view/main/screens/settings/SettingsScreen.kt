@@ -62,7 +62,9 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
         composable(SettingsNavItem.ContactUs.route) {
-
+            ContactUsScreen {
+                navController.popBackStack()
+            }
         }
         composable(SettingsNavItem.AboutUs.route) {
 
@@ -132,7 +134,7 @@ fun SettingsScreenContent(navController: NavHostController) {
         SettingsMenuItem(
             text = stringResource(R.string.contact_us),
             onClick = {
-
+                navController.navigate(SettingsNavItem.ContactUs.route)
             }
         )
 

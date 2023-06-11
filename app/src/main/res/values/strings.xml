@@ -51,4 +51,13 @@
     <string name="email">Email</string>
     <string name="optional">(optional)</string>
     <string name="email_placeholder">name@email.com</string>
+    <string name="sub_title_contact_us_screen">Let’s connect!</string>
+    <string name="sub_contact_us_screen">Tap to login to open the page or copy login tapping on the copy icon on the right side.</string>
+    <string name="website">Website</string>
+    <string name="facebook">Facebook</string>
+    <string name="linked_in">LinkedIn</string>
+    <string name="tik_tok">TikTok</string>
+    <string name="instagram">Instagram</string>
+    <string name="location">Location</string>
+    <string name="precise_location">Toronto, Ontario, Canada 🇨🇦</string>
 </resources>

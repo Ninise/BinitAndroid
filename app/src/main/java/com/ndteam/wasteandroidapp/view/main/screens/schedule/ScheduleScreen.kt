@@ -81,7 +81,7 @@ fun ScheduleScreenContent() {
             color = IconsDark,
             fontFamily = Inter,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             modifier = Modifier
                 .padding(top = 1.dp)
                 .align(alignment = Alignment.Start)
