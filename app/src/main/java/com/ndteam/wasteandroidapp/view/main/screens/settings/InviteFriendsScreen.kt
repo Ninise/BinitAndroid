@@ -34,12 +34,12 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun InviteFriendsScreen() {
-    InviteFriendsScreenContent()
+fun InviteFriendsScreen(navBack: () -> Unit) {
+    InviteFriendsScreenContent(navBack)
 }
 
 @Composable
-fun InviteFriendsScreenContent() {
+fun InviteFriendsScreenContent(navBack: () -> Unit) {
 
     val scope = rememberCoroutineScope()
 
@@ -76,9 +76,9 @@ fun InviteFriendsScreenContent() {
         horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-        ToolbarWithTitle(stringResource(id = R.string.invite_friends), {
-
-        })
+        ToolbarWithTitle(stringResource(id = R.string.invite_friends)) {
+            navBack()
+        }
 
         Row(
             verticalAlignment = Alignment.Bottom,
@@ -197,5 +197,7 @@ fun ToolbarWithTitle(title: String, backPressed: () -> Unit) {
 @Preview
 @Composable
 fun InviteFriendsScreen_Preview() {
-    InviteFriendsScreenContent()
+    InviteFriendsScreenContent() {
+
+    }
 }

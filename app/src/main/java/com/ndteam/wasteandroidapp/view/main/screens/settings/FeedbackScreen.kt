@@ -23,12 +23,12 @@ import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
 
 @Composable
-fun FeedbackScreen() {
-    FeedbackScreenContent()
+fun FeedbackScreen(navBack: () -> Unit) {
+    FeedbackScreenContent(navBack)
 }
 
 @Composable
-fun FeedbackScreenContent() {
+fun FeedbackScreenContent(navBack: () -> Unit) {
 
     val email = remember { mutableStateOf("") }
     val message = remember { mutableStateOf("") }
@@ -39,9 +39,9 @@ fun FeedbackScreenContent() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        ToolbarWithTitle(stringResource(id = R.string.feedback), {
-
-        })
+        ToolbarWithTitle(stringResource(id = R.string.feedback)) {
+            navBack()
+        }
 
         Column(
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -164,5 +164,7 @@ fun FeedbackScreenContent() {
 @Preview
 @Composable
 fun FeedbackScreen_Preview() {
-    FeedbackScreenContent()
+    FeedbackScreenContent {
+
+    }
 }
