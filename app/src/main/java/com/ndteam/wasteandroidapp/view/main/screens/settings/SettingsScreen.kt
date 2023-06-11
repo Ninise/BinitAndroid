@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.settings
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +25,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.review.ReviewException
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.model.ReviewErrorCode
+import com.google.android.play.core.review.testing.FakeReviewManager
+import com.ndteam.wasteandroidapp.App.Companion.context
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
@@ -104,6 +111,9 @@ fun SettingsScreen() {
 
 @Composable
 fun SettingsScreenContent(navController: NavHostController) {
+
+    val activity = LocalContext.current as Activity
+
     Column(
         modifier = Modifier
             .background(color = Color.White)
@@ -152,6 +162,31 @@ fun SettingsScreenContent(navController: NavHostController) {
         SettingsMenuItem(
             text = stringResource(R.string.rate_the_app),
             onClick = {
+
+                // todo test on a internal test track then switch to regular
+
+//                val manager = ReviewManagerFactory.create(context)
+
+                val manager = FakeReviewManager(activity)
+
+                val request = manager.requestReviewFlow()
+                request.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // We got the ReviewInfo object
+                        val reviewInfo = task.result
+
+                        val flow = manager.launchReviewFlow(activity, reviewInfo)
+                        flow.addOnCompleteListener { _ ->
+                            // The flow has finished. The API does not indicate whether the user
+                            // reviewed or not, or even whether the review dialog was shown. Thus, no
+                            // matter the result, we continue our app flow.
+                        }
+                    } else {
+                        // There was some problem, log or handle the error code.
+                        @ReviewErrorCode val reviewErrorCode = (task.getException() as ReviewException).errorCode
+                    }
+                }
+
 
             }
         )
