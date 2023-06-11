@@ -60,4 +60,8 @@
     <string name="instagram">Instagram</string>
     <string name="location">Location</string>
     <string name="precise_location">Toronto, Ontario, Canada 🇨🇦</string>
+    <string name="sub_title_about_us_screen">Who we are:</string>
+    <string name="sub_about_us_screen">"We are a team of nature-loving enthusiasts, driven by our deep appreciation for the Earth and all it provides. "</string>
+    <string name="sub_title_about_us_second_screen">Our mission:</string>
+    <string name="sub_about_us_second_screen">Our mission is to teach people the importance of properly sorting garbage and instill a deep understanding of its impact on our environment. We aim to raise awareness and inspire individuals to embrace responsible waste management practices in their daily lives.\nJoin us in our journey towards a cleaner, greener future. By taking responsibility for our actions and placing the right items in the garbage bin, we can conserve valuable resources and reduce harmful emissions.</string>
 </resources>

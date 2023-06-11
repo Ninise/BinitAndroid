@@ -67,7 +67,9 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
         composable(SettingsNavItem.AboutUs.route) {
-
+            AboutUsScreen {
+                navController.popBackStack()
+            }
         }
         composable(SettingsNavItem.RateTheApp.route) {
 
@@ -141,7 +143,7 @@ fun SettingsScreenContent(navController: NavHostController) {
         SettingsMenuItem(
             text = stringResource(R.string.about_us),
             onClick = {
-
+                navController.navigate(SettingsNavItem.AboutUs.route)
             }
         )
 
