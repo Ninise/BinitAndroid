@@ -64,4 +64,7 @@
     <string name="sub_about_us_screen">"We are a team of nature-loving enthusiasts, driven by our deep appreciation for the Earth and all it provides. "</string>
     <string name="sub_title_about_us_second_screen">Our mission:</string>
     <string name="sub_about_us_second_screen">Our mission is to teach people the importance of properly sorting garbage and instill a deep understanding of its impact on our environment. We aim to raise awareness and inspire individuals to embrace responsible waste management practices in their daily lives.\nJoin us in our journey towards a cleaner, greener future. By taking responsibility for our actions and placing the right items in the garbage bin, we can conserve valuable resources and reduce harmful emissions.</string>
+    <string name="sub_report_problem_screen">Please describe your problem detailed as possible.</string>
+    <string name="description">Description</string>
+    <string name="add_screenshot">Add Screenshot</string>
 </resources>

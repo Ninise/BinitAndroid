@@ -75,7 +75,9 @@ fun NavigationGraph(navController: NavHostController) {
 
         }
         composable(SettingsNavItem.ReportProblem.route) {
-
+            ReportProblemScreen {
+                navController.popBackStack()
+            }
         }
     }
 }
@@ -157,7 +159,7 @@ fun SettingsScreenContent(navController: NavHostController) {
         SettingsMenuItem(
             text = stringResource(R.string.report_a_problem),
             onClick = {
-
+                navController.navigate(SettingsNavItem.ReportProblem.route)
             }
         )
     }
