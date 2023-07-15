@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
-import com.ndteam.wasteandroidapp.models.Article
+import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.ui.theme.*
@@ -205,7 +205,7 @@ fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
             )
 
             Text(
-                text = article.shortDesc,
+                text = article.description,
                 color = SubTitleText,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Normal,
@@ -221,26 +221,26 @@ fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
 @Preview
 @Composable
 fun HomePreview() {
-    HomeScreenContent(
-        searchSuggestions = listOf("meat", "cup", "banana"),
-        garbageCategories = listOf(GarbageCategory("Recycle", "", RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", "0", RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", "", RecycleType.GARBAGE, "", "")),
-        articles = listOf(Article(
-            image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-            title = "Reuse. Reduce. Recycle",
-            shortDesc = "How to make lifestyle eco-friendly?",
-            content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
-            Article(
-                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-                title = "Reuse. Reduce. Recycle",
-                shortDesc = "How to make lifestyle eco-friendly?",
-                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
-            Article(
-                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-                title = "Reuse. Reduce. Recycle",
-                shortDesc = "How to make lifestyle eco-friendly?",
-                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),),
-        navigate = {
-
-        }
-    )
+//    HomeScreenContent(
+//        searchSuggestions = listOf("meat", "cup", "banana"),
+//        garbageCategories = listOf(GarbageCategory("Recycle", "", RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", "0", RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", "", RecycleType.GARBAGE, "", "")),
+//        articles = listOf(Article(
+//            image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+//            title = "Reuse. Reduce. Recycle",
+//            description = "How to make lifestyle eco-friendly?",
+//            content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+//            Article(
+//                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+//                title = "Reuse. Reduce. Recycle",
+//                shortDesc = "How to make lifestyle eco-friendly?",
+//                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
+//            Article(
+//                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
+//                title = "Reuse. Reduce. Recycle",
+//                shortDesc = "How to make lifestyle eco-friendly?",
+//                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),),
+//        navigate = {
+//
+//        }
+//    )
 }

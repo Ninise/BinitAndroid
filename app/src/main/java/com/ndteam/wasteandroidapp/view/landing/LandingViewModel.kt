@@ -1,10 +1,7 @@
 package com.ndteam.wasteandroidapp.view.landing
 
-import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.base.BaseViewModel
-import com.ndteam.wasteandroidapp.models.GarbageItem
-import com.ndteam.wasteandroidapp.models.RecycleType
-import com.ndteam.wasteandroidapp.utils.Utils
+import com.ndteam.wasteandroidapp.repository.BinitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,6 +9,8 @@ import javax.inject.Inject
 class LandingViewModel @Inject constructor(): BaseViewModel() {
 
     fun downloadData() {
+
+
 
 //        WasteApi.addGarbageElement( GarbageItem(
 //            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",

@@ -1,9 +1,7 @@
 package com.ndteam.wasteandroidapp.view.main
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
@@ -12,17 +10,14 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.ndteam.wasteandroidapp.App
-import com.ndteam.wasteandroidapp.R
-import com.ndteam.wasteandroidapp.api.WasteApi
 import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
-import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.ArticleItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageState
 import com.ndteam.wasteandroidapp.models.states.SuggestionState
-import com.ndteam.wasteandroidapp.repository.WasteRepository
+import com.ndteam.wasteandroidapp.repository.BinitRepository
 import com.ndteam.wasteandroidapp.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val repository: WasteRepository
+    val repository: BinitRepository
 ): BaseViewModel() {
 
     private val _suggestionState = mutableStateOf(SuggestionState())
@@ -83,13 +78,13 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
-                val result = repository.searchGarbage(query)
-
-                _garbageItemState.value = GarbageItemState(
-                    garbageList = result.data,
-                    isLoading = false,
-                    error = result.message
-                )
+//                val result = repository.searchGarbage(query)
+//
+//                _garbageItemState.value = GarbageItemState(
+//                    garbageList = result.data,
+//                    isLoading = false,
+//                    error = result.message
+//                )
             }
         } else {
             _garbageItemState.value = GarbageItemState(
@@ -103,14 +98,14 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
 
             _suggestionState.value = SuggestionState(isLoading = true)
-
-            val result = repository.getSuggestions()
-            _suggestionState.value = SuggestionState(
-                suggestions = result.data,
-                isLoading = false,
-                error = result.message
-
-            )
+//
+//            val result = repository.getSuggestions()
+//            _suggestionState.value = SuggestionState(
+//                suggestions = result.data,
+//                isLoading = false,
+//                error = result.message
+//
+//            )
         }
     }
 
@@ -119,13 +114,13 @@ class MainViewModel @Inject constructor(
 
             _garbageTypeState.value = GarbageState(isLoading = true)
 
-            val result = repository.getGarbageCategories()
-            _garbageTypeState.value = GarbageState(
-                garbageList = result.data,
-                isLoading = false,
-                error = result.message
-
-            )
+//            val result = repository.getGarbageCategories()
+//            _garbageTypeState.value = GarbageState(
+//                garbageList = result.data,
+//                isLoading = false,
+//                error = result.message
+//
+//            )
         }
     }
 
@@ -168,12 +163,15 @@ class MainViewModel @Inject constructor(
     }
 
     private fun downloadArticles() {
+        Utils.log("DOWNLOAD ARTICLES")
         viewModelScope.launch {
 
             _articlesItemsState.value = ArticleItemState(isLoading = true)
 
+            Utils.log("DOWNLOAD ARTICLES 1")
             val result = repository.getArticles()
 
+            Utils.log("DOWNLOAD ARTICLES 2")
             _articlesItemsState.value = ArticleItemState(
                 articlesList = result.data,
                 isLoading = false,

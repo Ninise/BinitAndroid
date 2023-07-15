@@ -1,6 +1,6 @@
 package com.ndteam.wasteandroidapp.models.states
 
-import com.ndteam.wasteandroidapp.models.Article
+import com.ndteam.wasteandroidapp.models.responses.Article
 
 class ArticleItemState(
     val articlesList: List<Article>? = null,

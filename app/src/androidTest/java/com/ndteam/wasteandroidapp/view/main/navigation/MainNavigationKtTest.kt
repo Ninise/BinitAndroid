@@ -32,7 +32,7 @@ class MainNavigationKtTest {
        composeTestRule.setContent {
             WasteAndroidAppTheme {
                 navController = TestNavHostController(LocalContext.current)
-                mainViewModel = MainViewModel(FakeWasteRepository())
+                mainViewModel = MainViewModel(FakeBinitRepository())
                 HomeScreen(navController = navController, mainViewModel)
             }
         }

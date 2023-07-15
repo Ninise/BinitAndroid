@@ -1,9 +1,7 @@
 package com.ndteam.wasteandroidapp.models
 
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.DocumentSnapshot.ServerTimestampBehavior
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys
-import com.ndteam.wasteandroidapp.api.WasteApi
 import java.util.*
 
 data class GarbageItem(

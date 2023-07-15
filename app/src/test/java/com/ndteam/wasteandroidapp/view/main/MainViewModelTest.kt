@@ -3,7 +3,7 @@ package com.ndteam.wasteandroidapp.view.main
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.ndteam.wasteandroidapp.MainCoroutineRule
-import com.ndteam.wasteandroidapp.repository.FakeWasteRepository
+import com.ndteam.wasteandroidapp.repository.FakeBinitRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
@@ -22,7 +22,7 @@ class MainViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = MainViewModel(FakeWasteRepository())
+        viewModel = MainViewModel(FakeBinitRepository())
         viewModel.downloadData()
     }
 

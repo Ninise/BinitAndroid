@@ -6,7 +6,7 @@ import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Resource
 
-open class FakeWasteRepository : WasteRepository {
+open class FakeBinitRepository : BinitRepository {
     override suspend fun getSuggestions(): Resource<List<String>> = Resource.Success(listOf("plastic bag", "meat", "cup", "pan", "banana"))
     override suspend fun getGarbageCategories(): Resource<List<GarbageCategory>>  = Resource.Success(
         arrayListOf(
