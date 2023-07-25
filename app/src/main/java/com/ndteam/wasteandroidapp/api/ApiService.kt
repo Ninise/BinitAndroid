@@ -1,7 +1,10 @@
 package com.ndteam.wasteandroidapp.api
 
 import com.ndteam.wasteandroidapp.models.responses.Article
+import com.ndteam.wasteandroidapp.models.responses.Product
+import com.ndteam.wasteandroidapp.models.responses.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 object WasteAPIKeys {
@@ -16,6 +19,10 @@ interface ApiService {
 
     @GET("/articles")
     suspend fun getAllArticles(): List<Article>
+
+
+    @GET("/products")
+    suspend fun searchProducts(@Query("query") query: String): Response<List<Product>>
 
 
     /*

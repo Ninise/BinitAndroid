@@ -12,6 +12,7 @@ import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
+import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.ArticleItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
@@ -52,7 +53,7 @@ class MainViewModel @Inject constructor(
     fun downloadData() {
         getSearchSuggestions()
         getGarbageCategories()
-        downloadAds()
+//        downloadAds()
         downloadArticles()
     }
 
@@ -78,13 +79,15 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
-//                val result = repository.searchGarbage(query)
-//
-//                _garbageItemState.value = GarbageItemState(
-//                    garbageList = result.data,
-//                    isLoading = false,
-//                    error = result.message
-//                )
+                val result = repository.searchProducts(query)
+
+                _garbageItemState.value = GarbageItemState(
+                    garbageList = result.data?.map {
+                                                  GarbageItem(it.image, it.name, it.description, RecycleType.parseValue(it.type))
+                    },
+                    isLoading = false,
+                    error = result.message
+                )
             }
         } else {
             _garbageItemState.value = GarbageItemState(

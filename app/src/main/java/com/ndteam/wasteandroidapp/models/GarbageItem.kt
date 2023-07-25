@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.models
 
+import androidx.compose.ui.text.capitalize
 import com.google.firebase.firestore.DocumentSnapshot
 import com.ndteam.wasteandroidapp.api.WasteAPIKeys
 import java.util.*
@@ -46,8 +47,8 @@ enum class RecycleType {
 
     companion object {
         fun parseValue(value: String) : RecycleType = when (value) {
-            RECYCLE.name -> RECYCLE
-            GARBAGE.name -> GARBAGE
+            RECYCLE.name.capitalize(Locale.CANADA) -> RECYCLE
+            GARBAGE.name.capitalize(Locale.CANADA) -> GARBAGE
             else -> ORGANIC
         }
     }

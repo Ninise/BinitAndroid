@@ -11,7 +11,6 @@ class LandingViewModel @Inject constructor(): BaseViewModel() {
     fun downloadData() {
 
 
-
 //        WasteApi.addGarbageElement( GarbageItem(
 //            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",
 //            name = "Plastic bottle",

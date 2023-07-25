@@ -2,6 +2,7 @@ package com.ndteam.wasteandroidapp.repository
 
 import com.ndteam.wasteandroidapp.api.ApiService
 import com.ndteam.wasteandroidapp.models.responses.Article
+import com.ndteam.wasteandroidapp.models.responses.Product
 import com.ndteam.wasteandroidapp.utils.Resource
 
 
@@ -11,6 +12,20 @@ class BinitRepository(private val apiService: ApiService) {
         return try {
             Resource.Success(
                 data = apiService.getAllArticles()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(
+                "Failed to get the data from the server", null
+            )
+        }
+    }
+
+    suspend fun searchProducts(query: String): Resource<List<Product>> {
+
+        return try {
+            Resource.Success(
+                data = apiService.searchProducts(query).data
             )
         } catch (e: Exception) {
             e.printStackTrace()
