@@ -117,13 +117,13 @@ class MainViewModel @Inject constructor(
 
             _garbageTypeState.value = GarbageState(isLoading = true)
 
-//            val result = repository.getGarbageCategories()
-//            _garbageTypeState.value = GarbageState(
-//                garbageList = result.data,
-//                isLoading = false,
-//                error = result.message
-//
-//            )
+            val result = repository.getGarbageCategories()
+            _garbageTypeState.value = GarbageState(
+                garbageList = result.data,
+                isLoading = false,
+                error = result.message
+
+            )
         }
     }
 

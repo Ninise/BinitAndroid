@@ -28,9 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
-import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.GarbageCategory
-import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
@@ -149,8 +148,11 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
         .clickable {
             onItemClick(item)
         }
+        .width(width = 100.dp)
         .padding(end = 16.dp)
-        .testTag("garbage_type_card")) {
+        .testTag("garbage_type_card"),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         Box (modifier = Modifier
             .size(90.dp, 90.dp)
