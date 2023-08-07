@@ -68,7 +68,8 @@ class MainViewModel @Inject constructor(
                 "",
                 type,
                 "TITLE",
-                "DESCRIPTION"
+                "DESCRIPTION",
+                items = listOf()
             )
         }
     }

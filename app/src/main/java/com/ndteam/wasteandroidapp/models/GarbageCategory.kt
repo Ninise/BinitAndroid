@@ -12,7 +12,8 @@ data class GarbageCategory(
     val image: String,
     val type: RecycleType,
     val importanceTitle: String,
-    val description: String
+    val description: String,
+    val items: List<SubCategoryItem>
 ) : GarbageIcon(type) {
     fun returnShadow() = when(type) {
         RecycleType.RECYCLE -> R.drawable.recycle_card_back_gradient
@@ -46,3 +47,8 @@ data class GarbageCategory(
         else -> Utils.string(R.string.title_organic)
     }
 }
+
+data class SubCategoryItem(
+    val title: String,
+    val data: List<String>
+)

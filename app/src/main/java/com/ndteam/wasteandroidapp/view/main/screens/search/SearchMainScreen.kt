@@ -141,7 +141,8 @@ fun SearchMainScreenContent(
                                 "R.drawable.ic_recycle",
                                 RecycleType.RECYCLE,
                                 "",
-                                ""
+                                "",
+                                items = listOf()
                             )
                         )
                     }
@@ -153,7 +154,8 @@ fun SearchMainScreenContent(
                                 "R.drawable.ic_garbage",
                                 RecycleType.GARBAGE,
                                 "",
-                                ""
+                                "",
+                                items = listOf()
                             )
                         )
                     }
@@ -165,7 +167,8 @@ fun SearchMainScreenContent(
                                 "R.drawable.ic_organic",
                                 RecycleType.ORGANIC,
                                 "",
-                                ""
+                                "",
+                                items = listOf()
                             )
                         )
                     }
@@ -177,7 +180,8 @@ fun SearchMainScreenContent(
                                 "R.drawable.ic_e_waste",
                                 RecycleType.E_WASTE,
                                 "",
-                                ""
+                                "",
+                                items = listOf()
                             )
                         )
                     }
@@ -189,7 +193,8 @@ fun SearchMainScreenContent(
                                 "R.drawable.ic_hazard",
                                 RecycleType.HAZARD,
                                 "",
-                                ""
+                                "",
+                                items = listOf()
                             )
                         )
                     }

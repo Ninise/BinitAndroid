@@ -1,20 +1,21 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
+import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
@@ -75,6 +77,69 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
         DetailsTextView(
             descriptionText = garbageCategory.description,
         )
+
+
+
+        Column (
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .padding(vertical = 20.dp)
+                ) {
+            garbageCategory.items.forEach {
+                Column {
+                    val expanded = remember { mutableStateOf(true) }
+
+                    Divider(
+                        color = DividerColor
+                    )
+
+                    Row(modifier = Modifier
+                        .clickable { expanded.value = !expanded.value }
+                        .height(64.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = it.title,
+                            fontSize = 16.sp,
+                            fontFamily = Inter,
+                            fontWeight = FontWeight.Normal,
+                            color = MainOrange,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(painter = painterResource(id = if (expanded.value) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down), contentDescription = "toggle")
+                    }
+
+                    if (expanded.value) {
+                        it.data.forEach {
+                            Row (modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .padding(vertical = 5.dp),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Text(text = "• ",
+                                    fontSize = 16.sp,
+                                    fontFamily = Inter,
+                                    fontWeight = FontWeight.Normal,
+                                    color = IconsDark,
+                                    modifier = Modifier)
+                                Text(
+                                    text = it,
+                                    fontSize = 16.sp,
+                                    fontFamily = Inter,
+                                    fontWeight = FontWeight.Normal,
+                                    color = IconsDark
+                                )
+                            }
+                        }
+                    }
+
+                    Divider(
+                        color = DividerColor,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+            }
+        }
 
 
         if (garbageItemState.isLoading ?: false) {
@@ -129,7 +194,7 @@ fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
 private fun DetailsTextView(descriptionText: String) {
 
     Text(
-        text = descriptionText,
+        text = ViewUtils.parseString(input = descriptionText),
         color = IconsDark,
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
@@ -201,7 +266,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
-        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg", RecycleType.RECYCLE, "Very imp", "good desk"),
+        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg", RecycleType.RECYCLE, "Very imp", "good desk", items = listOf()),
     garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
         navigate = {
 
