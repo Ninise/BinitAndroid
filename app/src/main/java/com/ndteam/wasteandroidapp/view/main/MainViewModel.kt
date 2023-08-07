@@ -101,14 +101,14 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
 
             _suggestionState.value = SuggestionState(isLoading = true)
-//
-//            val result = repository.getSuggestions()
-//            _suggestionState.value = SuggestionState(
-//                suggestions = result.data,
-//                isLoading = false,
-//                error = result.message
-//
-//            )
+
+            val result = repository.getQuickSearchSuggestions()
+            _suggestionState.value = SuggestionState(
+                suggestions = result.data,
+                isLoading = false,
+                error = result.message
+
+            )
         }
     }
 

@@ -37,6 +37,21 @@ class BinitRepository(private val apiService: ApiService) {
         }
     }
 
+    suspend fun getQuickSearchSuggestions() : Resource<List<String>> {
+        return try {
+            Resource.Success(
+                data = apiService.getQuickSearchSuggestions().data?.map {
+                    it.name
+                }
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(
+                "Failed to get the search suggestions", null
+            )
+        }
+    }
+
     fun getGarbageCategories(): Resource<List<GarbageCategory>> {
         return try {
             Resource.Success(

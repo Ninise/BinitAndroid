@@ -13,24 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
-import com.ndteam.wasteandroidapp.ui.theme.WhaleScaleColor
 
 
 @Composable
