@@ -59,14 +59,13 @@ class MainViewModel @Inject constructor(
 
     fun getGarbageCategoryByType(type: RecycleType) : GarbageCategory {
         garbageState.value.garbageList?.filter {
-            it.type == type
+            RecycleType.parseValue(it.type) == type
         }?.let {
             return it[0]
         }?: kotlin.run {
             return GarbageCategory(
                 type.name,
                 "",
-                type,
                 "TITLE",
                 "DESCRIPTION",
                 items = listOf()

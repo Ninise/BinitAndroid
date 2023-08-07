@@ -10,18 +10,17 @@ import com.ndteam.wasteandroidapp.utils.Utils
 data class GarbageCategory(
     val title: String,
     val image: String,
-    val type: RecycleType,
-    val importanceTitle: String,
+    val type: String,
     val description: String,
     val items: List<SubCategoryItem>
-) : GarbageIcon(type) {
-    fun returnShadow() = when(type) {
+) : GarbageIcon(RecycleType.parseValue(type)) {
+    fun returnShadow() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> R.drawable.recycle_card_back_gradient
         RecycleType.GARBAGE -> R.drawable.waste_card_back_gradient
         else -> R.drawable.organic_card_back_gradient
     }
 
-    fun categoryBinImage() = when(type) {
+    fun categoryBinImage() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> R.drawable.ic_main_recycle_bin
         RecycleType.GARBAGE -> R.drawable.ic_main_garbage_bin
         RecycleType.ORGANIC -> R.drawable.ic_main_organic_bin
@@ -29,19 +28,19 @@ data class GarbageCategory(
         RecycleType.HAZARD -> R.drawable.ic_main_hazar_bing
     }
 
-    fun categoryColor() = when(type) {
+    fun categoryColor() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> MainBlue
         RecycleType.GARBAGE -> MainOrange
         else -> MainGreen
     }
 
-    fun categoryIcon() = when(type) {
+    fun categoryIcon() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> R.drawable.ic_recycle
         RecycleType.GARBAGE -> R.drawable.ic_garbage
         else -> R.drawable.ic_organic
     }
 
-    fun categoryListTypeTitle() = when(type) {
+    fun categoryListTypeTitle() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> Utils.string(R.string.title_recycling)
         RecycleType.GARBAGE -> Utils.string(R.string.title_garbage)
         else -> Utils.string(R.string.title_organic)

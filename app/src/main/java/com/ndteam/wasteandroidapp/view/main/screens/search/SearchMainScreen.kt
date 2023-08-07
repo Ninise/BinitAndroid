@@ -139,8 +139,8 @@ fun SearchMainScreenContent(
                             category = GarbageCategory(
                                 "Recycle",
                                 "R.drawable.ic_recycle",
-                                RecycleType.RECYCLE,
-                                "",
+                                RecycleType.RECYCLE.name,
+
                                 "",
                                 items = listOf()
                             )
@@ -152,8 +152,8 @@ fun SearchMainScreenContent(
                             category = GarbageCategory(
                                 "Garbage",
                                 "R.drawable.ic_garbage",
-                                RecycleType.GARBAGE,
-                                "",
+                                RecycleType.GARBAGE.name,
+
                                 "",
                                 items = listOf()
                             )
@@ -165,8 +165,8 @@ fun SearchMainScreenContent(
                             category = GarbageCategory(
                                 "Organic",
                                 "R.drawable.ic_organic",
-                                RecycleType.ORGANIC,
-                                "",
+                                RecycleType.ORGANIC.name,
+
                                 "",
                                 items = listOf()
                             )
@@ -178,8 +178,7 @@ fun SearchMainScreenContent(
                             category = GarbageCategory(
                                 "E-Waste",
                                 "R.drawable.ic_e_waste",
-                                RecycleType.E_WASTE,
-                                "",
+                                RecycleType.E_WASTE.name,
                                 "",
                                 items = listOf()
                             )
@@ -191,8 +190,8 @@ fun SearchMainScreenContent(
                             category = GarbageCategory(
                                 "Household hazardous",
                                 "R.drawable.ic_hazard",
-                                RecycleType.HAZARD,
-                                "",
+                                RecycleType.HAZARD.name,
+
                                 "",
                                 items = listOf()
                             )

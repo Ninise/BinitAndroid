@@ -92,7 +92,7 @@ fun HomeScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
 
             garbageCategories.forEach {
                 GarbageTypeCard(it, typeImage = it.categoryBinImage()) {
-                    navigate(MainScreens.GarbageDetailsScreen.withArgs(it.type.name))
+                    navigate(MainScreens.GarbageDetailsScreen.withArgs(it.type))
                 }
             }
         }

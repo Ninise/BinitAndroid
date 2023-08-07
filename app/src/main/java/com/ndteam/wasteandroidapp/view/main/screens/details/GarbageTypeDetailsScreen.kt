@@ -40,7 +40,7 @@ import com.ndteam.wasteandroidapp.view.main.MainViewModel
 fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
 
     LaunchedEffect(Unit, block = {
-        viewModel.searchGarbage(garbageCategory.type.name)
+        viewModel.searchGarbage(garbageCategory.type)
     })
 
     GarbageTypeDetailsScreenContent(garbageCategory = garbageCategory, garbageItemState = viewModel.garbageItemState.value, navigate = { destination ->
@@ -60,7 +60,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
     Column (modifier = Modifier
         .background(color = Color.White)
         .verticalScroll(scrollState)) {
-        ToolbarPlanIconAndTitle(listType = garbageCategory.importanceTitle) {
+        ToolbarPlanIconAndTitle(listType = garbageCategory.title) {
             navigate(null)
         }
 
@@ -266,7 +266,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
-        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg", RecycleType.RECYCLE, "Very imp", "good desk", items = listOf()),
+        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", items = listOf()),
     garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
         navigate = {
 

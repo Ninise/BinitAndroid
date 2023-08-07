@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.api
 
+import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.responses.Product
 import com.ndteam.wasteandroidapp.models.responses.QuickSearch
@@ -26,6 +27,9 @@ interface ApiService {
 
     @GET("/quick_search")
     suspend fun getQuickSearchSuggestions(): Response<List<QuickSearch>>
+
+    @GET("/garbage_categories")
+    suspend fun getGarbageCategories(): Response<List<GarbageCategory>>
 
 
     /*
