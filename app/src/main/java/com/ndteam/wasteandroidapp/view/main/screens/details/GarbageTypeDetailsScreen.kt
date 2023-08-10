@@ -32,9 +32,15 @@ import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+
+// expand arrow goes to right
+// limit elements to 5 and disable internal scroll
+// add author
+// rename categories
 
 @Composable
 fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
@@ -49,7 +55,6 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
             viewModel.clearGarbageList()
         }
     })
-
 }
 
 @Composable
@@ -74,6 +79,14 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                 .padding(vertical = 10.dp, horizontal = 15.dp)
         )
 
+        Text(
+            text = garbageCategory.author,
+            fontSize = 16.sp,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Normal,
+            color = MainOrange,
+        )
+
         DetailsTextView(
             descriptionText = garbageCategory.description,
         )
@@ -87,7 +100,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                 ) {
             garbageCategory.items.forEach {
                 Column {
-                    val expanded = remember { mutableStateOf(true) }
+                    val expanded = remember { mutableStateOf(false) }
 
                     Divider(
                         color = DividerColor
@@ -123,7 +136,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                                     color = IconsDark,
                                     modifier = Modifier)
                                 Text(
-                                    text = it,
+                                    text = ViewUtils.parseString(input = it),
                                     fontSize = 16.sp,
                                     fontFamily = Inter,
                                     fontWeight = FontWeight.Normal,
@@ -199,7 +212,6 @@ private fun DetailsTextView(descriptionText: String) {
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        letterSpacing = 1.sp,
         lineHeight = 24.sp,
         modifier = Modifier.padding(top = 10.dp, start = 16.dp, end = 16.dp)
     )
@@ -266,7 +278,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
-        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", items = listOf()),
+        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", "", items = listOf()),
     garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
         navigate = {
 

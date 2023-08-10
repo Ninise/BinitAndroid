@@ -37,18 +37,20 @@ data class GarbageItem(
 }
 
 enum class RecycleType {
-    RECYCLE, GARBAGE, ORGANIC, E_WASTE, HAZARD;
+    RECYCLE, GARBAGE, ORGANIC, E_WASTE, HAZARD, YARD;
 
     companion object {
         fun parseValue(value: String) : RecycleType = when (value) {
-            RECYCLE.name.capitalize(Locale.CANADA) -> RECYCLE
-            GARBAGE.name.capitalize(Locale.CANADA) -> GARBAGE
-            ORGANIC.name.capitalize(Locale.CANADA) -> ORGANIC
-            E_WASTE.name.capitalize(Locale.CANADA) -> E_WASTE
-            HAZARD.name.capitalize(Locale.CANADA) -> HAZARD
+            RECYCLE.name.lowercase().capitalize(Locale.CANADA) -> RECYCLE
+            GARBAGE.name.lowercase().capitalize(Locale.CANADA) -> GARBAGE
+            ORGANIC.name.lowercase().capitalize(Locale.CANADA) -> ORGANIC
+            E_WASTE.name.lowercase().capitalize(Locale.CANADA).replace('_','-') -> E_WASTE
+            HAZARD.name.lowercase().capitalize(Locale.CANADA) -> HAZARD
+            YARD.name.lowercase().capitalize(Locale.CANADA) -> YARD
             else -> HAZARD
         }
     }
 
 
 }
+

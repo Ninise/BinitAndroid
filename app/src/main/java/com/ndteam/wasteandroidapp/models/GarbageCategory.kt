@@ -1,6 +1,5 @@
 package com.ndteam.wasteandroidapp.models
 
-import androidx.compose.ui.platform.LocalContext
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.MainBlue
 import com.ndteam.wasteandroidapp.ui.theme.MainGreen
@@ -11,6 +10,7 @@ data class GarbageCategory(
     val title: String,
     val image: String,
     val type: String,
+    val author: String,
     val description: String,
     val items: List<SubCategoryItem>
 ) : GarbageIcon(RecycleType.parseValue(type)) {
@@ -26,6 +26,7 @@ data class GarbageCategory(
         RecycleType.ORGANIC -> R.drawable.ic_main_organic_bin
         RecycleType.E_WASTE -> R.drawable.ic_main_e_waste_bin
         RecycleType.HAZARD -> R.drawable.ic_main_hazar_bing
+        RecycleType.YARD -> R.drawable.ic_main_yard_bin
     }
 
     fun categoryColor() = when(RecycleType.parseValue(type)) {

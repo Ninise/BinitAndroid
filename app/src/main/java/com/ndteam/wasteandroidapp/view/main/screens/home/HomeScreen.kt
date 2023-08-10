@@ -169,7 +169,7 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
         }
 
         Text(
-            text = item.title,
+            text = item.type,
             color = TitleText,
             fontFamily = Inter,
             fontWeight = FontWeight.SemiBold,
