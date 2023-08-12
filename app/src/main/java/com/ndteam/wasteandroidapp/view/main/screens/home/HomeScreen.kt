@@ -123,7 +123,7 @@ fun HomeScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
 
         articles.forEach { article ->
            ArticleItem(article = article, onItemClick = {
-
+               navigate(MainScreens.ArticleDetailsScreen.withArgs("${it.id}"))
            })
         }
 
@@ -149,7 +149,7 @@ fun GarbageTypeCard(item: GarbageCategory, typeImage: Int, onItemClick: (Garbage
             onItemClick(item)
         }
         .width(width = 100.dp)
-        .padding(end = 16.dp)
+        .padding(end = 10.dp)
         .testTag("garbage_type_card"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -207,7 +207,7 @@ fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
             )
 
             Text(
-                text = article.description,
+                text = article.short_description,
                 color = SubTitleText,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Normal,

@@ -20,7 +20,7 @@ object WasteAPIKeys {
 interface ApiService {
 
     @GET("/articles")
-    suspend fun getAllArticles(): List<Article>
+    suspend fun getAllArticles(): Response<List<Article>>
 
     @GET("/products")
     suspend fun searchProducts(@Query("query") query: String, @Query("offset") offset: Int, @Query("limit") limit: Int): Response<List<Product>>

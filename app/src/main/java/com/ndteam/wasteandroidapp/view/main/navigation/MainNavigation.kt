@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import com.ndteam.wasteandroidapp.view.main.screens.article.ArticleDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.home.HomeScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.GarbageTypeDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchMainScreen
@@ -20,6 +21,7 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
 
     val GARBAGE_TYPE = "garbage_type"
     val SEARCH_QUERY = "search_query"
+    val ARTICLE_ID = "article_id"
 
     NavHost(navController = navController, startDestination = MainScreens.MainScreen.route) {
 
@@ -72,6 +74,23 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
             entry.arguments?.getString(GARBAGE_TYPE)?.let { type ->
                 val category = viewModel.getGarbageCategoryByType(type = RecycleType.parseValue(type))
                 GarbageTypeDetailsScreen(navController = navController, viewModel, category)
+            }
+
+        }
+
+        composable(
+            route = MainScreens.ArticleDetailsScreen.route + "/{$ARTICLE_ID}",
+            arguments = listOf(
+                navArgument(GARBAGE_TYPE) {
+                    type = NavType.StringType
+                    defaultValue = "0"
+                    nullable = false
+                }
+            )
+        ) { entry ->
+            entry.arguments?.getString(ARTICLE_ID)?.let { id ->
+                val article = viewModel.getArticleById(id = id.toInt())
+                ArticleDetailsScreen(navController, viewModel, article)
             }
 
         }

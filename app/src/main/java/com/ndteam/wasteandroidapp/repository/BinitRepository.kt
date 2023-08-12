@@ -14,7 +14,7 @@ class BinitRepository(private val apiService: ApiService) {
 
         return try {
             Resource.Success(
-                data = apiService.getAllArticles()
+                data = apiService.getAllArticles().data
             )
         } catch (e: Exception) {
             e.printStackTrace()

@@ -10,6 +10,8 @@ sealed class MainScreens(val route: String) {
 
     object MainScreen : MainScreens("main_screen")
 
+    object ArticleDetailsScreen: MainScreens("article_details_screen")
+
     fun withArgs(vararg args: String) : String {
         return buildString {
             append(route)

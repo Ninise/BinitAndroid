@@ -33,7 +33,6 @@ import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
-import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
@@ -214,7 +213,7 @@ fun ToolbarPlanIconAndTitle(listType: String, backPressed: () -> Unit) {
 }
 
 @Composable
-private fun DetailsTextView(descriptionText: String) {
+fun DetailsTextView(descriptionText: String) {
 
     Text(
         text = ViewUtils.parseString(input = descriptionText),

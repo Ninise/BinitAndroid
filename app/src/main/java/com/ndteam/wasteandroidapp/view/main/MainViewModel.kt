@@ -14,6 +14,7 @@ import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.states.ArticleItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageState
@@ -72,6 +73,16 @@ class MainViewModel @Inject constructor(
                 "",
                 items = listOf()
             )
+        }
+    }
+
+    fun getArticleById(id: Int) : Article {
+        articleItemState.value.articlesList?.filter {
+            it.id == id
+        }?.let {
+            return it[0]
+        }?: kotlin.run {
+            return Article(0, "", "", "", "", "", "", "", listOf())
         }
     }
 
