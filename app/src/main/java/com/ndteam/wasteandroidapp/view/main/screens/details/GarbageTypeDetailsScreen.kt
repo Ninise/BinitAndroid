@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,10 +38,10 @@ import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
-// expand arrow goes to right
-// limit elements to 5 and disable internal scroll
-// add author
-// rename categories
+// expand arrow goes to right +
+// limit elements to 5 and disable internal scroll +
+// add author +
+// rename categories +
 
 @Composable
 fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
@@ -80,35 +81,36 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
         )
 
         Text(
-            text = garbageCategory.author,
-            fontSize = 16.sp,
+            text = "@${garbageCategory.image_author}",
+            fontSize = 12.sp,
             fontFamily = Inter,
             fontWeight = FontWeight.Normal,
-            color = MainOrange,
+            fontStyle = FontStyle.Italic,
+            color = IconsDark,
+            modifier = Modifier
+                .padding(horizontal = 15.dp)
         )
 
         DetailsTextView(
             descriptionText = garbageCategory.description,
         )
 
-
-
         Column (
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .padding(vertical = 20.dp)
                 ) {
+            Divider(
+                color = DividerColor
+            )
             garbageCategory.items.forEach {
                 Column {
                     val expanded = remember { mutableStateOf(false) }
 
-                    Divider(
-                        color = DividerColor
-                    )
-
                     Row(modifier = Modifier
                         .clickable { expanded.value = !expanded.value }
-                        .height(64.dp),
+                        .height(60.dp)
+                        .padding(end = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -117,9 +119,17 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                             fontFamily = Inter,
                             fontWeight = FontWeight.Normal,
                             color = MainOrange,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 10.dp)
                         )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Image(painter = painterResource(id = if (expanded.value) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down), contentDescription = "toggle")
+
+                        Image(
+                            painter = painterResource(id = if (expanded.value) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
+                            contentDescription = "toggle",
+                            modifier = Modifier
+                                .size(16.dp)
+                        )
                     }
 
                     if (expanded.value) {
@@ -278,7 +288,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 @Composable
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
-        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", "", items = listOf()),
+        garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", "", "",items = listOf()),
     garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
         navigate = {
 

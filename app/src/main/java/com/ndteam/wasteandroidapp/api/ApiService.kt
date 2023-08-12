@@ -23,7 +23,7 @@ interface ApiService {
     suspend fun getAllArticles(): List<Article>
 
     @GET("/products")
-    suspend fun searchProducts(@Query("query") query: String): Response<List<Product>>
+    suspend fun searchProducts(@Query("query") query: String, @Query("offset") offset: Int, @Query("limit") limit: Int): Response<List<Product>>
 
     @GET("/quick_search")
     suspend fun getQuickSearchSuggestions(): Response<List<QuickSearch>>

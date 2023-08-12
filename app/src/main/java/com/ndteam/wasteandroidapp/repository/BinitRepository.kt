@@ -24,11 +24,11 @@ class BinitRepository(private val apiService: ApiService) {
         }
     }
 
-    suspend fun searchProducts(query: String): Resource<List<Product>> {
+    suspend fun searchProducts(query: String, offset: Int, limit: Int): Resource<List<Product>> {
 
         return try {
             Resource.Success(
-                data = apiService.searchProducts(query).data
+                data = apiService.searchProducts(query, limit = limit, offset = offset).data
             )
         } catch (e: Exception) {
             e.printStackTrace()

@@ -67,7 +67,9 @@ class MainViewModel @Inject constructor(
                 type.name,
                 "",
                 "TITLE",
+                "AUTHOR",
                 "DESCRIPTION",
+                "",
                 items = listOf()
             )
         }
@@ -79,7 +81,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
-                val result = repository.searchProducts(query)
+                val result = repository.searchProducts(query, offset = 0, limit = 5)
 
                 _garbageItemState.value = GarbageItemState(
                     garbageList = result.data?.map {

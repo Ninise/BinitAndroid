@@ -10,7 +10,8 @@ data class GarbageCategory(
     val title: String,
     val image: String,
     val type: String,
-    val author: String,
+    val image_author: String,
+    val display_type: String,
     val description: String,
     val items: List<SubCategoryItem>
 ) : GarbageIcon(RecycleType.parseValue(type)) {
