@@ -6,6 +6,17 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.ndteam.wasteandroidapp.App
+import com.ndteam.wasteandroidapp.R
+import com.ndteam.wasteandroidapp.utils.Const.DEPOT_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.ELECTRONIC_WASTE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.GARBAGE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.HHW_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.METAL_ITEMS_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.NOT_ACCEPTED_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.ORGANIC_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.OVERSIZE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.RECYCLE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.YARD_WASTE_TYPE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlin.random.Random
 
@@ -21,6 +32,40 @@ object Utils {
 
     fun getRandomFloatInRange(min: Float, max: Float): Float {
         return Random.nextFloat() * (max - min) + min
+    }
+
+    fun getDefaultIconByType(type: String) : Int {
+        when (type) {
+            GARBAGE_TYPE -> return R.drawable.ic_garbage
+            HHW_TYPE -> return R.drawable.ic_hazard
+            ORGANIC_TYPE -> return R.drawable.ic_organic
+            RECYCLE_TYPE -> return R.drawable.ic_recycle
+            OVERSIZE_TYPE -> return R.drawable.ic_garbage // change it
+            ELECTRONIC_WASTE_TYPE -> return R.drawable.ic_e_waste
+            NOT_ACCEPTED_TYPE -> return R.drawable.ic_garbage // change it
+            DEPOT_TYPE -> return R.drawable.ic_garbage // change it
+            YARD_WASTE_TYPE -> return R.drawable.ic_garbage // change it
+            METAL_ITEMS_TYPE -> return R.drawable.ic_garbage // change it
+        }
+
+        return R.drawable.ic_garbage // make a default icon
+    }
+
+    fun getCategoryTitleByType(type: String) : String {
+        when (type) {
+            GARBAGE_TYPE -> return GARBAGE_TYPE.lowercase()
+            HHW_TYPE -> return HHW_TYPE.lowercase()
+            ORGANIC_TYPE -> return ORGANIC_TYPE.lowercase()
+            RECYCLE_TYPE -> return RECYCLE_TYPE.lowercase()
+            OVERSIZE_TYPE -> return OVERSIZE_TYPE.lowercase()
+            ELECTRONIC_WASTE_TYPE -> return ELECTRONIC_WASTE_TYPE.lowercase()
+            NOT_ACCEPTED_TYPE -> return NOT_ACCEPTED_TYPE.lowercase()
+            DEPOT_TYPE -> return DEPOT_TYPE.lowercase()
+            YARD_WASTE_TYPE -> return YARD_WASTE_TYPE.lowercase()
+            METAL_ITEMS_TYPE -> return METAL_ITEMS_TYPE.lowercase()
+        }
+
+        return GARBAGE_TYPE.lowercase()
     }
 
 }

@@ -56,7 +56,7 @@ class BinitRepository(private val apiService: ApiService) {
     suspend fun getGarbageCategories(): Resource<List<GarbageCategory>> {
         return try {
             Resource.Success(
-                data = apiService.getGarbageCategories().data
+                data = apiService.getGarbageCategories().data?.reversed()
             )
         } catch (e: Exception) {
             e.printStackTrace()

@@ -10,4 +10,18 @@ object Const {
 
     const val SEARCH_QUERY_DEFAULT = "echo"
 
+    const val GARBAGE_TYPE = "Garbage"
+    const val HHW_TYPE = "HHW"
+    const val ORGANIC_TYPE = "Organic"
+    const val RECYCLE_TYPE = "Recycle"
+    const val OVERSIZE_TYPE = "Oversize"
+    const val ELECTRONIC_WASTE_TYPE = "Electronic Waste"
+    const val NOT_ACCEPTED_TYPE = "Not Accepted"
+    const val DEPOT_TYPE = "Depot"
+    const val YARD_WASTE_TYPE = "Yard Waste"
+    const val METAL_ITEMS_TYPE = "Metal Items"
+
+
+
+
 }

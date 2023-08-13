@@ -33,6 +33,7 @@ import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
@@ -175,7 +176,7 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
         } else {
             garbageItemState.garbageList?.let {
                 GarbageExampleListDetailsView(
-                    garbageCategory.categoryListTypeTitle(),
+                    Utils.getCategoryTitleByType(garbageCategory.type),
                     it
                 )
             }
@@ -276,7 +277,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            Divider(startIndent = 20.dp, thickness = 1.dp, color = DividerColor)
+            Divider(startIndent = 40.dp, thickness = 1.dp, color = DividerColor)
 
             Spacer(modifier = Modifier.height(4.dp))
         }
@@ -288,7 +289,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
         garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", "", "",items = listOf()),
-    garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE))),
+    garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE.name))),
         navigate = {
 
         }

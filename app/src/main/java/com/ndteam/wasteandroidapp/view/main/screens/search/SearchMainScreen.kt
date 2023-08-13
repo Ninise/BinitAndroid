@@ -22,9 +22,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,9 +42,15 @@ import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Const.ELECTRONIC_WASTE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.GARBAGE_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.HHW_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.ORGANIC_TYPE
+import com.ndteam.wasteandroidapp.utils.Const.RECYCLE_TYPE
 import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import java.util.*
 
 @Composable
 fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, query: String = "") {
@@ -51,6 +59,11 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 
     val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
 
+    LaunchedEffect(key1 = Unit, block = {
+        if (query.isNotEmpty()) {
+            viewModel.searchGarbage(query, limit = 25)
+        }
+    })
 
     SearchMainScreenContent(
         textState = textState,
@@ -134,79 +147,45 @@ fun SearchMainScreenContent(
                        }
                    }
 
-                    item {
-                        quickSearchItem(
-                            category = GarbageCategory(
-                                "Recycle",
-                                "R.drawable.ic_recycle",
-                                RecycleType.RECYCLE.name,
-                                "type",
-                                "",
-                                "",
-                                items = listOf()
+                    fun defaultItems() {
+                        item {
+                            quickSearchItem(
+                                category = GarbageCategory("Recycle", "R.drawable.ic_recycle", RECYCLE_TYPE, "", "", "", items = listOf())
                             )
-                        )
-                    }
+                        }
 
-                    item {
-                        quickSearchItem(
-                            category = GarbageCategory(
-                                "Garbage",
-                                "R.drawable.ic_garbage",
-                                RecycleType.GARBAGE.name,
-                                "",
-                                "",
-                                "",
-                                items = listOf()
+                        item {
+                            quickSearchItem(
+                                category = GarbageCategory("Garbage", "R.drawable.ic_garbage", GARBAGE_TYPE, "", "", "", items = listOf())
                             )
-                        )
-                    }
+                        }
 
-                    item {
-                        quickSearchItem(
-                            category = GarbageCategory(
-                                "Organic",
-                                "R.drawable.ic_organic",
-                                RecycleType.ORGANIC.name,
-                                "",
-                                "",
-                                "",
-                                items = listOf()
+                        item {
+                            quickSearchItem(
+                                category = GarbageCategory("Organic", "R.drawable.ic_organic", ORGANIC_TYPE, "", "", "", items = listOf())
                             )
-                        )
-                    }
+                        }
 
-                    item {
-                        quickSearchItem(
-                            category = GarbageCategory(
-                                "E-Waste",
-                                "R.drawable.ic_e_waste",
-                                RecycleType.E_WASTE.name,
-                                "",
-                                "",
-                                "",
-                                items = listOf()
+                        item {
+                            quickSearchItem(
+                                category = GarbageCategory("E-Waste", "R.drawable.ic_e_waste", ELECTRONIC_WASTE_TYPE, "", "", "", items = listOf())
                             )
-                        )
-                    }
+                        }
 
-                    item {
-                        quickSearchItem(
-                            category = GarbageCategory(
-                                "Household hazardous",
-                                "R.drawable.ic_hazard",
-                                RecycleType.HAZARD.name,
-                                "",
-                                "",
-                                "",
-                                items = listOf()
+                        item {
+                            quickSearchItem(
+                                category = GarbageCategory("Household hazardous", "R.drawable.ic_hazard", HHW_TYPE, "", "", "", items = listOf())
                             )
-                        )
+                        }
                     }
 
 
 
                     garbageState.value.garbageList?.let {
+
+                        if (it.isEmpty() && textState.value.text.isEmpty()) {
+                            defaultItems()
+                        }
 
                         if (it.isEmpty() && textState.value.text.isNotEmpty()) {
                             item {
@@ -270,6 +249,8 @@ fun SearchMainScreenContent(
 
 
 
+                    }.run {
+                        defaultItems()
                     }
 
                 }
@@ -335,7 +316,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 } else {
                     Icon(
                         painterResource(id = R.drawable.ic_search_mag_glass),
-                        tint = if (isActive) IconsDark else IconsGray,
+                        tint = IconsGray,
                         contentDescription = "",
                         modifier = Modifier
                             .padding(start = 15.dp)
@@ -406,23 +387,35 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
        .padding(vertical = 10.dp)
        .clickable {
            onItemClick(item.name)
-       }) {
-       AsyncImage(
-           model = item.icon,
-           contentDescription = item.name,
-           contentScale = ContentScale.Crop,
-           modifier = Modifier
-               .size(76.dp, height = 76.dp)
-               .clip(RoundedCornerShape(11.dp))
+       },
+       verticalAlignment = Alignment.CenterVertically) {
 
-       )
+       if (item.icon.isNotEmpty()) {
+           AsyncImage(
+               model = item.icon,
+               contentDescription = item.name,
+               contentScale = ContentScale.Crop,
+               modifier = Modifier
+                   .size(76.dp, height = 76.dp)
+                   .clip(RoundedCornerShape(11.dp))
+
+           )
+       } else {
+           Icon(
+               painterResource(id = Utils.getDefaultIconByType(item.type)),
+               tint = IconsGray,
+               contentDescription = "",
+               modifier = Modifier
+                   .size(24.dp, height = 24.dp)
+           )
+       }
 
        Column (
            Modifier
                .weight(1f)
                .padding(horizontal = 15.dp)) {
            Text(
-               text = item.name,
+               text = item.name.capitalize(Locale.CANADA),
                color = TitleText,
                fontFamily = Inter,
                fontWeight = FontWeight.Medium,
@@ -439,13 +432,15 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
                fontWeight = FontWeight.Normal,
                fontSize = 12.sp,
                letterSpacing = 1.sp,
+               maxLines = 2,
+               overflow = TextOverflow.Ellipsis
            )
        }
 
 
        if (showIcon) {
            Icon(
-               painterResource(id = item.returnImage()),
+               painterResource(id = Utils.getDefaultIconByType(item.type)),
                tint = GarbageTypeIconColor,
                contentDescription = "",
                modifier = Modifier
@@ -464,7 +459,7 @@ fun categoryPlaceholder(item: GarbageCategory, click: () -> Unit) {
         .height(55.dp)
         .clickable { click() }) {
         Icon(
-            painterResource(id = item.returnImage()),
+            painterResource(id = Utils.getDefaultIconByType(item.type)),
             tint = GarbageTypeIconColor,
             contentDescription = "",
             modifier = Modifier

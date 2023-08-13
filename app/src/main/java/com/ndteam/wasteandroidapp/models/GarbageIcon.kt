@@ -12,4 +12,5 @@ open class GarbageIcon(private val type: RecycleType) {
         else -> R.drawable.ic_garbage
     }
 
+
 }

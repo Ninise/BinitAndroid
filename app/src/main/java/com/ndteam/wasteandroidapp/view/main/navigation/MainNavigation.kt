@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.screens.article.ArticleDetailsScreen
 import com.ndteam.wasteandroidapp.view.main.screens.home.HomeScreen
@@ -72,7 +73,7 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
             )
         ) { entry ->
             entry.arguments?.getString(GARBAGE_TYPE)?.let { type ->
-                val category = viewModel.getGarbageCategoryByType(type = RecycleType.parseValue(type))
+                val category = viewModel.getGarbageCategoryByType(type = type)
                 GarbageTypeDetailsScreen(navController = navController, viewModel, category)
             }
 

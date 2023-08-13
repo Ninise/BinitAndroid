@@ -58,14 +58,14 @@ class MainViewModel @Inject constructor(
         downloadArticles()
     }
 
-    fun getGarbageCategoryByType(type: RecycleType) : GarbageCategory {
+    fun getGarbageCategoryByType(type: String) : GarbageCategory {
         garbageState.value.garbageList?.filter {
-            RecycleType.parseValue(it.type) == type
+            it.type == type
         }?.let {
             return it[0]
         }?: kotlin.run {
             return GarbageCategory(
-                type.name,
+                type,
                 "",
                 "TITLE",
                 "AUTHOR",
@@ -86,17 +86,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun searchGarbage(query: String) {
+    fun searchGarbage(query: String, limit: Int = 5) {
 
         if (query.isNotEmpty()) {
             viewModelScope.launch {
                 _garbageItemState.value = GarbageItemState(isLoading = true)
 
-                val result = repository.searchProducts(query, offset = 0, limit = 5)
+                val result = repository.searchProducts(query, offset = 0, limit = limit)
 
                 _garbageItemState.value = GarbageItemState(
                     garbageList = result.data?.map {
-                                                  GarbageItem(it.image, it.name, it.description, RecycleType.parseValue(it.type))
+                                                  GarbageItem(it.image, it.name, it.description, it.type)
                     },
                     isLoading = false,
                     error = result.message
@@ -179,15 +179,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun downloadArticles() {
-        Utils.log("DOWNLOAD ARTICLES")
         viewModelScope.launch {
 
             _articlesItemsState.value = ArticleItemState(isLoading = true)
 
-            Utils.log("DOWNLOAD ARTICLES 1")
             val result = repository.getArticles()
 
-            Utils.log("DOWNLOAD ARTICLES 2")
             _articlesItemsState.value = ArticleItemState(
                 articlesList = result.data,
                 isLoading = false,
