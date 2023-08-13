@@ -23,18 +23,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
+
+// decide with image attaching
 
 @Composable
 fun ReportProblemScreen(navBack: () -> Unit) {
-    ReportProblemScreenContent(navBack)
+    val viewModel = hiltViewModel<MainViewModel>()
+
+    ReportProblemScreenContent(navBack, makeSuggestion = { name, type, desc, location ->
+        viewModel.makeSuggestion(name, type, desc, location)
+    })
 }
 
 @Composable
-fun ReportProblemScreenContent(navBack: () -> Unit) {
+fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, String, String, String) -> Unit) {
 
     val text = remember { mutableStateOf("") }
 
@@ -160,7 +169,14 @@ fun ReportProblemScreenContent(navBack: () -> Unit) {
             }
 
             DefaultButton(text = stringResource(id = R.string.send), modifier = Modifier.padding(top = 10.dp), pressed = {
-
+                if (text.value.isNotEmpty()) {
+                    makeSuggestion(
+                        Const.S_FEEDBACK_NAME,
+                        Const.S_FEEDBACK, text.value,
+                        Const.S_ANDROID
+                    )
+                }
+                text.value = ""
             })
 
         }
@@ -170,7 +186,9 @@ fun ReportProblemScreenContent(navBack: () -> Unit) {
 @Preview
 @Composable
 fun ReportProblemScreen_Preview() {
-    ReportProblemScreenContent {
+    ReportProblemScreenContent(navBack = {
 
-    }
+    }, makeSuggestion = { _, _, _, _ ->
+
+    })
 }

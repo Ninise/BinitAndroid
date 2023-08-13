@@ -21,7 +21,16 @@ object Const {
     const val YARD_WASTE_TYPE = "Yard Waste"
     const val METAL_ITEMS_TYPE = "Metal Items"
 
+    const val S_SCHEDULE_NAME = "schedule"
+    const val S_LOCATION_NAME = "location"
+    const val S_FEEDBACK_NAME = "feedback"
+    const val S_PROBLEM_NAME = "problem"
 
+    const val S_SUGGESTION = "suggestion"
+    const val S_FEEDBACK = "feedback"
+    const val S_PROBLEM = "problem"
+
+    const val S_ANDROID = "android"
 
 
 }

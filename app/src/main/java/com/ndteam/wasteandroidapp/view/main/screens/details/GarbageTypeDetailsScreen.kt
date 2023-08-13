@@ -42,6 +42,7 @@ import com.ndteam.wasteandroidapp.view.main.MainViewModel
 // limit elements to 5 and disable internal scroll +
 // add author +
 // rename categories +
+// make see all clickable
 
 @Composable
 fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {

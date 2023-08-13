@@ -21,18 +21,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Const.S_ANDROID
+import com.ndteam.wasteandroidapp.utils.Const.S_SCHEDULE_NAME
+import com.ndteam.wasteandroidapp.utils.Const.S_SUGGESTION
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
 @Composable
 fun ScheduleScreen() {
+    val viewModel = hiltViewModel<MainViewModel>()
 
-    ScheduleScreenContent()
+    ScheduleScreenContent(makeSuggestion = { name, type, desc, location ->
+        viewModel.makeSuggestion(name, type, desc, location)
+    })
 }
 
 @Composable
-fun ScheduleScreenContent() {
+fun ScheduleScreenContent(makeSuggestion: (String, String, String, String) -> Unit) {
 
     val text = remember {
         mutableStateOf("")
@@ -115,7 +123,10 @@ fun ScheduleScreenContent() {
         )
 
         DefaultButton(text = stringResource(id = R.string.send), pressed = {
-
+            if (text.value.isNotEmpty()) {
+                makeSuggestion(S_SCHEDULE_NAME, S_SUGGESTION, text.value, S_ANDROID)
+            }
+            text.value = ""
         })
 
     }
@@ -124,5 +135,7 @@ fun ScheduleScreenContent() {
 @Preview
 @Composable
 fun ScheduleScreen_Preview() {
-    ScheduleScreenContent()
+    ScheduleScreenContent(makeSuggestion = { _, _, _, _ ->
+
+    })
 }

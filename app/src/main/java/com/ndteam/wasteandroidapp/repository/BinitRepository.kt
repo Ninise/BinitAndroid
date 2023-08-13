@@ -4,6 +4,7 @@ import com.ndteam.wasteandroidapp.api.ApiService
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.RecycleType
 import com.ndteam.wasteandroidapp.models.SubCategoryItem
+import com.ndteam.wasteandroidapp.models.requests.SuggestRequest
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.responses.Product
 import com.ndteam.wasteandroidapp.utils.Resource
@@ -65,6 +66,20 @@ class BinitRepository(private val apiService: ApiService) {
             )
         }
     }
+
+    suspend fun makeSuggestion(request: SuggestRequest) : Resource<SuggestRequest> {
+        return try {
+            Resource.Success(
+                data = apiService.makeSuggestion(request = request).data
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(
+                "Error while making a suggestion", null
+            )
+        }
+    }
+
 
 //    fun getGarbageCategories(): Resource<List<GarbageCategory>> {
 //        return try {

@@ -1,11 +1,14 @@
 package com.ndteam.wasteandroidapp.api
 
 import com.ndteam.wasteandroidapp.models.GarbageCategory
+import com.ndteam.wasteandroidapp.models.requests.SuggestRequest
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.responses.Product
 import com.ndteam.wasteandroidapp.models.responses.QuickSearch
 import com.ndteam.wasteandroidapp.models.responses.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 
@@ -30,6 +33,9 @@ interface ApiService {
 
     @GET("/garbage_categories")
     suspend fun getGarbageCategories(): Response<List<GarbageCategory>>
+
+    @POST("/suggested")
+    suspend fun makeSuggestion(@Body request: SuggestRequest): Response<SuggestRequest>
 
 
     /*

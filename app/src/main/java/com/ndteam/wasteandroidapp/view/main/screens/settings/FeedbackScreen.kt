@@ -18,17 +18,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
 @Composable
 fun FeedbackScreen(navBack: () -> Unit) {
-    FeedbackScreenContent(navBack)
+    val viewModel = hiltViewModel<MainViewModel>()
+    
+    FeedbackScreenContent(navBack, makeSuggestion = { name, type, desc, location ->
+        viewModel.makeSuggestion(name, type, desc, location)
+    })
 }
 
 @Composable
-fun FeedbackScreenContent(navBack: () -> Unit) {
+fun FeedbackScreenContent(navBack: () -> Unit, makeSuggestion: (String, String, String, String) -> Unit) {
 
     val email = remember { mutableStateOf("") }
     val message = remember { mutableStateOf("") }
@@ -151,7 +158,15 @@ fun FeedbackScreenContent(navBack: () -> Unit) {
             )
 
             DefaultButton(text = stringResource(id = R.string.send), modifier = Modifier.padding(top = 10.dp), pressed = {
-
+                if (message.value.isNotEmpty()) {
+                    makeSuggestion(
+                        Const.S_FEEDBACK_NAME,
+                        Const.S_FEEDBACK, "EMAIL: ${email.value}; MESSAGE: ${message.value}",
+                        Const.S_ANDROID
+                    )
+                }
+                email.value = ""
+                message.value = ""
             })
 
         }
@@ -164,7 +179,9 @@ fun FeedbackScreenContent(navBack: () -> Unit) {
 @Preview
 @Composable
 fun FeedbackScreen_Preview() {
-    FeedbackScreenContent {
+    FeedbackScreenContent(navBack = {
 
-    }
+    }, makeSuggestion = { name, type, desc, location ->
+
+    })
 }

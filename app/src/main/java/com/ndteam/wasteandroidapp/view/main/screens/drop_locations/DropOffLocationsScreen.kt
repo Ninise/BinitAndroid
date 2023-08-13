@@ -18,17 +18,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.*
+import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
+import com.ndteam.wasteandroidapp.view.main.MainViewModel
 
 @Composable
 fun DropOffLocationsScreen() {
-    DropOffLocationsScreenContent()
+    val viewModel = hiltViewModel<MainViewModel>()
+
+    DropOffLocationsScreenContent(makeSuggestion = { name, type, desc, location ->
+        viewModel.makeSuggestion(name, type, desc, location)
+    })
 }
 
 @Composable
-fun DropOffLocationsScreenContent() {
+fun DropOffLocationsScreenContent(makeSuggestion: (String, String, String, String) -> Unit) {
 
     val text = remember {
         mutableStateOf("")
@@ -111,7 +118,8 @@ fun DropOffLocationsScreenContent() {
         )
 
         DefaultButton(text = stringResource(id = R.string.send), pressed = {
-
+            makeSuggestion(Const.S_LOCATION_NAME, Const.S_SUGGESTION, text.value, Const.S_ANDROID)
+            text.value = ""
         })
     }
 }
@@ -119,5 +127,7 @@ fun DropOffLocationsScreenContent() {
 @Preview
 @Composable
 fun DropOffLocationsScreen_Preview() {
-    DropOffLocationsScreenContent()
+    DropOffLocationsScreenContent(makeSuggestion = { _, _, _, _ ->
+
+    })
 }

@@ -14,6 +14,7 @@ import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.GarbageItem
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.models.requests.SuggestRequest
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.states.ArticleItemState
 import com.ndteam.wasteandroidapp.models.states.GarbageItemState
@@ -108,6 +109,18 @@ class MainViewModel @Inject constructor(
             )
         }
 
+    }
+
+    fun makeSuggestion(name: String, type: String, description: String, location: String) {
+        viewModelScope.launch {
+            val request = SuggestRequest(
+                name = name,
+                type = type,
+                description = description,
+                location = location
+            )
+            repository.makeSuggestion(request = request)
+        }
     }
 
     private fun getSearchSuggestions()  {
