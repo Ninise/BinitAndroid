@@ -75,7 +75,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             navController.popBackStack()
         },
         onTextChange = {
-            viewModel.searchGarbage(textState.value.text)
+            viewModel.searchGarbage(textState.value.text, limit = 25)
         }
     )
 }

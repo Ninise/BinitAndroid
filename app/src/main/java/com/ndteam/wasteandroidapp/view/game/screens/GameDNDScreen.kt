@@ -44,15 +44,16 @@ import kotlinx.coroutines.launch
 // Add correct drop state ?
 
 
+
 @Composable
-fun GameMainScreen(gameSet: List<GameObject>, onBackPress: () -> Unit) {
+fun GameMainScreen(gameSet: MutableList<GameObject>, onBackPress: () -> Unit) {
 
     LaunchedEffect(Unit, block = {
 
     })
 
     var gameObject by remember {
-        mutableStateOf(gameSet[0])
+        mutableStateOf(gameSet.removeFirst())
     }
 
 
@@ -62,7 +63,12 @@ fun GameMainScreen(gameSet: List<GameObject>, onBackPress: () -> Unit) {
 
 
     GameMainScreenContent(gameObject, counter, onEndOfObject = { correct ->
-        gameObject = gameSet.random()
+        if (gameSet.isEmpty()) {
+            onBackPress()
+            return@GameMainScreenContent
+        }
+
+        gameObject = gameSet.removeLast()
         if (correct) {
             counter++
         }
