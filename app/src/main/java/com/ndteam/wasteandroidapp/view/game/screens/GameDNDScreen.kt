@@ -5,16 +5,25 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,6 +31,9 @@ import androidx.compose.ui.unit.sp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.models.RecycleType
+import com.ndteam.wasteandroidapp.ui.theme.IconsDark
+import com.ndteam.wasteandroidapp.ui.theme.Inter
+import com.ndteam.wasteandroidapp.ui.theme.MainOrange
 import com.ndteam.wasteandroidapp.ui.theme.Nunito
 import com.ndteam.wasteandroidapp.view.custom_views.shake
 import com.ndteam.wasteandroidapp.view.game.DragTarget
@@ -46,7 +58,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun GameMainScreen(gameSet: MutableList<GameObject>, onBackPress: () -> Unit) {
+fun GameMainScreen(gameSet: MutableList<GameObject>, onBackPress: () -> Unit, onFinish: (Int) -> Unit) {
 
     LaunchedEffect(Unit, block = {
 
@@ -64,7 +76,7 @@ fun GameMainScreen(gameSet: MutableList<GameObject>, onBackPress: () -> Unit) {
 
     GameMainScreenContent(gameObject, counter, onEndOfObject = { correct ->
         if (gameSet.isEmpty()) {
-            onBackPress()
+            onFinish(counter)
             return@GameMainScreenContent
         }
 
@@ -160,7 +172,9 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 )
             }
             
-            Spacer(modifier = Modifier.weight(1f).background(color = Color.Magenta))
+            Spacer(modifier = Modifier
+                .weight(1f)
+                .background(color = Color.Magenta))
             
             Image(
                 painter = painterResource(id = R.drawable.ic_game_star),
@@ -364,6 +378,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
         }
 
     }
+
 }
 
 @Preview(device = Devices.AUTOMOTIVE_1024p, widthDp = 1024, heightDp = 720)

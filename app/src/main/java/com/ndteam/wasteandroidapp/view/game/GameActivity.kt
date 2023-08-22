@@ -20,6 +20,7 @@ import com.ndteam.wasteandroidapp.ui.theme.WasteAndroidAppTheme
 import com.ndteam.wasteandroidapp.ui.theme.gameImageTopEdgeBack
 import com.ndteam.wasteandroidapp.utils.GameUtils
 import com.ndteam.wasteandroidapp.utils.NavigationUtils
+import com.ndteam.wasteandroidapp.view.game.screens.CongratsScreen
 import com.ndteam.wasteandroidapp.view.game.screens.GameGuideScreen
 import com.ndteam.wasteandroidapp.view.game.screens.GamePickerScreen
 import com.ndteam.wasteandroidapp.view.game.screens.GameQuizGameScreen
@@ -73,6 +74,12 @@ class GameActivity: BaseActivity() {
                         } else {
                             GameMainScreen(GameUtils.getBatchOfItems(this), onBackPress = {
                                 onBackPressed()
+                            }, onFinish = { congrats ->
+//                                CongratsScreen(congrats, onBackPressed = {
+//
+//                                }, onPlayPress = {
+//
+//                                })
                             })
                         }
                     }

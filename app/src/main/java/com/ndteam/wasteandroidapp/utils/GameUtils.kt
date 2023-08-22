@@ -351,4 +351,25 @@ object GameUtils {
         return sharedPref.getInt(name, 0)
     }
 
+    fun getCongratsTextBasedOnScore(score: Int) : String {
+        return when(score) {
+            1 -> Utils.string(R.string.congrats_1_title)
+            2 -> Utils.string(R.string.congrats_2_title)
+            3 -> Utils.string(R.string.congrats_3_title)
+            4 -> Utils.string(R.string.congrats_4_title)
+            5 -> Utils.string(R.string.congrats_5_title)
+            else -> Utils.string(R.string.congrats_4_title)
+        }
+    }
+
+    fun getCongratsSubsTextBasedOnScore(score: Int) : String {
+        return when(score) {
+            1 -> Utils.string(R.string.congrats_3_sub)
+            2 -> Utils.string(R.string.congrats_3_sub)
+            3 -> Utils.string(R.string.congrats_3_sub)
+            4 -> Utils.string(R.string.congrats_4_sub)
+            5 -> Utils.string(R.string.congrats_4_sub)
+            else -> Utils.string(R.string.congrats_4_sub)
+        }
+    }
 }
