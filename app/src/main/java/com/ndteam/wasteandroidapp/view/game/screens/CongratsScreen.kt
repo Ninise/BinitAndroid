@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -54,11 +55,9 @@ fun CongratsScreenContent(stars: Int, onPlayPress: () -> Unit, onBackPressed: ()
             contentScale = ContentScale.Crop
         )
 
-
-
         Row(
             modifier = Modifier
-                .align(alignment = Alignment.Center)
+                .align(alignment = Alignment.TopStart)
                 .padding(top = 10.dp, start = 25.dp, end = 25.dp)
         ) {
 
@@ -80,13 +79,16 @@ fun CongratsScreenContent(stars: Int, onPlayPress: () -> Unit, onBackPressed: ()
                     .background(color = Color.Magenta)
             )
 
-            GameOverDialog(
-                stars = stars,
-                title = GameUtils.getCongratsTextBasedOnScore(stars),
-                sub = GameUtils.getCongratsSubsTextBasedOnScore(stars)
-            )
+
 
         }
+
+        GameOverDialog(
+            stars = stars,
+            title = GameUtils.getCongratsTextBasedOnScore(stars),
+            sub = GameUtils.getCongratsSubsTextBasedOnScore(stars),
+            onPlayPress = onPlayPress
+        )
 
     }
 
@@ -94,7 +96,7 @@ fun CongratsScreenContent(stars: Int, onPlayPress: () -> Unit, onBackPressed: ()
 
 
 @Composable
-fun GameOverDialog(stars: Int, title: String, sub: String) {
+fun GameOverDialog(stars: Int, title: String, sub: String, onPlayPress: () -> Unit) {
     Box {
         Column(
             modifier = Modifier.align(alignment = Alignment.Center)
@@ -104,7 +106,7 @@ fun GameOverDialog(stars: Int, title: String, sub: String) {
             Column(
                 modifier = Modifier
                     .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
-                    .padding(all = 14.dp)
+                    .padding(all = 20.dp)
                     .alpha(0.9f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -115,7 +117,7 @@ fun GameOverDialog(stars: Int, title: String, sub: String) {
                                 style = SpanStyle(
                                     color = MainOrange,
                                     fontFamily = Inter,
-                                    fontWeight = FontWeight.Normal,
+                                    fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp
                                 )
                             ) {
@@ -124,17 +126,28 @@ fun GameOverDialog(stars: Int, title: String, sub: String) {
 
                             withStyle(
                                 style = SpanStyle(
-                                    color = IconsDark,
+                                    color = MainOrange,
                                     fontFamily = Inter,
-                                    fontWeight = FontWeight.Normal,
+                                    fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp
                                 )
                             ) {
-                                append("/2")
+                                append("/10")
                             }
                         }
                     }
 
+                )
+
+                Text(
+                    text = title,
+                    color = IconsDark,
+                    textAlign = TextAlign.Center,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .padding(top = 10.dp)
                 )
 
                 Text(
@@ -143,15 +156,12 @@ fun GameOverDialog(stars: Int, title: String, sub: String) {
                     textAlign = TextAlign.Center,
                     fontFamily = Inter,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .padding(top = 10.dp)
+                    fontSize = 14.sp
                 )
 
                 Button(
                     onClick = {
-
-                        // play again
+                        onPlayPress()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MainOrange),
                     shape = RoundedCornerShape(6.dp),
@@ -161,7 +171,7 @@ fun GameOverDialog(stars: Int, title: String, sub: String) {
                 ) {
 
                     Text(
-                        text = "Play again",
+                        text = stringResource(R.string.play_again),
                         color = Color.White,
                         fontFamily = Inter,
                         fontWeight = FontWeight.Medium,

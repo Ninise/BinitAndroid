@@ -70,12 +70,13 @@
 
     <string name="congrats_5_title">Perfect score and a big win for our planet.</string>
     <string name="congrats_5_sub">Thank you for your commitment!</string>
-    <string name="congrats_4_title">Amazing work! Your sorting skills help save nature and our planet.</string>
+    <string name="congrats_4_title">Amazing work! Your sorting skills help\nsave nature and our planet.</string>
     <string name="congrats_4_sub">You inspire others!</string>
-    <string name="congrats_3_title">Fantastic job! You\'re saving nature and our planet with your sorting.</string>
+    <string name="congrats_3_title">Fantastic job! You\'re saving nature and\nour planet with your sorting.</string>
     <string name="congrats_3_sub">Keep going!</string>
-    <string name="congrats_2_title">Well done! Your sorting efforts make a difference for nature and our planet.</string>
-    <string name="congrats_1_title">Good effort! Your sorting can help save nature and our planet.</string>
+    <string name="congrats_2_title">Well done! Your sorting efforts make a\ndifference for nature and our planet.</string>
+    <string name="congrats_1_title">Good effort! Your sorting can help save\nnature and our planet.</string>
+    <string name="play_again">Play again</string>
 
 
 </resources>

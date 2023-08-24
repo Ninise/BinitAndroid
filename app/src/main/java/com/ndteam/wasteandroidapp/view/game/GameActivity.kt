@@ -52,6 +52,8 @@ class GameActivity: BaseActivity() {
             WasteAndroidAppTheme {
 
                 val isGuideStage = remember { mutableStateOf(true) }
+                val isCongrats = remember { mutableStateOf(false) }
+                val congratsStars = remember { mutableStateOf(0) }
 
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
@@ -71,15 +73,18 @@ class GameActivity: BaseActivity() {
                             }, onPlayPress = {
                                 isGuideStage.value = false
                             })
+                        } else if (isCongrats.value) {
+                            CongratsScreen(congratsStars.value, onBackPressed = {
+                                onBackPressed()
+                            }, onPlayPress = {
+                                isCongrats.value = false
+                            })
                         } else {
                             GameMainScreen(GameUtils.getBatchOfItems(this), onBackPress = {
                                 onBackPressed()
                             }, onFinish = { congrats ->
-//                                CongratsScreen(congrats, onBackPressed = {
-//
-//                                }, onPlayPress = {
-//
-//                                })
+                                congratsStars.value = congrats
+                                isCongrats.value = true
                             })
                         }
                     }
