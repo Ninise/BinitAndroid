@@ -22,18 +22,7 @@ data class GarbageCategory(
     val items: List<SubCategoryItem>
 ) : GarbageIcon(RecycleType.parseValue(type)) {
 
-    fun categoryBinImage() = when(type) {
-        RECYCLE_TYPE -> R.drawable.ic_main_recycle_bin
-        GARBAGE_TYPE -> R.drawable.ic_main_garbage_bin
-        ORGANIC_TYPE -> R.drawable.ic_main_organic_bin
-        ELECTRONIC_WASTE_TYPE -> R.drawable.ic_main_e_waste_bin
-        HHW_TYPE -> R.drawable.ic_main_hazar_bing
-        YARD_WASTE_TYPE -> R.drawable.ic_main_yard_bin
-
-        else -> {
-            R.drawable.ic_main_garbage_bin
-        }
-    }
+    fun categoryBinImage() = Utils.categoryBinImage(type)
 
     fun categoryColor() = when(RecycleType.parseValue(type)) {
         RecycleType.RECYCLE -> MainBlue

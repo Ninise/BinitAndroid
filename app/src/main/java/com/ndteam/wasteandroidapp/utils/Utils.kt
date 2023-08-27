@@ -50,6 +50,18 @@ object Utils {
 
         return R.drawable.ic_garbage // make a default icon
     }
+    fun categoryBinImage(type: String) = when(type) {
+        RECYCLE_TYPE -> R.drawable.ic_main_recycle_bin
+        GARBAGE_TYPE -> R.drawable.ic_main_garbage_bin
+        ORGANIC_TYPE -> R.drawable.ic_main_organic_bin
+        ELECTRONIC_WASTE_TYPE -> R.drawable.ic_main_e_waste_bin
+        HHW_TYPE -> R.drawable.ic_main_hazar_bing
+        YARD_WASTE_TYPE -> R.drawable.ic_main_yard_bin
+
+        else -> {
+            R.drawable.ic_main_garbage_bin
+        }
+    }
 
     fun getCategoryTitleByType(type: String) : String {
         when (type) {

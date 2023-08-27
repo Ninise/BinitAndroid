@@ -37,6 +37,7 @@ import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.utils.ViewUtils
 import com.ndteam.wasteandroidapp.view.custom_views.CircularLoaderView
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
 
 // expand arrow goes to right +
 // limit elements to 5 and disable internal scroll +
@@ -55,6 +56,10 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
         if (destination == null) {
             navController.popBackStack()
             viewModel.clearGarbageList()
+        } else {
+            destination.let {
+                navController.navigate(MainScreens.SearchMainScreen.withArgs(it))
+            }
         }
     })
 }
@@ -178,7 +183,10 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
             garbageItemState.garbageList?.let {
                 GarbageExampleListDetailsView(
                     Utils.getCategoryTitleByType(garbageCategory.type),
-                    it
+                    it,
+                    navigate = {
+                        navigate(garbageCategory.type)
+                    }
                 )
             }
         }
@@ -229,7 +237,7 @@ fun DetailsTextView(descriptionText: String) {
 }
 
 @Composable
-fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
+fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>, navigate: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(
@@ -248,7 +256,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>) {
         )
 
         TextButton(onClick = {
-            //TODO open search
+            navigate()
         }) {
             Text(
                 text = stringResource(R.string.see_all),

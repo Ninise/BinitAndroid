@@ -89,7 +89,7 @@ fun GamePickerScreenContent(navigate: (String) -> Unit) {
             modifier = Modifier.weight(1f)
         )
 
-        BannerAdView()
+//        BannerAdView()
     }
 }
 

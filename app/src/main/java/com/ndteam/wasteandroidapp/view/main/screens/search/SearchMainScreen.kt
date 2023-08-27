@@ -396,18 +396,18 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
                contentDescription = item.name,
                contentScale = ContentScale.Crop,
                modifier = Modifier
-                   .size(76.dp, height = 76.dp)
+                   .size(76.dp)
                    .clip(RoundedCornerShape(11.dp))
 
            )
        } else {
-           Icon(
-               painterResource(id = Utils.getDefaultIconByType(item.type)),
-               tint = IconsGray,
-               contentDescription = "",
-               modifier = Modifier
-                   .size(24.dp, height = 24.dp)
-           )
+           Box (modifier = Modifier.size(76.dp), contentAlignment = Alignment.Center) {
+               Image(
+                   painter = painterResource(id = Utils.categoryBinImage(item.type)),
+                   contentDescription = "Bin",
+                   modifier = Modifier.size(60.dp),
+                   contentScale = ContentScale.Fit)
+           }
        }
 
        Column (
