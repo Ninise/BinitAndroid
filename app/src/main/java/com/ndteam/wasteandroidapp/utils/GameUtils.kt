@@ -3,19 +3,22 @@ package com.ndteam.wasteandroidapp.utils
 import android.app.Activity
 import android.content.Context
 import com.ndteam.wasteandroidapp.R
+import com.ndteam.wasteandroidapp.models.AnswerObject
 import com.ndteam.wasteandroidapp.models.GameObject
+import com.ndteam.wasteandroidapp.models.QuizObject
 import com.ndteam.wasteandroidapp.models.RecycleType
+import java.util.*
+import kotlin.random.Random
 
 object GameUtils {
+
+    const val DND_ITEMS_AMOUNT = 10
+    const val QUIZ_AMOUNT = 5
 
     private const val TOTAL_AMOUNT = "total_amount"
     private const val LAST_INDEX = "last_index"
 
     private val gameSet = arrayListOf(
-        GameObject(
-            R.drawable.ic_game_item_meat_org,
-            "Meat",
-            RecycleType.GARBAGE),
         GameObject(
             R.drawable.ic_game_item_credit_card_garb,
             "Credit card",
@@ -318,6 +321,118 @@ object GameUtils {
             RecycleType.RECYCLE),
         )
 
+    private val questionsList = arrayListOf(
+        QuizObject(
+            question = "Which of the following items should be sorted into the \"Recycle\" bin?",
+            answers = arrayListOf(
+                AnswerObject(
+                    answer = "Plastic bottles",
+                    explanation = "",
+                    isCorrect = true
+                ),
+                AnswerObject(
+                    answer = "Soiled pizza boxes",
+                    explanation = "Recycling facilities don't process items with food waste as it affects recycled material quality.\n" +
+                            "Dispose of soiled pizza boxes in the compost or garbage bin based on local recycling guidelines.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Food scraps",
+                    explanation = "Recycling facilities don't process items with food waste as it affects recycled material quality.\n" +
+                            "Dispose of food scraps in the compost bin.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Soiled paper towels",
+                    explanation = "Recycling facilities don't process items with food waste as it affects recycled material quality.\n" +
+                            "Dispose of soiled paper towels in the compost or garbage bin based on local recycling guidelines.",
+                    isCorrect = false
+                )
+            )
+        ),
+        QuizObject(
+            question = "Aluminum cans should be sorted into the \"Recycle\" bin.",
+            answers = arrayListOf(
+                AnswerObject(
+                    answer = "True",
+                    explanation = "",
+                    isCorrect = true
+                ),
+                AnswerObject(
+                    answer = "False",
+                    explanation = "Aluminum cans should be recycled because it conserves resources, saves energy, reduces landfill waste, has economic benefits, and protects the environment",
+                    isCorrect = false
+                )
+            )
+        ),
+        QuizObject(
+            question = "Which category do banana peels fall under for proper disposal?",
+            answers = arrayListOf(
+                AnswerObject(
+                    answer = "Recycle",
+                    explanation = "Recycling facilities don't process items with food waste as it affects recycled material quality.\n" +
+                            "Dispose of soiled pizza boxes in the compost or garbage bin based on local recycling guidelines.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Compost",
+                    explanation = "",
+                    isCorrect = true
+                ),
+                AnswerObject(
+                    answer = "Garbage",
+                    explanation = "When organic waste ends up in landfills, it produces methane, a potent greenhouse gas, a potent greenhouse gas that contributes to climate change. Composting them reduces methane emissions.",
+                    isCorrect = false
+                )
+            )
+        ),
+        QuizObject(
+            question = "Which of the following materials should be sorted into the \"Compost\" bin?",
+            answers = arrayListOf(
+                AnswerObject(
+                    answer = "Plastic bags",
+                    explanation = "Plastic bags are not biodegradable. They don't break down naturally in the composting process and can contaminate the compost with microplastics.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Glass jars",
+                    explanation = "Glass jars are not a biodegradable material. Glass does not break down naturally and remains intact in the composting process.\nIt is recommended to recycle glass jars instead to conserve resources and reduce waste.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Fruit and vegetable peels",
+                    explanation = "",
+                    isCorrect = true
+                )
+            )
+        ),
+        QuizObject(
+            question = "Which category should broken glass be sorted into?",
+            answers = arrayListOf(
+                AnswerObject(
+                    answer = "Recycle",
+                    explanation = "Broken glass cannot be recycled due to safety hazards, contamination risks, and sorting challenges. Please dispose of broken glass in the regular trash to ensure safety and maintain recycling quality.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Compost",
+                    explanation = "Glass is not a biodegradable material. Glass does not break down naturally and remains intact in the composting process. It is recommended to recycle glass jars instead to conserve resources and reduce waste.",
+                    isCorrect = false
+                ),
+                AnswerObject(
+                    answer = "Garbage",
+                    explanation = "",
+                    isCorrect = true
+                )
+            )
+        )
+    )
+
+    fun getBatchOfQuestions(activity: Activity) : MutableList<QuizObject> {
+        // add saving of a last fetch
+        return questionsList
+    }
+
     fun getBatchOfItems(activity: Activity) : MutableList<GameObject> {
         // save total number of elements
         // save last item index
@@ -329,7 +444,7 @@ object GameUtils {
         val lastIndex = getData(activity, LAST_INDEX)
 
         if (lastIndex == 0) {
-            gameSet.shuffle()
+            gameSet.shuffle(Random(40))
         }
 
         return if (lastIndex + 10 < totalAmount) {

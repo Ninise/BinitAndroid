@@ -31,4 +31,7 @@ val DividerColor = Color(0x1A4F5969)
 
 val WhaleScaleColor = Color(0xFF67788A)
 
+val QuizCorrectButton = Color(0xFF2CA650)
+val QuizMistakeButton = Color(0xFFE12D2D)
+
 //val dividerColor = Color(0x4F59691A)

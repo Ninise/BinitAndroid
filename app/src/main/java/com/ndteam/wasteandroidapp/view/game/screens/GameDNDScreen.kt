@@ -331,8 +331,6 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                             delay(1_000)
                             mistakeGarbage.value = false
                         }
-
-
                     }
 
 
@@ -371,8 +369,7 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 painter = painterResource(id = gameObject.image),
                 contentDescription = "Game item",
                 modifier = Modifier
-                    .width(50.dp),
-
+                    .size(50.dp),
                 contentScale = ContentScale.Fit
             )
         }

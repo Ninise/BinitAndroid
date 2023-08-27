@@ -74,7 +74,7 @@ class GameActivity: BaseActivity() {
                                 isGuideStage.value = false
                             })
                         } else if (isCongrats.value) {
-                            CongratsScreen(congratsStars.value, onBackPressed = {
+                            CongratsScreen(congratsStars.value, isQuiz = false, onBackPressed = {
                                 onBackPressed()
                             }, onPlayPress = {
                                 isCongrats.value = false
@@ -92,10 +92,20 @@ class GameActivity: BaseActivity() {
                     QUIZ -> {
                         LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
-
-                        GameQuizGameScreen(onBackPress = {
-                            onBackPressed()
-                        })
+                        if (isCongrats.value) {
+                            CongratsScreen(congratsStars.value, isQuiz = true, onBackPressed = {
+                                onBackPressed()
+                            }, onPlayPress = {
+                                isCongrats.value = false
+                            })
+                        } else {
+                            GameQuizGameScreen(GameUtils.getBatchOfQuestions(this), onBackPress = {
+                                onBackPressed()
+                            }, onFinish = { congrats ->
+                                congratsStars.value = congrats
+                                isCongrats.value = true
+                            })
+                        }
                     }
                 }
 

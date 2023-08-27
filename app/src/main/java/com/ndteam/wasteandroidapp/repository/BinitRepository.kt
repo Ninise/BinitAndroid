@@ -1,9 +1,7 @@
 package com.ndteam.wasteandroidapp.repository
 
 import com.ndteam.wasteandroidapp.api.ApiService
-import com.ndteam.wasteandroidapp.models.GarbageCategory
-import com.ndteam.wasteandroidapp.models.RecycleType
-import com.ndteam.wasteandroidapp.models.SubCategoryItem
+import com.ndteam.wasteandroidapp.models.*
 import com.ndteam.wasteandroidapp.models.requests.SuggestRequest
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.models.responses.Product
@@ -79,6 +77,8 @@ class BinitRepository(private val apiService: ApiService) {
             )
         }
     }
+
+
 
 
 //    fun getGarbageCategories(): Resource<List<GarbageCategory>> {
