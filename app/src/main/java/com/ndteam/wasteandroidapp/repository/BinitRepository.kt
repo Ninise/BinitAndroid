@@ -65,6 +65,19 @@ class BinitRepository(private val apiService: ApiService) {
         }
     }
 
+    suspend fun getQuizQuestions(): Resource<List<QuizObject>> {
+        return try {
+            Resource.Success(
+                data = apiService.getQuizQuestions().data?.reversed()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(
+                "Failed to get the data from the server", null
+            )
+        }
+    }
+
     suspend fun makeSuggestion(request: SuggestRequest) : Resource<SuggestRequest> {
         return try {
             Resource.Success(

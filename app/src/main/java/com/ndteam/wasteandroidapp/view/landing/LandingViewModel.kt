@@ -1,15 +1,28 @@
 package com.ndteam.wasteandroidapp.view.landing
 
+import androidx.lifecycle.viewModelScope
 import com.ndteam.wasteandroidapp.base.BaseViewModel
 import com.ndteam.wasteandroidapp.repository.BinitRepository
+import com.ndteam.wasteandroidapp.utils.GameUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LandingViewModel @Inject constructor(): BaseViewModel() {
+class LandingViewModel @Inject constructor(val repository: BinitRepository): BaseViewModel() {
 
     fun downloadData() {
 
+        viewModelScope.launch {
+
+            val result = repository.getQuizQuestions()
+
+            result.data?.let {
+                GameUtils.saveQuizQuestions(it)
+            }
+
+
+        }
 
 //        WasteApi.addGarbageElement( GarbageItem(
 //            icon = "https://im.indiatimes.in/content/2021/Jul/plastic-bottle_60df027c2b119.jpg",

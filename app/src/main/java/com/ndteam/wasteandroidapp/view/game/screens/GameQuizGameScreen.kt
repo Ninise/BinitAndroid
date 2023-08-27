@@ -33,6 +33,7 @@ import com.ndteam.wasteandroidapp.models.QuizObject
 import com.ndteam.wasteandroidapp.repository.BinitRepository
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.GameUtils
+import com.ndteam.wasteandroidapp.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,6 +49,8 @@ fun GameQuizGameScreen(gameSet: MutableList<QuizObject>, onBackPress: () -> Unit
     var currentQuestion by remember {
         mutableStateOf(gameSet.removeFirst())
     }
+
+    Utils.log("gameSet ${gameSet.size}")
 
     GameQuizGameScreenContent(counter = counter, questionNumber = GameUtils.QUIZ_AMOUNT - gameSet.size, currentQuestion = currentQuestion, onNext = { correct ->
         if (correct) {
