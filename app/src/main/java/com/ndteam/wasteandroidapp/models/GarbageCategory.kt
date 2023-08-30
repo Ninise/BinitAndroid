@@ -17,6 +17,7 @@ data class GarbageCategory(
     val image: String,
     val type: String,
     val image_author: String,
+    val image_author_url: String,
     val display_type: String,
     val description: String,
     val items: List<SubCategoryItem>

@@ -72,6 +72,7 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
         searchSuggestions = searchSuggestions,
         ads = viewModel.ads,
         popBack = {
+            viewModel.clearSearch()
             navController.popBackStack()
         },
         onTextChange = {
@@ -135,7 +136,7 @@ fun SearchMainScreenContent(
                            categoryPlaceholder(
                                item = category
                            ) {
-                               textState.value = TextFieldValue(category.title.lowercase())
+                               textState.value = TextFieldValue(category.type.lowercase())
                                onTextChange()
                            }
 
@@ -150,31 +151,31 @@ fun SearchMainScreenContent(
                     fun defaultItems() {
                         item {
                             quickSearchItem(
-                                category = GarbageCategory("Recycle", "R.drawable.ic_recycle", RECYCLE_TYPE, "", "", "", items = listOf())
+                                category = GarbageCategory("Recycle", "R.drawable.ic_recycle", RECYCLE_TYPE, "", "", "", "", items = listOf())
                             )
                         }
 
                         item {
                             quickSearchItem(
-                                category = GarbageCategory("Garbage", "R.drawable.ic_garbage", GARBAGE_TYPE, "", "", "", items = listOf())
+                                category = GarbageCategory("Garbage", "R.drawable.ic_garbage", GARBAGE_TYPE, "", "", "","", items = listOf())
                             )
                         }
 
                         item {
                             quickSearchItem(
-                                category = GarbageCategory("Organic", "R.drawable.ic_organic", ORGANIC_TYPE, "", "", "", items = listOf())
+                                category = GarbageCategory("Organic", "R.drawable.ic_organic", ORGANIC_TYPE, "", "", "","", items = listOf())
                             )
                         }
 
                         item {
                             quickSearchItem(
-                                category = GarbageCategory("E-Waste", "R.drawable.ic_e_waste", ELECTRONIC_WASTE_TYPE, "", "", "", items = listOf())
+                                category = GarbageCategory("E-Waste", "R.drawable.ic_e_waste", ELECTRONIC_WASTE_TYPE, "", "", "","", items = listOf())
                             )
                         }
 
                         item {
                             quickSearchItem(
-                                category = GarbageCategory("Household hazardous", "R.drawable.ic_hazard", HHW_TYPE, "", "", "", items = listOf())
+                                category = GarbageCategory("Household hazardous", "R.drawable.ic_hazard", HHW_TYPE, "", "", "","", items = listOf())
                             )
                         }
                     }
@@ -199,20 +200,19 @@ fun SearchMainScreenContent(
                                         contentDescription = "No search result",
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .padding(horizontal = 15.dp)
+                                            .padding(horizontal = 55.dp)
                                             .align(alignment = Alignment.CenterHorizontally),
                                         contentScale = ContentScale.Fit)
 
                                     Text(
-                                        text = "Ooops, we don’t have this item in our garbage bins.\n" +
-                                                "Sorry, we will add it soon.",
+                                        text = stringResource(id = R.string.oops_no_search_result),
                                         color = BodyText,
                                         fontFamily = Inter,
                                         fontWeight = FontWeight.Normal,
                                         fontSize = 14.sp,
                                         letterSpacing = 1.sp,
                                         textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(top = 10.dp)
+                                        modifier = Modifier.padding(top = 15.dp)
                                     )
 
                                     Spacer(modifier = Modifier.padding())
@@ -382,12 +382,18 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
 
 @Composable
 fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (String) -> Unit) {
-   Row(modifier = Modifier
-       .fillMaxWidth()
-       .padding(vertical = 10.dp)
-       .clickable {
-           onItemClick(item.name)
-       },
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 10.dp)
+        .clickable {
+            onItemClick(item.name)
+            isExpanded = !isExpanded
+        },
        verticalAlignment = Alignment.CenterVertically) {
 
        if (item.icon.isNotEmpty()) {
@@ -419,20 +425,20 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
                color = TitleText,
                fontFamily = Inter,
                fontWeight = FontWeight.Medium,
-               fontSize = 14.sp,
-               letterSpacing = 1.sp,
+               fontSize = 14.sp
            )
 
            Spacer(modifier = Modifier.height(2.dp))
 
+
+
            Text(
-               text = item.wayToRecycler,
+               text = item.wayToRecycler.trim(),
                color = BodyText,
                fontFamily = Inter,
                fontWeight = FontWeight.Normal,
                fontSize = 12.sp,
-               letterSpacing = 1.sp,
-               maxLines = 2,
+               maxLines = if (isExpanded) 10 else 2,
                overflow = TextOverflow.Ellipsis
            )
        }

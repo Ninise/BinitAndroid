@@ -11,7 +11,7 @@
     <string name="got_it">Got it</string>
     <string name="let_get_started">Let’s get started!</string>
     <string name="main_title_good_to_know">Good to know</string>
-    <string name="main_title_game">Game</string>
+    <string name="main_title_game">Games</string>
     <string name="main_title_how_to_sort">How to sort</string>
     <string name="title_recycling">recycling</string>
     <string name="title_garbage">garbage</string>
@@ -78,6 +78,7 @@
     <string name="congrats_1_title">Good effort! Your sorting can help save\nnature and our planet.</string>
     <string name="play_again">Play again</string>
     <string name="oooops">Oooops!</string>
+    <string name="oops_no_search_result">Ooops, we don’t have this item in our garbage bins.\n Sorry, we will add it soon.</string>
 
 
 </resources>

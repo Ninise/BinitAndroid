@@ -70,6 +70,7 @@ class MainViewModel @Inject constructor(
                 "",
                 "TITLE",
                 "AUTHOR",
+                "LINK",
                 "DESCRIPTION",
                 "",
                 items = listOf()
@@ -109,6 +110,10 @@ class MainViewModel @Inject constructor(
             )
         }
 
+    }
+
+    fun clearSearch() {
+        _garbageItemState.value = GarbageItemState(isLoading = false)
     }
 
     fun makeSuggestion(name: String, type: String, description: String, location: String) {
