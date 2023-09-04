@@ -104,7 +104,7 @@ fun <T> DropTarget(
 
     val dragInfo = LocalDragTargetInfo.current
     val dragPosition = dragInfo.dragPosition
-    val dragOffset = dragInfo.dragOffset
+    val dragOffset = Offset(dragInfo.dragOffset.x + 100, dragInfo.dragOffset.y + 180)
     val ready = dragInfo.ready
 
     var isCurrentDropTarget by remember {

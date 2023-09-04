@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GameObject
 import com.ndteam.wasteandroidapp.models.RecycleType
@@ -95,7 +96,6 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
     val offsetX = remember { Animatable(200f) }
 
     val scope = rememberCoroutineScope()
-
 
     suspend fun renewObjPosition() {
         offsetY.snapTo(0f)
@@ -225,24 +225,30 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                     if (draggedItem.type == RecycleType.ORGANIC) {
 
-                        // todo correct state and points
-                        correct = true
-                        image = R.drawable.ic_correct_organic_bin
+                        LaunchedEffect(key1 = Unit, block = {
+                            correct = true
+                            image = R.drawable.ic_correct_organic_bin
+                            delay(1_000)
+                            image = R.drawable.ic_def_organic_bin
+                        })
+
 
                     } else {
-                        image = R.drawable.ic_mistake_organic_bin
-                        mistakeOrganic.value = true
 
                         LaunchedEffect(Unit) {
-                            delay(1_000)
+                            image = R.drawable.ic_mistake_organic_bin
+                            mistakeOrganic.value = true
+                            delay(2_000)
                             mistakeOrganic.value = false
+                            image = R.drawable.ic_def_organic_bin
                         }
-
-                        image = R.drawable.ic_def_organic_bin
 
                     }
 
+
                     afterDropRenewObject(correct)
+
+
                 }
 
                 Image(
@@ -319,9 +325,11 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
                         correct = true
 
-                        // todo correct state
-                        image = R.drawable.ic_correct_garbage_bin
 
+                        LaunchedEffect(key1 = Unit, block = {
+                            image = R.drawable.ic_correct_garbage_bin
+                            delay(1_000)
+                        })
                     } else {
 
                         image = R.drawable.ic_mistake_garbage_bin
@@ -335,10 +343,11 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
 
 
                     // todo add correct state
-                    LaunchedEffect(key1 = "Renew state", block = {
-                        delay(1_000)
+                    LaunchedEffect(key1 = Unit, block = {
+                        delay(2_000)
                         image = R.drawable.ic_def_garbage_bin
                     })
+
 
                     afterDropRenewObject(correct)
 

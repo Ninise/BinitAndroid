@@ -18,9 +18,19 @@ import com.ndteam.wasteandroidapp.utils.Const.OVERSIZE_TYPE
 import com.ndteam.wasteandroidapp.utils.Const.RECYCLE_TYPE
 import com.ndteam.wasteandroidapp.utils.Const.YARD_WASTE_TYPE
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 object Utils {
+
+    private const val MAIN_CATEGORY_ANIMATION = "main_category_animation"
+
+    fun saveAnimationState(animated: Boolean) {
+        App.context.getSharedPreferences("APP", Context.MODE_PRIVATE).edit().putBoolean(MAIN_CATEGORY_ANIMATION, animated)
+    }
+
+    fun isListWasAnimated() : Boolean = App.context.getSharedPreferences("APP", Context.MODE_PRIVATE).getBoolean(MAIN_CATEGORY_ANIMATION, false)
+
 
     fun string(res: Int) : String {
         return App.context.getString(res)

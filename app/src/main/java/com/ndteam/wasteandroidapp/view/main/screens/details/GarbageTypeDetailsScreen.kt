@@ -2,6 +2,7 @@ package com.ndteam.wasteandroidapp.view.main.screens.search
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,12 +122,15 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                 .padding(horizontal = 20.dp)
                 .padding(vertical = 20.dp)
                 ) {
-            Divider(
-                color = DividerColor
-            )
+
             garbageCategory.items.forEach {
                 Column {
                     val expanded = remember { mutableStateOf(false) }
+
+                    Divider(
+                        color = DividerColor,
+                        modifier = Modifier.padding(vertical = 5.dp)
+                    )
 
                     Row(modifier = Modifier
                         .clickable { expanded.value = !expanded.value }
@@ -152,36 +157,41 @@ fun GarbageTypeDetailsScreenContent(garbageCategory: GarbageCategory, garbageIte
                         )
                     }
 
-                    if (expanded.value) {
-                        it.data.forEach {
-                            Row (modifier = Modifier
-                                .padding(horizontal = 20.dp)
-                                .padding(vertical = 5.dp),
-                                verticalAlignment = Alignment.Top
-                            ) {
-                                Text(text = "• ",
-                                    fontSize = 16.sp,
-                                    fontFamily = Inter,
-                                    fontWeight = FontWeight.Normal,
-                                    color = IconsDark,
-                                    modifier = Modifier)
-                                Text(
-                                    text = ViewUtils.parseString(input = it),
-                                    fontSize = 16.sp,
-                                    fontFamily = Inter,
-                                    fontWeight = FontWeight.Normal,
-                                    color = IconsDark
-                                )
+                    AnimatedVisibility(visible = expanded.value) {
+                        Column {
+                            it.data.forEach {
+                                Row (modifier = Modifier
+                                    .padding(horizontal = 20.dp)
+                                    .padding(vertical = 5.dp),
+                                    verticalAlignment = Alignment.Top
+                                ) {
+                                    Text(text = "• ",
+                                        fontSize = 16.sp,
+                                        fontFamily = Inter,
+                                        fontWeight = FontWeight.Normal,
+                                        color = IconsDark,
+                                        modifier = Modifier)
+                                    Text(
+                                        text = ViewUtils.parseString(input = it),
+                                        fontSize = 16.sp,
+                                        fontFamily = Inter,
+                                        fontWeight = FontWeight.Normal,
+                                        color = IconsDark
+                                    )
+                                }
                             }
                         }
                     }
 
-                    Divider(
-                        color = DividerColor,
-                        modifier = Modifier.padding(top = 10.dp)
-                    )
+
                 }
             }
+
+
+            Divider(
+                color = DividerColor,
+                modifier = Modifier.padding(top = 5.dp)
+            )
         }
 
 
@@ -266,7 +276,9 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>, navi
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
             letterSpacing = 1.sp,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
 
         TextButton(onClick = {
@@ -312,7 +324,7 @@ fun GarbageExampleListDetailsView(type: String, garbage: List<GarbageItem>, navi
 fun GarbageTypeDetailsScreenPreview() {
     GarbageTypeDetailsScreenContent(
         garbageCategory = GarbageCategory("Recycle", "https://imageio.forbes.com/specials-images/imageserve/623026466/0x0.jpg?format=jpg","Very imp", "good desk", "", "", "",items = listOf()),
-    garbageItemState = GarbageItemState(garbageList = listOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE.name))),
+    garbageItemState = GarbageItemState(garbageList = arrayListOf(GarbageItem("", "What", "Recycle", RecycleType.RECYCLE.name))),
         navigate = {
 
         }, {

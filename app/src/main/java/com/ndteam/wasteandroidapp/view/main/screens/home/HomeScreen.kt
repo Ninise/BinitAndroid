@@ -1,15 +1,15 @@
 package com.ndteam.wasteandroidapp.view.main.screens.home
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -27,15 +27,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.models.GarbageCategory
 import com.ndteam.wasteandroidapp.models.responses.Article
 import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
 import com.ndteam.wasteandroidapp.view.main.navigation.MainScreens
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchChip
 import com.ndteam.wasteandroidapp.view.main.screens.search.SearchView
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -82,20 +85,37 @@ fun HomeScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
 
         TextTitleMain(title = stringResource(R.string.main_title_how_to_sort))
 
-        Row (
+        val listState = rememberLazyListState()
+
+        LazyRow (
             modifier = Modifier
-                .horizontalScroll(state = rememberScrollState(), enabled = true)
                 .align(alignment = CenterHorizontally)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            state = listState,
             horizontalArrangement = Arrangement.SpaceBetween) {
 
-            garbageCategories.forEach {
+            items(garbageCategories) {
                 GarbageTypeCard(it, typeImage = it.categoryBinImage()) {
                     navigate(MainScreens.GarbageDetailsScreen.withArgs(it.type))
                 }
             }
         }
+
+        LaunchedEffect(key1 = Unit, block = {
+            if (!Utils.isListWasAnimated()) {
+                delay(500)
+                listState.animateScrollBy(value = 50f)
+                delay(500)
+                listState.animateScrollToItem(index = 0)
+                delay(500)
+                listState.animateScrollBy(value = 50f)
+                delay(500)
+                listState.animateScrollToItem(index = 0)
+            }
+
+            Utils.saveAnimationState(true)
+        })
 
         TextTitleMain(title = stringResource(R.string.main_title_game), topMargin = 15.dp)
 

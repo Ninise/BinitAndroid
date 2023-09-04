@@ -81,7 +81,7 @@ fun GameQuizGameScreenContent(counter: Int, questionNumber: Int, currentQuestion
         initialValue = -5f,
         targetValue = -800f,
         animationSpec = infiniteRepeatable(
-            animation = tween(25_000),
+            animation = tween(50_000),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -146,7 +146,7 @@ fun GameQuizGameScreenContent(counter: Int, questionNumber: Int, currentQuestion
                         text = "$counter",
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
-                            .padding(top = 3.dp),
+                            .padding(bottom = 3.dp),
                         fontSize = 24.sp,
                         fontFamily = Nunito,
                         fontWeight = FontWeight.Bold,
@@ -160,7 +160,9 @@ fun GameQuizGameScreenContent(counter: Int, questionNumber: Int, currentQuestion
                 Box (
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
-                        .padding(top = 160.dp)
+                        .padding(top = 200.dp),
+                    contentAlignment = Alignment.Center
+
                 ) {
                     Column(
                         modifier = Modifier
@@ -336,7 +338,11 @@ fun AnswerButton(text: String, state: Boolean, isCorrect: Boolean, onClick: () -
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 10.dp)
-            .border(width = 1.dp, color = if (state) Color(0xFFFFFFFF) else Color(0xFFDDDDDD), shape = RoundedCornerShape(6.dp))
+            .border(
+                width = 1.dp,
+                color = if (state) Color(0xFFFFFFFF) else Color(0xFFDDDDDD),
+                shape = RoundedCornerShape(6.dp)
+            )
 //            .shadow(elevation = 1.dp, clip = true, shape = RoundedCornerShape(6.dp), spotColor = Color(0xFFDDDDDD), ambientColor = Color(0xFFDDDDDD))
             .defaultMinSize(minHeight = 64.dp)
 //            .padding(all = 3.dp)
@@ -352,7 +358,7 @@ fun AnswerButton(text: String, state: Boolean, isCorrect: Boolean, onClick: () -
                 color = if (!state) IconsDark else Color.White,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Normal,
-                fontSize = 18.sp,
+                fontSize = 14.sp,
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
             )

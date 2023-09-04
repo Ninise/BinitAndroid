@@ -1,5 +1,8 @@
 package com.ndteam.wasteandroidapp.view.main.screens.search
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -76,7 +79,10 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
             navController.popBackStack()
         },
         onTextChange = {
-            viewModel.searchGarbage(textState.value.text, limit = 25)
+            viewModel.searchGarbage(textState.value.text, limit = 50)
+        },
+        load = {
+
         }
     )
 }
@@ -89,7 +95,8 @@ fun SearchMainScreenContent(
     searchSuggestions: List<String>,
     ads: List<NativeAd>,
     popBack: () -> Unit,
-    onTextChange: () -> Unit) {
+    onTextChange: () -> Unit,
+    load:() -> Unit) {
 
     Box(modifier =
     Modifier
@@ -245,6 +252,7 @@ fun SearchMainScreenContent(
                                 }
 
                             }
+
                         }
 
 
@@ -390,9 +398,9 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 10.dp)
+        .animateContentSize()
         .clickable {
             onItemClick(item.name)
-            isExpanded = !isExpanded
         },
        verticalAlignment = Alignment.CenterVertically) {
 
@@ -439,7 +447,17 @@ fun GarbageItemView(item: GarbageItem, showIcon: Boolean = true, onItemClick: (S
                fontWeight = FontWeight.Normal,
                fontSize = 12.sp,
                maxLines = if (isExpanded) 10 else 2,
-               overflow = TextOverflow.Ellipsis
+               overflow = TextOverflow.Ellipsis,
+               modifier = Modifier
+                   .animateContentSize(
+                       animationSpec = spring(
+                           dampingRatio = Spring.DampingRatioLowBouncy,
+                           stiffness = Spring.StiffnessLow
+                       )
+                   )
+                   .clickable {
+                       isExpanded = !isExpanded
+                   }
            )
        }
 
@@ -541,6 +559,9 @@ fun SearchViewPreview() {
 
         },
         onTextChange = {
+
+        },
+        load = {
 
         }
     )

@@ -98,8 +98,8 @@ class MainViewModel @Inject constructor(
 
                 _garbageItemState.value = GarbageItemState(
                     garbageList = result.data?.map {
-                                                  GarbageItem(it.image, it.name, it.description, it.type)
-                    },
+                        GarbageItem(it.image, it.name, it.description, it.type)
+                    } as ArrayList<GarbageItem>?,
                     isLoading = false,
                     error = result.message
                 )
