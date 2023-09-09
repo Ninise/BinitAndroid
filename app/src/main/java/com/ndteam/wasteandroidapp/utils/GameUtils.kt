@@ -109,10 +109,6 @@ object GameUtils {
             "Styrofoam box",
             RecycleType.GARBAGE),
         GameObject(
-            R.drawable.ic_game_item_styrofoam_box_garb,
-            "Styrofoam box",
-            RecycleType.GARBAGE),
-        GameObject(
             R.drawable.ic_game_item_cup_2_garb,
             "Cup",
             RecycleType.GARBAGE),
