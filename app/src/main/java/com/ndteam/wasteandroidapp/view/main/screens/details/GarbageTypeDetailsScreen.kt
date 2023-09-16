@@ -255,7 +255,7 @@ fun DetailsTextView(descriptionText: String) {
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
+        lineHeight = 20.sp,
         modifier = Modifier.padding(top = 10.dp, start = 16.dp, end = 16.dp)
     )
 }

@@ -227,7 +227,7 @@ fun SearchMainScreenContent(
                             }
                         } else {
                             items(it) { item ->
-                                index++
+//                                index++
                                 GarbageItemView(
                                     item = item,
                                     onItemClick = {
@@ -235,21 +235,21 @@ fun SearchMainScreenContent(
                                     }
                                 )
 
-                                Spacer(modifier = Modifier.height(4.dp))
+//                                Spacer(modifier = Modifier.height(4.dp))
 
-                                Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+                                Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor, modifier = Modifier.padding(vertical = 4.dp))
 
-                                Spacer(modifier = Modifier.height(4.dp))
+//                                Spacer(modifier = Modifier.height(4.dp))
 
-                                if (index % 3 == 0 && ads.isNotEmpty()) {
-                                    NativeAdItemViewXML(ad = ads.random())
-
-                                    Spacer(modifier = Modifier.height(4.dp))
-
-                                    Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                }
+//                                if (index % 3 == 0 && ads.isNotEmpty()) {
+//                                    NativeAdItemViewXML(ad = ads.random())
+//
+//                                    Spacer(modifier = Modifier.height(4.dp))
+//
+//                                    Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+//
+//                                    Spacer(modifier = Modifier.height(4.dp))
+//                                }
 
                             }
 

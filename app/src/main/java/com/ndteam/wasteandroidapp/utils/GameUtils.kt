@@ -354,6 +354,10 @@ object GameUtils {
         val totalAmount = gameSet.size
         val lastIndex = getData(activity, LAST_INDEX)
 
+        if (lastIndex == 0) {
+            gameSet.shuffle(Random(40))
+        }
+
         return if (lastIndex + 10 < totalAmount) {
             saveData(activity,lastIndex + 10, LAST_INDEX)
 

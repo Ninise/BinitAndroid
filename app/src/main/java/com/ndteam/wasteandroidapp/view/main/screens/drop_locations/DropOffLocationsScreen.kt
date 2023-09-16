@@ -1,16 +1,23 @@
 package com.ndteam.wasteandroidapp.view.main.screens.drop_locations
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +31,7 @@ import com.ndteam.wasteandroidapp.ui.theme.*
 import com.ndteam.wasteandroidapp.utils.Const
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
 import com.ndteam.wasteandroidapp.view.main.MainViewModel
+import kotlin.coroutines.coroutineContext
 
 @Composable
 fun DropOffLocationsScreen() {
@@ -34,6 +42,7 @@ fun DropOffLocationsScreen() {
     })
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DropOffLocationsScreenContent(makeSuggestion: (String, String, String, String) -> Unit) {
 
@@ -41,11 +50,18 @@ fun DropOffLocationsScreenContent(makeSuggestion: (String, String, String, Strin
         mutableStateOf("")
     }
 
+    val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -62,6 +78,7 @@ fun DropOffLocationsScreenContent(makeSuggestion: (String, String, String, Strin
             painter = painterResource(id = R.drawable.ic_location_screen_image),
             contentDescription = "Drop-ff placeholder",
             modifier = Modifier
+                .height(170.dp)
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
                 .padding(top = 30.dp)
@@ -120,7 +137,11 @@ fun DropOffLocationsScreenContent(makeSuggestion: (String, String, String, Strin
         DefaultButton(text = stringResource(id = R.string.send), pressed = {
             makeSuggestion(Const.S_LOCATION_NAME, Const.S_SUGGESTION, text.value, Const.S_ANDROID)
             text.value = ""
+            Toast.makeText(context, "Message has sent, thank you! :)", Toast.LENGTH_SHORT).show()
+            keyboardController?.hide()
         })
+
+
     }
 }
 

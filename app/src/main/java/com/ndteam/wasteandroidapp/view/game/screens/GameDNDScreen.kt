@@ -224,20 +224,14 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                     var correct = false
 
                     if (draggedItem.type == RecycleType.ORGANIC) {
-
-                        LaunchedEffect(key1 = Unit, block = {
-                            correct = true
-                            image = R.drawable.ic_correct_organic_bin
-                            delay(1_000)
-                            image = R.drawable.ic_def_organic_bin
-                        })
-
+                        correct = true
+                        image = R.drawable.ic_correct_organic_bin
 
                     } else {
+                        image = R.drawable.ic_mistake_organic_bin
+                        mistakeOrganic.value = true
 
                         LaunchedEffect(Unit) {
-                            image = R.drawable.ic_mistake_organic_bin
-                            mistakeOrganic.value = true
                             delay(2_000)
                             mistakeOrganic.value = false
                             image = R.drawable.ic_def_organic_bin

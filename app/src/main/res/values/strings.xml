@@ -79,6 +79,8 @@
     <string name="play_again">Play again</string>
     <string name="oooops">Oooops!</string>
     <string name="oops_no_search_result">Ooops, we don’t have this item in our garbage bins.\n Sorry, we will add it soon.</string>
+    <string name="email_isnt_valid">Email is not valid</string>
+    <string name="change_screenshot">Change screenshot</string>
 
 
 </resources>

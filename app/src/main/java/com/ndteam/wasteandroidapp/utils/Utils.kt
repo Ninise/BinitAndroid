@@ -1,10 +1,11 @@
 package com.ndteam.wasteandroidapp.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
-import android.content.ContextWrapper
+import android.content.Intent
 import android.util.Log
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import com.ndteam.wasteandroidapp.App
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.utils.Const.DEPOT_TYPE
@@ -17,8 +18,6 @@ import com.ndteam.wasteandroidapp.utils.Const.ORGANIC_TYPE
 import com.ndteam.wasteandroidapp.utils.Const.OVERSIZE_TYPE
 import com.ndteam.wasteandroidapp.utils.Const.RECYCLE_TYPE
 import com.ndteam.wasteandroidapp.utils.Const.YARD_WASTE_TYPE
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 object Utils {
@@ -42,6 +41,11 @@ object Utils {
 
     fun getRandomFloatInRange(min: Float, max: Float): Float {
         return Random.nextFloat() * (max - min) + min
+    }
+
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
+        return email.matches(emailRegex)
     }
 
     fun getDefaultIconByType(type: String) : Int {
@@ -88,6 +92,22 @@ object Utils {
         }
 
         return GARBAGE_TYPE.lowercase()
+    }
+
+    fun inviteFriends(): Intent {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Hey, check this app out - https://binit.pro")
+            type = "text/plain"
+        }
+        return Intent.createChooser(sendIntent, null)
+    }
+
+    fun copyToClipboard(context: Context, text: String) {
+        val clipboardManager =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Binit", text)
+        clipboardManager.setPrimaryClip(clip)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +25,7 @@ import com.ndteam.wasteandroidapp.ui.theme.DividerColor
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
 import com.ndteam.wasteandroidapp.ui.theme.MainOrange
+import com.ndteam.wasteandroidapp.utils.Utils
 
 @Composable
 fun ContactUsScreen(navBack: () -> Unit) {
@@ -35,6 +38,15 @@ fun ContactUsScreen(navBack: () -> Unit) {
 fun ContactUsScreenContent(navBack: () -> Unit) {
 
     val scroll = rememberScrollState()
+
+    val context = LocalContext.current
+
+    val email = "dummyEmail"
+    val website = "https://binit.pro"
+    val facebook = "@facebook"
+    val linkedin = "@linkedin"
+    val tiktok = "@tiktok"
+    val instagram = "@inst"
 
     Column(
         modifier = Modifier
@@ -74,38 +86,38 @@ fun ContactUsScreenContent(navBack: () -> Unit) {
                     .align(alignment = Alignment.Start)
             )
             
-            ContactUsItem(title = stringResource(id = R.string.email), handle = "dummyEmail", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.email), handle = email, onCopy = {
+                Utils.copyToClipboard(context, email)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)
 
-            ContactUsItem(title = stringResource(id = R.string.website), handle = "dummyWebsite", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.website), handle = website, onCopy = {
+                Utils.copyToClipboard(context, website)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)
 
-            ContactUsItem(title = stringResource(id = R.string.facebook), handle = "dummyFacebook", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.facebook), handle = facebook, onCopy = {
+                Utils.copyToClipboard(context, facebook)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)
 
-            ContactUsItem(title = stringResource(id = R.string.linked_in), handle = "dummyLinkedIn", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.linked_in), handle = linkedin, onCopy = {
+                Utils.copyToClipboard(context, linkedin)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)
 
-            ContactUsItem(title = stringResource(id = R.string.tik_tok), handle = "dummyTikTok", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.tik_tok), handle = tiktok, onCopy = {
+                Utils.copyToClipboard(context, tiktok)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)
 
-            ContactUsItem(title = stringResource(id = R.string.instagram), handle = "dummyInstagram", onCopy = {
-                // todo action in viewModel
+            ContactUsItem(title = stringResource(id = R.string.instagram), handle = instagram, onCopy = {
+                Utils.copyToClipboard(context, instagram)
             })
 
             Divider(thickness = 1.dp, color = DividerColor)

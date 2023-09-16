@@ -1,6 +1,7 @@
 package com.ndteam.wasteandroidapp.view.main.screens.settings
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -47,13 +49,15 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
 
     val text = remember { mutableStateOf("") }
 
-    var selectedImageUris by remember {
-        mutableStateOf<List<Uri>>(emptyList())
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
     }
 
+    val context = LocalContext.current
+
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> selectedImageUris = uris }
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uris -> selectedImageUri = uris }
     )
 
     Column (modifier = Modifier
@@ -109,38 +113,36 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
                 )
             )
 
-            LazyRow(
+            if (selectedImageUri != null) {
+
+                Row(
                 modifier = Modifier.padding(top = 10.dp)
             ) {
 
-                items(selectedImageUris) { uri ->
-                   Box(
-                       modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
-                       contentAlignment = Alignment.TopEnd
-                   ) {
-                       AsyncImage(
-                           model = uri,
-                           contentDescription = null,
-                           modifier = Modifier.size(101.dp),
-                           contentScale = ContentScale.Crop
-                       )
+                    Box(
+                        modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+                        contentAlignment = Alignment.TopEnd
+                    ) {
+                        AsyncImage(
+                            model = selectedImageUri,
+                            contentDescription = null,
+                            modifier = Modifier.size(101.dp),
+                            contentScale = ContentScale.Crop
+                        )
 
-                       IconButton(onClick = {
-                           selectedImageUris = selectedImageUris.filter { it != uri }
-                       }, modifier = Modifier.offset(x = 10.dp, y = (-10).dp)) {
-                           Image(
-                               painter = painterResource(id = R.drawable.ic_delete_screen),
-                               contentDescription = "",
-                               modifier = Modifier.size(18.dp),
-                               contentScale = ContentScale.Fit
-                           )
-                       }
-                   }
-
-                    Spacer(
-                        modifier = Modifier.width(10.dp)
-                    )
+                        IconButton(onClick = {
+                            selectedImageUri = null
+                        }, modifier = Modifier.offset(x = 10.dp, y = (-10).dp)) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_delete_screen),
+                                contentDescription = "",
+                                modifier = Modifier.size(18.dp),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+                    }
                 }
+
             }
 
             IconButton(onClick = {
@@ -158,7 +160,7 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
                    )
 
                    Text(
-                       text = stringResource(R.string.add_screenshot),
+                       text = if (selectedImageUri == null) stringResource(R.string.add_screenshot) else stringResource(R.string.change_screenshot),
                        color = MainOrange,
                        fontFamily = Inter,
                        fontWeight = FontWeight.Normal,
@@ -175,8 +177,15 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
                         Const.S_FEEDBACK, text.value,
                         Const.S_ANDROID
                     )
+
+                    text.value = ""
+                    selectedImageUri = null
+
+                    Toast.makeText(context, "We will carefully review your report. Thank you for making us better! :)", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please describe your problem, we will try to fix it. Thank you! :)", Toast.LENGTH_SHORT).show()
                 }
-                text.value = ""
+
             })
 
         }

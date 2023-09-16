@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.settings
 
+import android.content.Intent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.ndteam.wasteandroidapp.R
 import com.ndteam.wasteandroidapp.ui.theme.IconsDark
 import com.ndteam.wasteandroidapp.ui.theme.Inter
+import com.ndteam.wasteandroidapp.utils.Utils
 import com.ndteam.wasteandroidapp.view.custom_views.DefaultButton
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -47,6 +50,8 @@ fun InviteFriendsScreenContent(navBack: () -> Unit) {
     val offsetX = remember { Animatable(0f) }
 
     val offsetPersonX = remember { Animatable(0f) }
+
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit, block = {
 
@@ -152,6 +157,9 @@ fun InviteFriendsScreenContent(navBack: () -> Unit) {
 
         DefaultButton(text = stringResource(id = R.string.share_with_friends), icon = R.drawable.ic_invite, modifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp), pressed = {
             dropBanana()
+
+            context.startActivity(Utils.inviteFriends())
+
         })
 
     }

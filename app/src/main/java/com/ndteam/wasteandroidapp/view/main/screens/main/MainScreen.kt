@@ -3,10 +3,7 @@ package com.ndteam.wasteandroidapp.view.main.screens.main
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -100,7 +97,7 @@ fun BottomNavigation(navController: NavController) {
         items.forEach { item ->
             BottomNavigationItem(
                 icon = {
-                    Icon(painterResource(id = item.icon), contentDescription = item.title)
+                        Icon(painterResource(id = item.icon), contentDescription = item.title)
                        },
                 label = {
                     Text(

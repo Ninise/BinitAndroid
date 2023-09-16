@@ -1,5 +1,6 @@
 package com.ndteam.wasteandroidapp.view.main.screens.schedule
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,10 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -39,12 +43,17 @@ fun ScheduleScreen() {
     })
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ScheduleScreenContent(makeSuggestion: (String, String, String, String) -> Unit) {
 
     val text = remember {
         mutableStateOf("")
     }
+
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Column(
         modifier = Modifier
@@ -127,6 +136,8 @@ fun ScheduleScreenContent(makeSuggestion: (String, String, String, String) -> Un
                 makeSuggestion(S_SCHEDULE_NAME, S_SUGGESTION, text.value, S_ANDROID)
             }
             text.value = ""
+            Toast.makeText(context, "Message has sent, thank you! :)", Toast.LENGTH_SHORT).show()
+            keyboardController?.hide()
         })
 
     }
