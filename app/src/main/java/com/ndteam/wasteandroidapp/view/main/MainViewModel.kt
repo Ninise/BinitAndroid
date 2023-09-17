@@ -25,6 +25,17 @@ import com.ndteam.wasteandroidapp.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
+data class ScreenState(
+    val isLoading: Boolean = false,
+    val items: List<GarbageItem> = emptyList(),
+    val error: String? = null,
+    val endReached: Boolean = false,
+    val page: Int = 0
+)
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -49,7 +60,6 @@ class MainViewModel @Inject constructor(
 
     fun clearGarbageList() {
         _garbageItemState.value = GarbageItemState(isLoading = false)
-
     }
 
     fun downloadData() {
@@ -88,21 +98,72 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    var prevQuery = ""
+    var prevOffset = 0
+    var endHasReached: Boolean = false
+
     fun searchGarbage(query: String, limit: Int = 5) {
+
+        var offset = 0
+
+        if (prevQuery == query) {
+            offset = prevOffset + 26
+        } else {
+            endHasReached = false
+        }
+
+        if (endHasReached) {
+            return
+        }
 
         if (query.isNotEmpty()) {
             viewModelScope.launch {
-                _garbageItemState.value = GarbageItemState(isLoading = true)
+                if (offset == 0) {
+                    _garbageItemState.value = GarbageItemState(isLoading = true)
+                } else {
+                    _garbageItemState.value.isLoading = true
+                }
 
-                val result = repository.searchProducts(query, offset = 0, limit = limit)
+                val result = repository.searchProducts(query, offset = offset, limit = 25)
 
-                _garbageItemState.value = GarbageItemState(
-                    garbageList = result.data?.map {
+                result.data?.let {
+                    endHasReached = it.isEmpty()
+                }
+
+
+                prevQuery = query
+                prevOffset = offset
+
+                if (prevOffset != 0) {
+
+
+                    val temp = _garbageItemState.value.garbageList
+
+                    val newItems = result.data?.map {
                         GarbageItem(it.image, it.name, it.description, it.type)
-                    } as ArrayList<GarbageItem>?,
-                    isLoading = false,
-                    error = result.message
-                )
+                    } as ArrayList<GarbageItem>
+
+
+                    temp.addAll(newItems)
+
+
+                    _garbageItemState.value = GarbageItemState(
+                        garbageList = temp,
+                        isLoading = false
+                    )
+
+
+                } else {
+                    _garbageItemState.value = GarbageItemState(
+                        garbageList = result.data?.map {
+                            GarbageItem(it.image, it.name, it.description, it.type)
+                        } as ArrayList<GarbageItem>,
+                        isLoading = false,
+                        error = result.message
+                    )
+                }
+
+
             }
         } else {
             _garbageItemState.value = GarbageItemState(

@@ -71,18 +71,19 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
     SearchMainScreenContent(
         textState = textState,
         isLoading = viewModel.garbageItemState.value.isLoading,
-        garbageState = viewModel.garbageItemState,
+        list = viewModel.garbageItemState.value.garbageList as List<GarbageItem>,
         searchSuggestions = searchSuggestions,
-        ads = viewModel.ads,
+//        ads = viewModel.ads,
         popBack = {
             viewModel.clearSearch()
             navController.popBackStack()
         },
         onTextChange = {
-            viewModel.searchGarbage(textState.value.text, limit = 50)
+            viewModel.searchGarbage(textState.value.text)
         },
         load = {
-
+            viewModel.searchGarbage(textState.value.text)
+            Utils.log("load more")
         }
     )
 }
@@ -91,12 +92,12 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 fun SearchMainScreenContent(
     textState: MutableState<TextFieldValue>,
     isLoading: Boolean,
-    garbageState: State<GarbageItemState>,
+    list: List<GarbageItem>,
     searchSuggestions: List<String>,
-    ads: List<NativeAd>,
     popBack: () -> Unit,
     onTextChange: () -> Unit,
     load:() -> Unit) {
+
 
     Box(modifier =
     Modifier
@@ -124,145 +125,129 @@ fun SearchMainScreenContent(
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.padding(horizontal = 20.dp)) {
-                if (isLoading) {
+                @Composable
+                fun quickSearchItem(category: GarbageCategory) {
+                    if (textState.value.text.isEmpty()) {
+                        categoryPlaceholder(
+                            item = category
+                        ) {
+                            textState.value = TextFieldValue(category.type.lowercase())
+                            onTextChange()
+                        }
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
+
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+                }
+
+                fun defaultItems() {
                     item {
-                        Box (
-                            Modifier
-                                .fillMaxWidth()
-                                .height(90.dp),
-                            contentAlignment = Alignment.TopCenter) {
-                            CircularLoaderView(color = Const.MAIN_COLORS_ARRAY.random() )
+                        quickSearchItem(
+                            category = GarbageCategory("Recycle", "R.drawable.ic_recycle", RECYCLE_TYPE, "", "", "", "", items = listOf())
+                        )
+                    }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory("Garbage", "R.drawable.ic_garbage", GARBAGE_TYPE, "", "", "","", items = listOf())
+                        )
+                    }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory("Organic", "R.drawable.ic_organic", ORGANIC_TYPE, "", "", "","", items = listOf())
+                        )
+                    }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory("E-Waste", "R.drawable.ic_e_waste", ELECTRONIC_WASTE_TYPE, "", "", "","", items = listOf())
+                        )
+                    }
+
+                    item {
+                        quickSearchItem(
+                            category = GarbageCategory("Household hazardous", "R.drawable.ic_hazard", HHW_TYPE, "", "", "","", items = listOf())
+                        )
+                    }
+                }
+
+
+                if (list.isEmpty() && textState.value.text.isEmpty()) {
+                    defaultItems()
+                }
+
+                if (list.isEmpty() && textState.value.text.isNotEmpty()) {
+                    item {
+                        Column (modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 100.dp)
+                            .align(alignment = Alignment.CenterHorizontally)) {
+
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_no_search_results),
+                                contentDescription = "No search result",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 55.dp)
+                                    .align(alignment = Alignment.CenterHorizontally),
+                                contentScale = ContentScale.Fit)
+
+                            Text(
+                                text = stringResource(id = R.string.oops_no_search_result),
+                                color = BodyText,
+                                fontFamily = Inter,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp,
+                                letterSpacing = 1.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(top = 15.dp)
+                            )
+
+                            Spacer(modifier = Modifier.padding())
                         }
                     }
                 } else {
-                    var index = 0
-
-                   @Composable
-                   fun quickSearchItem(category: GarbageCategory) {
-                       if (textState.value.text.isEmpty()) {
-                           categoryPlaceholder(
-                               item = category
-                           ) {
-                               textState.value = TextFieldValue(category.type.lowercase())
-                               onTextChange()
-                           }
-
-                           Spacer(modifier = Modifier.height(4.dp))
-
-                           Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-
-                           Spacer(modifier = Modifier.height(4.dp))
-                       }
-                   }
-
-                    fun defaultItems() {
-                        item {
-                            quickSearchItem(
-                                category = GarbageCategory("Recycle", "R.drawable.ic_recycle", RECYCLE_TYPE, "", "", "", "", items = listOf())
-                            )
+                    items(list.size) { idx ->
+                        val item = list[idx]
+                        Utils.log("idx: ${idx}; list.size: ${list.size}; ${item.name}")
+                        if (idx == list.size - 1 && !isLoading) {
+                            load()
                         }
 
-                        item {
-                            quickSearchItem(
-                                category = GarbageCategory("Garbage", "R.drawable.ic_garbage", GARBAGE_TYPE, "", "", "","", items = listOf())
-                            )
-                        }
-
-                        item {
-                            quickSearchItem(
-                                category = GarbageCategory("Organic", "R.drawable.ic_organic", ORGANIC_TYPE, "", "", "","", items = listOf())
-                            )
-                        }
-
-                        item {
-                            quickSearchItem(
-                                category = GarbageCategory("E-Waste", "R.drawable.ic_e_waste", ELECTRONIC_WASTE_TYPE, "", "", "","", items = listOf())
-                            )
-                        }
-
-                        item {
-                            quickSearchItem(
-                                category = GarbageCategory("Household hazardous", "R.drawable.ic_hazard", HHW_TYPE, "", "", "","", items = listOf())
-                            )
-                        }
-                    }
-
-
-
-                    garbageState.value.garbageList?.let {
-
-                        if (it.isEmpty() && textState.value.text.isEmpty()) {
-                            defaultItems()
-                        }
-
-                        if (it.isEmpty() && textState.value.text.isNotEmpty()) {
-                            item {
-                                Column (modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 100.dp)
-                                    .align(alignment = Alignment.CenterHorizontally)) {
-
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_no_search_results),
-                                        contentDescription = "No search result",
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(horizontal = 55.dp)
-                                            .align(alignment = Alignment.CenterHorizontally),
-                                        contentScale = ContentScale.Fit)
-
-                                    Text(
-                                        text = stringResource(id = R.string.oops_no_search_result),
-                                        color = BodyText,
-                                        fontFamily = Inter,
-                                        fontWeight = FontWeight.Normal,
-                                        fontSize = 14.sp,
-                                        letterSpacing = 1.sp,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(top = 15.dp)
-                                    )
-
-                                    Spacer(modifier = Modifier.padding())
-                                }
-                            }
-                        } else {
-                            items(it) { item ->
-//                                index++
-                                GarbageItemView(
-                                    item = item,
-                                    onItemClick = {
-
-                                    }
-                                )
-
-//                                Spacer(modifier = Modifier.height(4.dp))
-
-                                Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor, modifier = Modifier.padding(vertical = 4.dp))
-
-//                                Spacer(modifier = Modifier.height(4.dp))
-
-//                                if (index % 3 == 0 && ads.isNotEmpty()) {
-//                                    NativeAdItemViewXML(ad = ads.random())
-//
-//                                    Spacer(modifier = Modifier.height(4.dp))
-//
-//                                    Divider(startIndent = 2.dp, thickness = 1.dp, color = DividerColor)
-//
-//                                    Spacer(modifier = Modifier.height(4.dp))
-//                                }
+                        GarbageItemView(
+                            item = item,
+                            onItemClick = {
 
                             }
+                        )
 
-                        }
+                        Divider(
+                            startIndent = 2.dp,
+                            thickness = 1.dp,
+                            color = DividerColor,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
 
-
-
-                    }.run {
-                        defaultItems()
                     }
+                }
 
+            if (isLoading) {
+                item {
+                    Box (
+                        Modifier
+                            .fillMaxWidth()
+                            .height(90.dp),
+                        contentAlignment = Alignment.TopCenter) {
+                        CircularLoaderView(color = Const.MAIN_COLORS_ARRAY.random() )
+                    }
                 }
             }
+            }
+
         }
     }
 
@@ -548,21 +533,21 @@ fun SearchViewPreview() {
     val isLoading = remember { mutableStateOf(false) }
     val garbageState = remember { mutableStateOf(GarbageItemState(arrayListOf(), false, null)) }
 
-
-    SearchMainScreenContent(
-        textState,
-        isLoading = isLoading.value,
-        garbageState,
-        arrayListOf(),
-        arrayListOf(),
-        popBack = {
-
-        },
-        onTextChange = {
-
-        },
-        load = {
-
-        }
-    )
+//
+//    SearchMainScreenContent(
+//        textState,
+//        isLoading = isLoading.value,
+//        garbageState,
+//        arrayListOf(),
+////        arrayListOf(),
+//        popBack = {
+//
+//        },
+//        onTextChange = {
+//
+//        },
+//        load = {
+//
+//        }
+//    )
 }
