@@ -1,86 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/native_ad_view"
-    android:layout_width="match_parent"
-    android:layout_height="130dp"
-    android:layout_centerInParent="true">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:orientation="vertical">
+</RelativeLayout>
+<!--<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/native_ad_view"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="130dp"-->
+<!--    android:layout_centerInParent="true">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:paddingBottom="10dp"-->
+<!--        android:paddingStart="20dp"-->
+<!--        android:paddingEnd="20dp"-->
+<!--        android:orientation="vertical">-->
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/admob_close_button_black_circle_white_cross"
-                />
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:orientation="vertical">
+<!--            <ImageView-->
+<!--                android:id="@+id/icon"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/admob_close_button_black_circle_white_cross"-->
+<!--                />-->
 
-                <TextView
-                    android:id="@+id/primary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/opensans_semibold"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    android:text="Header"
-                    android:textColor="@color/black"
-                    />
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:orientation="vertical">-->
 
-
-                <Button
-                    android:id="@+id/cta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/opensans_regular"
-                    android:textSize="14sp"
-                    android:textColor="@color/admob_open"
-                    android:background="@android:color/transparent"
-                    android:textAllCaps="false"
-                    android:text="@string/open"
-                    android:textAlignment="textStart"
-                    />
-
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/primary"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/opensans_semibold"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:text="Header"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    />-->
 
 
+<!--                <Button-->
+<!--                    android:id="@+id/cta"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/opensans_regular"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:textColor="@color/admob_open"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:text="@string/open"-->
+<!--                    android:textAlignment="textStart"-->
+<!--                    />-->
 
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/secondary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_regular"
-            android:maxLines="2"
-            android:textSize="12sp"
-            android:text="Any string"
-            android:textColor="@color/black"
-            />
-
-
-    </LinearLayout>
+<!--            </LinearLayout>-->
 
 
-</com.google.android.gms.ads.nativead.NativeAdView>
+
+<!--        </LinearLayout>-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/secondary"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/opensans_regular"-->
+<!--            android:maxLines="2"-->
+<!--            android:textSize="12sp"-->
+<!--            android:text="Any string"-->
+<!--            android:textColor="@color/black"-->
+<!--            />-->
+
+
+<!--    </LinearLayout>-->
+
+
+<!--</com.google.android.gms.ads.nativead.NativeAdView>-->
 
