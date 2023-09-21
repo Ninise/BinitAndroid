@@ -1,5 +1,6 @@
 package com.whalescale.binit.view.main
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 //import com.google.android.gms.ads.nativead.NativeAd
 //import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.whalescale.binit.App
+import com.whalescale.binit.api.FirebaseUtils
 import com.whalescale.binit.base.BaseViewModel
 import com.whalescale.binit.models.GarbageCategory
 import com.whalescale.binit.models.GarbageItem
@@ -179,15 +181,32 @@ class MainViewModel @Inject constructor(
         _garbageItemState.value = GarbageItemState(isLoading = false)
     }
 
-    fun makeSuggestion(name: String, type: String, description: String, location: String) {
+    fun makeSuggestion(name: String, type: String, description: String, location: String, uri: Uri?) {
         viewModelScope.launch {
-            val request = SuggestRequest(
-                name = name,
-                type = type,
-                description = description,
-                location = location
-            )
-            repository.makeSuggestion(request = request)
+
+            uri?.let {
+                FirebaseUtils.uploadImage(java.util.UUID.randomUUID().toString(), it, callback = { url ->
+                   viewModelScope.launch {
+                       val request = SuggestRequest(
+                           name = name,
+                           type = type,
+                           description = "${description}; URL:${url}",
+                           location = location
+                       )
+                       repository.makeSuggestion(request = request)
+                   }
+                })
+            }.run {
+                val request = SuggestRequest(
+                    name = name,
+                    type = type,
+                    description = description,
+                    location = location
+                )
+                repository.makeSuggestion(request = request)
+            }
+
+
         }
     }
 

@@ -36,7 +36,7 @@ fun DropOffLocationsScreen() {
     val viewModel = hiltViewModel<MainViewModel>()
 
     DropOffLocationsScreenContent(makeSuggestion = { name, type, desc, location ->
-        viewModel.makeSuggestion(name, type, desc, location)
+        viewModel.makeSuggestion(name, type, desc, location, null)
     })
 }
 

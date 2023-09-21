@@ -36,7 +36,7 @@ fun ScheduleScreen() {
     val viewModel = hiltViewModel<MainViewModel>()
 
     ScheduleScreenContent(makeSuggestion = { name, type, desc, location ->
-        viewModel.makeSuggestion(name, type, desc, location)
+        viewModel.makeSuggestion(name, type, desc, location, null)
     })
 }
 

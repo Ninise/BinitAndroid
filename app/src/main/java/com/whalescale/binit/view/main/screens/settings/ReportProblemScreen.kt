@@ -37,13 +37,13 @@ import com.whalescale.binit.view.main.MainViewModel
 fun ReportProblemScreen(navBack: () -> Unit) {
     val viewModel = hiltViewModel<MainViewModel>()
 
-    ReportProblemScreenContent(navBack, makeSuggestion = { name, type, desc, location ->
-        viewModel.makeSuggestion(name, type, desc, location)
+    ReportProblemScreenContent(navBack, makeSuggestion = { name, type, desc, location, uri ->
+        viewModel.makeSuggestion(name, type, desc, location, uri)
     })
 }
 
 @Composable
-fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, String, String, String) -> Unit) {
+fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, String, String, String, Uri?) -> Unit) {
 
     val text = remember { mutableStateOf("") }
 
@@ -173,7 +173,8 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
                     makeSuggestion(
                         Const.S_FEEDBACK_NAME,
                         Const.S_FEEDBACK, text.value,
-                        Const.S_ANDROID
+                        Const.S_ANDROID,
+                        selectedImageUri
                     )
 
                     text.value = ""
@@ -195,7 +196,7 @@ fun ReportProblemScreenContent(navBack: () -> Unit, makeSuggestion: (String, Str
 fun ReportProblemScreen_Preview() {
     ReportProblemScreenContent(navBack = {
 
-    }, makeSuggestion = { _, _, _, _ ->
+    }, makeSuggestion = { _, _, _, _, _ ->
 
     })
 }

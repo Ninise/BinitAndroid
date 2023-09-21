@@ -36,7 +36,7 @@ fun FeedbackScreen(navBack: () -> Unit) {
     val viewModel = hiltViewModel<MainViewModel>()
     
     FeedbackScreenContent(navBack, makeSuggestion = { name, type, desc, location ->
-        viewModel.makeSuggestion(name, type, desc, location)
+        viewModel.makeSuggestion(name, type, desc, location, null)
     })
 }
 
