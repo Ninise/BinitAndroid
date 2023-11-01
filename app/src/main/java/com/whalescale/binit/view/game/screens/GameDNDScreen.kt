@@ -23,6 +23,7 @@ import com.whalescale.binit.R
 import com.whalescale.binit.models.GameObject
 import com.whalescale.binit.models.RecycleType
 import com.whalescale.binit.ui.theme.Nunito
+import com.whalescale.binit.utils.Utils
 import com.whalescale.binit.view.custom_views.shake
 import com.whalescale.binit.view.game.DragTarget
 import com.whalescale.binit.view.game.DropTarget
@@ -103,8 +104,8 @@ fun GameMainScreenContent(gameObject: GameObject, counter: Int, onEndOfObject: (
                 targetValue = 1000f,
                 animationSpec = tween(durationMillis = 3_000)
             ) {
-                if (this.value == 1000f) {
 
+                if (this.value == 1000f) {
                     onEndOfObject(false)
 
                     CoroutineScope(Dispatchers.Default).launch {

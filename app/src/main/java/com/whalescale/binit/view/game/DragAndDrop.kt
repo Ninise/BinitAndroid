@@ -80,7 +80,7 @@ fun <T> DragTarget(
                     scope.launch {
                         Utils.log("ONE 2")
                         offsetY.animateTo(
-                            targetValue = 1300f,
+                            targetValue = 1000f,
                             animationSpec = tween(durationMillis = 5_000)) {
                             Utils.log("ONE 3")
                             if (this.value == 700f) {
@@ -88,6 +88,7 @@ fun <T> DragTarget(
                                 objectFell()
                             }
                         }
+                        objectFell()
                         Utils.log("POST ANIMATION: ${offsetY.value}")
                     }
 
