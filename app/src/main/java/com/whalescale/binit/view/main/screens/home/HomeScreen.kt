@@ -67,7 +67,10 @@ fun HomeScreenContent(searchSuggestions: List<String>, garbageCategories: List<G
         .testTag("test_main")
         .background(Color.White)
         .verticalScroll(state = rememberScrollState(), enabled = true)) {
-        SearchView(state = textState, isMockView = true, click = {
+
+        TextTitleMain(title = stringResource(R.string.main_title_what_to_dispose))
+
+        SearchView(state = textState, isMockView = true, paddingTop = 5.dp, click = {
             navigate(MainScreens.SearchMainScreen.withArgs(Const.SEARCH_QUERY_DEFAULT))
         }, onTextChange = {
 
@@ -244,26 +247,17 @@ fun ArticleItem(article: Article, onItemClick: (Article) -> Unit) {
 @Preview
 @Composable
 fun HomePreview() {
-//    HomeScreenContent(
-//        searchSuggestions = listOf("meat", "cup", "banana"),
-//        garbageCategories = listOf(GarbageCategory("Recycle", "", RecycleType.GARBAGE, "", ""), GarbageCategory("Organic", "0", RecycleType.ORGANIC, "", ""), GarbageCategory("Waste", "", RecycleType.GARBAGE, "", "")),
-//        articles = listOf(Article(
-//            image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-//            title = "Reuse. Reduce. Recycle",
-//            description = "How to make lifestyle eco-friendly?",
-//            content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
-//            Article(
-//                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-//                title = "Reuse. Reduce. Recycle",
-//                shortDesc = "How to make lifestyle eco-friendly?",
-//                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),
-//            Article(
-//                image = "https://www.sciencenews.org/wp-content/uploads/2021/01/013021_plastics_feat-1440x700.jpg",
-//                title = "Reuse. Reduce. Recycle",
-//                shortDesc = "How to make lifestyle eco-friendly?",
-//                content = "How to make lifestyle eco-friendly?, \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\", \"How to make lifestyle eco-friendly?\""),),
-//        navigate = {
-//
-//        }
-//    )
+    HomeScreenContent(
+        searchSuggestions = listOf("meat", "cup", "banana"),
+        garbageCategories = listOf(
+            GarbageCategory("Recycle", "R.drawable.ic_recycle",
+                Const.RECYCLE_TYPE, "", "", "", "", items = listOf()),
+            GarbageCategory("Garbage", "R.drawable.ic_garbage",
+                Const.GARBAGE_TYPE, "", "", "","", items = listOf())
+        ),
+        articles = listOf(),
+        navigate = {
+
+        }
+    )
 }

@@ -30,7 +30,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContent {
             WasteAndroidAppTheme {
 
@@ -41,8 +40,6 @@ class MainActivity : BaseActivity() {
                         darkIcons = true
                     )
                 }
-
-
 
                 MainScreen()
             }

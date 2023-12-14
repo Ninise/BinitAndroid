@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -252,7 +253,7 @@ fun SearchMainScreenContent(
 }
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, isActive: Boolean = false, click: () -> Unit, backClick: () -> Unit = {}, onTextChange: () -> Unit) {
+fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false, isActive: Boolean = false, paddingTop: Dp = 15.dp, paddingBottom: Dp = 15.dp, click: () -> Unit, backClick: () -> Unit = {}, onTextChange: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
         .clickable {
             if (isMockView) {
@@ -285,7 +286,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
             enabled = !isMockView,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp),
+                .padding(start = 15.dp, end = 15.dp, top = paddingTop, bottom = paddingBottom),
             placeholder = {
                 Text(stringResource(R.string.search), style = TextStyle(color = HintText, fontSize = 16.sp, fontFamily = Inter, fontWeight = FontWeight.Normal))
             },
@@ -337,7 +338,7 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
                 }
             },
             singleLine = true,
-            shape = RoundedCornerShape(6.dp), // The TextFiled has rounded corners top left and right by default
+            shape = RoundedCornerShape(8.dp), // The TextFiled has rounded corners top left and right by default
             colors = TextFieldDefaults.textFieldColors(
                 textColor = BodyText,
                 cursorColor = cursorText,
@@ -359,15 +360,29 @@ fun SearchChip(text: String, onItemClick: (String) -> Unit) {
         .testTag("search_chip")
         .background(color = ChipBackGray, shape = RoundedCornerShape(6.dp))
         .clickable { onItemClick(text) }) {
-        Text(
-            text = text,
-            color = BodyText,
-            fontFamily = Inter,
-            fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
-            letterSpacing = 1.sp,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Icon(
+                painterResource(id = R.drawable.ic_quick_search_arrow),
+                contentDescription = "arrow",
+                modifier = Modifier
+                    .size(size = 12.dp),
+                tint = BodyText
+            )
+            Text(
+                text = text,
+                color = BodyText,
+                fontFamily = Inter,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                letterSpacing = 1.sp,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+
     }
 }
 
