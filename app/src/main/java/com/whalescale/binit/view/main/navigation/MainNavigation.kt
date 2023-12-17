@@ -10,18 +10,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.whalescale.binit.models.RecycleType
 import com.whalescale.binit.utils.Const
+import com.whalescale.binit.utils.Utils
 import com.whalescale.binit.view.main.MainViewModel
 import com.whalescale.binit.view.main.screens.article.ArticleDetailsScreen
 import com.whalescale.binit.view.main.screens.home.HomeScreen
 import com.whalescale.binit.view.main.screens.search.GarbageTypeDetailsScreen
 import com.whalescale.binit.view.main.screens.search.SearchMainScreen
 
-@Composable
-fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController: NavHostController = rememberNavController()) {
 
-    val GARBAGE_TYPE = "garbage_type"
-    val SEARCH_QUERY = "search_query"
-    val ARTICLE_ID = "article_id"
+const val GARBAGE_TYPE = "garbage_type"
+const val SEARCH_QUERY = "search_query"
+const val ARTICLE_ID = "article_id"
+
+@Composable
+fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, search: (String) -> Unit, navController: NavHostController = rememberNavController()) {
 
     NavHost(navController = navController, startDestination = MainScreens.MainScreen.route) {
 
@@ -51,9 +53,9 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
             entry.arguments?.getString(SEARCH_QUERY, "")?.let { query ->
 
                 if (query == Const.SEARCH_QUERY_DEFAULT) {
-                    SearchMainScreen(navController = navController, viewModel)
+                    SearchMainScreen(viewModel)
                 } else {
-                    SearchMainScreen(navController = navController, viewModel, query)
+                    SearchMainScreen(viewModel, query)
                 }
 
 
@@ -73,7 +75,9 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
         ) { entry ->
             entry.arguments?.getString(GARBAGE_TYPE)?.let { type ->
                 val category = viewModel.getGarbageCategoryByType(type = type)
-                GarbageTypeDetailsScreen(navController = navController, viewModel, category)
+                GarbageTypeDetailsScreen(navController = navController, viewModel, category, search = {
+                    search(it)
+                })
             }
 
         }
@@ -96,7 +100,13 @@ fun MainNavigation(viewModel: MainViewModel, openGame: () -> Unit, navController
         }
 
         composable(route = MainScreens.MainScreen.route) {
-            HomeScreen(navController = navController, viewModel)
+            HomeScreen(viewModel, navigation = {
+                if (it.startsWith(MainScreens.SearchMainScreen.route)) {
+                    search(it.substringAfter("/"))
+                } else {
+                    navController.navigate(it)
+                }
+            })
         }
 
     }

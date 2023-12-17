@@ -52,7 +52,7 @@ import com.whalescale.binit.view.main.navigation.MainScreens
 // make see all clickable +
 
 @Composable
-fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory) {
+fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewModel, garbageCategory: GarbageCategory, search: (String) -> Unit) {
 
     LaunchedEffect(Unit, block = {
         viewModel.searchGarbage(garbageCategory.type, limit = 5)
@@ -64,7 +64,8 @@ fun GarbageTypeDetailsScreen(navController: NavController, viewModel: MainViewMo
             viewModel.clearGarbageList()
         } else {
             destination.let {
-                navController.navigate(MainScreens.SearchMainScreen.withArgs(it))
+//                navController.navigate(MainScreens.SearchMainScreen.withArgs(it))
+                search(it)
             }
         }
     }, openLink = { link ->

@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 //import com.google.android.gms.ads.AdLoader
@@ -52,10 +53,17 @@ import com.whalescale.binit.utils.Const.RECYCLE_TYPE
 import com.whalescale.binit.utils.Utils
 import com.whalescale.binit.view.custom_views.CircularLoaderView
 import com.whalescale.binit.view.main.MainViewModel
+import com.whalescale.binit.view.main.screens.schedule.ScheduleScreenContent
 import java.util.*
 
+
 @Composable
-fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, query: String = "") {
+fun SearchScreen(query: String = "") {
+    SearchMainScreen(viewModel = hiltViewModel<MainViewModel>(), query = query)
+}
+
+@Composable
+fun SearchMainScreen(viewModel: MainViewModel, query: String = "") {
 
     val textState = remember { mutableStateOf(TextFieldValue(query)) }
 
@@ -64,6 +72,8 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
     LaunchedEffect(key1 = Unit, block = {
         if (query.isNotEmpty()) {
             viewModel.searchGarbage(query, limit = 25)
+        } else {
+            viewModel.clearSearch()
         }
     })
 
@@ -75,7 +85,6 @@ fun SearchMainScreen(navController: NavController, viewModel: MainViewModel, que
 //        ads = viewModel.ads,
         popBack = {
             viewModel.clearSearch()
-            navController.popBackStack()
         },
         onTextChange = {
             viewModel.searchGarbage(textState.value.text)
@@ -262,21 +271,6 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
         }
         .testTag("search_view")) {
 
-        if (state.value == TextFieldValue("") && !isMockView) {
-            IconButton(onClick = {
-                backClick()
-            }) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    tint = IconsGray,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(start = 15.dp)
-                        .size(24.dp)
-                )
-            }
-        }
-
         TextField(
             value = state.value,
             onValueChange = { value ->
@@ -292,30 +286,14 @@ fun SearchView(state: MutableState<TextFieldValue>, isMockView: Boolean = false,
             },
             textStyle = TextStyle(color = BodyText, fontSize = 16.sp, fontFamily = Inter, fontWeight = FontWeight.Normal),
             leadingIcon = {
-                if (state.value != TextFieldValue("")) {
-                    IconButton(onClick = {
-                        backClick()
-                    }) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            tint = IconsGray,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(15.dp)
-                                .size(24.dp)
-                        )
-                    }
-                } else {
-                    Icon(
-                        painterResource(id = R.drawable.ic_search_mag_glass),
-                        tint = IconsGray,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .padding(start = 15.dp)
-                            .size(24.dp)
-                    )
-                }
-
+                Icon(
+                    painterResource(id = R.drawable.ic_search_mag_glass),
+                    tint = IconsGray,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .size(24.dp)
+                )
             },
             trailingIcon = {
                 if (state.value != TextFieldValue("")) {

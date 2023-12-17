@@ -41,10 +41,13 @@ class MainActivity : BaseActivity() {
                     )
                 }
 
-                MainScreen()
+                MainScreen(mainViewModel)
+
+
             }
         }
 
+        mainViewModel.downloadData()
 
     }
 

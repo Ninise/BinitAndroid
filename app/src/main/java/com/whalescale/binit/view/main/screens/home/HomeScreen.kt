@@ -41,7 +41,7 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
+fun HomeScreen(viewModel: MainViewModel, navigation: (String) -> Unit) {
 
     val searchSuggestions = viewModel.suggestionState.value.suggestions ?: listOf()
 
@@ -50,8 +50,8 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
     val articles = viewModel.articleItemState.value.articlesList ?: listOf()
 
     HomeScreenContent(searchSuggestions, garbageCategories, articles,
-        navigate = { destination ->
-            navController.navigate(destination)
+        navigate = { query ->
+            navigation(query)
         }
     )
 

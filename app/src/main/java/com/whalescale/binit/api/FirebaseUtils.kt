@@ -12,8 +12,6 @@ import java.io.ByteArrayOutputStream
 
 object FirebaseUtils {
 
-
-
     fun uploadImage(name: String, uri: Uri, callback: (String) -> Unit) {
         FirebaseAuth.getInstance()
             .signInAnonymously()
